@@ -75,3 +75,8 @@ def author_login_form(request):
         form = AuthorLoginForm()
 
     return render(request, 'forum/author_login_form.html', {'form': form})
+
+def author_logout(request):
+    global author_logged_in
+    author_logged_in = None
+    return HttpResponseRedirect('/')

@@ -1,0 +1,11 @@
+body {
+    background-image: url("background.jpg");
+}
+
+nav {
+    background-image: url("navbar_background.jpg");
+}
+
+#content{
+    margin-top: 30px;
+}
