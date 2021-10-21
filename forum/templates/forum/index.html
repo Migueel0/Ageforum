@@ -1,0 +1,14 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+        {% if post_list %}
+            {% for post in question_list %}
+                <h1>{{ post.post_text }}</h1>
+            {% endfor %}
+        {% else %}
+            <p>No posts are available.</p>
+        {% endif %}
+    </body>
+</html>
