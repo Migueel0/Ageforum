@@ -1,0 +1,38 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <form action="{% url 'author_create_form' %}" method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.username.errors }}
+            <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+            {{ form.username }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.email.errors }}
+            <label for="{{ form.email.id_for_label }}">Email:</label>
+            {{ form.email }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.password.errors }}
+            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+            {{ form.password }}
+        </div>
+        <div class="fieldWrapper">
+            <label for="{{ form.password.id_for_label }}">Repita contraseña:</label>
+            {{ form.password }}
+        </div>
+        <div class="fieldWrapper">
+            <label for="{{ form.avatar.id_for_label }}">Avatar:</label>
+            {{ form.avatar }}
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>

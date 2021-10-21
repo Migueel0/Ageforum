@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('<int:post_id>/', views.post_detail, name='post_detail'),
-    path('author_form', views.author_form, name='author_form'),
+    path('author_create_form', views.author_create_form, name='author_create_form'),
+    path('author_login_form', views.author_login_form, name='author_login_form'),
 ]

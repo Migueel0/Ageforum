@@ -1,14 +1,27 @@
 <html>
-    <head>
 
-    </head>
-    <body>
-        {% if post_list %}
-            {% for post in post_list %}
-                <a href="{{post.id}}"><h1>{{ post.post_title }}</h1></a>
-            {% endfor %}
-        {% else %}
-            <p>No posts are available.</p>
-        {% endif %}
-    </body>
+<head>
+
+</head>
+
+<body>
+    {% if author_logged_in %}
+    <p>Bienvenido <strong>{{ author_logged_in.username }}</strong></p>
+    <a href="author_logout">Cerrar sesión</a>
+    {% else %}
+    <a href="author_create_form">Registrarse</a>
+    <a href="author_login_form">Login</a>
+    {% endif %}
+
+    {% if post_list %}
+    {% for post in post_list %}
+    <a href="{{post.id}}">
+        <h1>{{ post.post_title }}</h1>
+    </a>
+    {% endfor %}
+    {% else %}
+    <p>No posts are available.</p>
+    {% endif %}
+</body>
+
 </html>
