@@ -1,11 +1,11 @@
 <html>
     <head>
-
+        
     </head>
     <body>
         {% if post_list %}
-            {% for post in post_list %}
-                <a href="{{post.id}}"><h1>{{ post.post_title }}</h1></a>
+            {% for post in question_list %}
+                <h1>{{ post.post_text }}</h1>
             {% endfor %}
         {% else %}
             <p>No posts are available.</p>

@@ -1,6 +1,6 @@
-from django.http import HttpResponse, response
+from django.http import HttpResponse
 from django.template import loader
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 
 from .models import Author,Post,Response
 
@@ -11,11 +11,3 @@ def index(request):
         'post_list': post_list,
     }
     return render(request, 'forum/index.html', context)
-
-def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'forum/post_detail.html', {'post': post})
-
-def author_form(request):
-    author = Author()
-    return render(request, 'forum/author_form.html', {'author': author})
