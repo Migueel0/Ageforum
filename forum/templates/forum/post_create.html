@@ -18,6 +18,7 @@
         crossorigin="anonymous"></script>
 
     <title>Foro Age of Empires IV</title>
+
 </head>
 
 <body>
@@ -43,8 +44,8 @@
                         <img id="author_avatar" class="d-inline-block img-thumbnail"
                             src="{{author_logged_in.avatar.url}}" width="50" height="50" />
                         {% else %}
-                        <img id="author_avatar" class="d-inline-block img-thumbnail" src="/avatars/generic_avatar.png"
-                            width="50" height="50" />
+                        <img id="author_avatar" class="d-inline-block img-thumbnail"
+                            src="/avatars/generic_avatar.png" width="50" height="50" />
                         {% endif %}
                     </a>
                 </li>
@@ -66,24 +67,22 @@
             </form>
         </div>
     </nav>
-    <div class="w-50 mx-auto">
-        {% if author_logged_in %}
-        <div>
-            <a href="post_create" class="new_topic_button btn btn-danger">+ Nuevo tema</a>
-        </div>
-        {% endif %}
-        <div id="post_list" class="list-group">
-            {% if post_list %}
-            {% for post in post_list %}
-            <a href="{{post.id}}" class="list-group-item list-group-item-action">
-                <h1>{{ post.post_title }}</h1>
-            </a>
-            {% endfor %}
-            {% else %}
-            <p>No posts are available.</p>
-            {% endif %}
-        </div>
+
+    {% if author_logged_in %}
+    <div class="fieldWrapper">
+        <label for="{{ form.post_title.id_for_label }}">Título:</label>
+        {{ form.post_title }}
     </div>
+    
+    <div class="fieldWrapper">
+        <label for="{{ form.post_text.id_for_label }}">Mensaje:</label>
+        {{ form.post_text }}
+    </div>
+    <input type="submit" class="btn btn-danger" value="Publicar tema"/>
+    {% else %}
+    <h1 class="text-danger">Debe de indentificarse para crear un nuevo tema y comentar</h1>
+    {% endif %}
+
 </body>
 
 </html>

@@ -6,6 +6,14 @@ nav {
     background-image: url("navbar_background.jpg");
 }
 
-#content{
+#post_list {
+    margin-top: 15px;
+}
+
+#author_avatar {
+    margin-right: 20px !important;
+}
+
+.new_topic_button {
     margin-top: 30px;
 }

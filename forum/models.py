@@ -6,7 +6,7 @@ class Author(models.Model):
     email = models.EmailField()
     join_date = models.DateTimeField()
     last_login_date = models.DateTimeField(null=True)
-    avatar = models.ImageField(upload_to='avatar')
+    avatar = models.ImageField(upload_to='avatars/')
 
     def __str__(self):
         return self.username    

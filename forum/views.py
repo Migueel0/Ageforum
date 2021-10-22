@@ -5,7 +5,7 @@ from django.template import loader
 from django.shortcuts import get_object_or_404, render
 
 from .models import Author,Post,Response
-from .forms import AuthorCreateForm, AuthorLoginForm
+from .forms import AuthorCreateForm, AuthorLoginForm, PostCreateForm
 
 import datetime
 
@@ -80,3 +80,7 @@ def author_logout(request):
     global author_logged_in
     author_logged_in = None
     return HttpResponseRedirect('/')
+
+def post_create(request):
+    form = PostCreateForm()
+    return render(request, 'forum/post_create.html', {'form': form})
