@@ -14,3 +14,6 @@ class AuthorLoginForm(forms.Form):
 class PostCreateForm(forms.Form):
     post_title = forms.CharField(label='Título', max_length=100, required=True)
     post_text = forms.CharField(label='Mensaje', widget=forms.Textarea)
+
+class ResponseForm(forms.Form):
+    response_text = forms.CharField()

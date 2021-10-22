@@ -2,34 +2,96 @@
 
 <head>
     {% load static %}
-    <link rel="stylesheet" href="{% static '/forum/style.css' %}"> 
+    <link rel="icon" type="image/png" href="{% static 'forum/favicon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'forum/style.css' %}">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
-    integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <title>Foro Age of Empires IV</title>
+
 </head>
 
 <body>
-    <h1>{{ post.post_title }}</h1>
-    <p>{{ post.post_text }}</p>
-    <p>By: {{ post.author }}</p>
-    <br />
-    {% for response in post.response_set.all %}
-    <p>{{ response.response_text }} | By: {{response.author}}</p>
-    {% endfor %}
-    <a href="/">Volver al inicio</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'forum/title.png' %}">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                {% if author_logged_in %}
+                <li class="nav-item text-light">
+                    <p class="d-inline-block">Bienvenido</p>
+                    <a href="#" class="nav-link d-inline-block text-light">
+                        <p id="author_username" class="d-inline-block h5 strong"><strong>
+                                {{ author_logged_in.username }}
+                            </strong></p>
+                        {% if author_logged_in.avatar %}
+                        <img id="author_avatar" class="d-inline-block img-thumbnail"
+                            src="{{author_logged_in.avatar.url}}" width="50" height="50" />
+                        {% else %}
+                        <img id="author_avatar" class="d-inline-block img-thumbnail" src="/avatars/generic_avatar.png"
+                            width="50" height="50" />
+                        {% endif %}
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
+                </li>
+                {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="author_create_form">Registrarse</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="author_login_form">Identificarse</a>
+                </li>
+                {% endif %}
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar en el foro" aria-label="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </div>
+    </nav>
+
+    <div id="post_title_wrapper" class="d-flex text-center w-75 mx-auto">
+        <h1 id="post_title">{{ post.post_title }}</h1>
+    </div>
+
+    <div id="post_detail" class="d-block w-50 mx-auto">
+
+        <p>{{ post.post_text }}</p>
+
+        <p>By: {{ post.author }}</p>
+
+        {% for response in post.response_set.all %}
+        <div>
+            <p>{{ response.response_text }} | By: {{response.author}}</p>
+        </div>
+        {% endfor %}
+        <a href="/">Volver al inicio</a>
+    </div>
+    {% if author_logged_in %}
+    <div id="actions" class="d-block w-50 mx-auto margin_top_30">
+        <form action="response_create" method="get">
+            <button type="submit" class="btn btn-danger">Responder</button>
+        </form>
+    </div>
+    {% endif %}
 </body>
 
 </html>
