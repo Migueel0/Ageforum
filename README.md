@@ -12,7 +12,7 @@ To make it possible we are using the following softwares:
 ## CODE STRUCTURE
 We can divide this proyect in 3 different splits:
 
-* **1 Data Base:** We are working with SQLite database where we are saving all forum data like usersnames,posts etc.Probably,later,we will change the database into another SQL. 
+* **1 Database:** We are working with SQLite database where we are saving all forum data like usersnames,posts etc.Probably,later,we will change the database into another SQL. 
 * **2 Frontend development:** For web development, we´r using HTML for the webpage structure,css and Bootstrap for webpage design and Django for the comunication with the backend.
 * **3 Backend development:** As we´r using Django, the Backend lenguaje used is Python.
 
