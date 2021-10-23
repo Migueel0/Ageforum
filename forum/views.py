@@ -14,6 +14,7 @@ author_logged_in = None
 post_current = None
 
 
+#Django
 def index(request):
     post_list = Post.objects.order_by('-pub_date')[:50]
     context = {
@@ -41,8 +42,8 @@ def author_create_form(request):
             author = Author()
             author.username = form.cleaned_data['username']
             author.password = form.cleaned_data['password']
-            passwordRepeat = form.cleaned_data['passwordRepeat']
-            if(author.password != passwordRepeat):
+            password_repeat = form.cleaned_data['password_repeat']
+            if(author.password != password_repeat):
                 # TODO raise error in form
                 raise forms.ValidationError("Passwords do not match")
             author.email = form.cleaned_data['email']
@@ -123,10 +124,10 @@ def response_create(request):
         response_text = form.cleaned_data['response_text']
         pub_date = datetime.datetime.now()
         response = Response(author=author, post=post,
-                            response_text=response_text, pub_date=pub_date)
+            response_text=response_text, pub_date=pub_date)
         response.save()
         return HttpResponseRedirect('/' + str(post.id))
     else:
-        form = PostCreateForm()
+        form = ResponseForm()
 
     return render(request, 'forum/response_create.html', {'form': form, 'author_logged_in': author_logged_in, 'post_current': post_current})

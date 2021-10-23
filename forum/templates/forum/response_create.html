@@ -75,6 +75,7 @@
     <div id="response_create_wrapper" class="container justify-content-center d-flex w-50 mx-auto margin_top_30">
         <form action="response_create" method="post">
             {% csrf_token %}
+            <label for="{{ form.post_title.id_for_label }}" class="text-light">Respuesta:</label><br />
             <textarea class="row d-flex" name="response_text" cols="40" rows="10" required="" id="id_response_text"></textarea>
             <button type="submit" class="btn btn-danger row margin_top_30">Publicar respuesta</button>
         </form>
