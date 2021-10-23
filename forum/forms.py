@@ -17,4 +17,4 @@ class PostCreateForm(forms.Form):
     post_text = forms.CharField(label='Mensaje', widget=forms.Textarea)
 
 class ResponseForm(forms.Form):
-    response_text = forms.CharField(label='Respuesta', widget=forms.Textarea)
+    response_text = forms.CharField()

@@ -37,12 +37,6 @@
             <input type="text" class="form-control" placeholder="Usuario" name="username" id="id_username">
         </div>
 
-        <!-- {% csrf_token %}
-        <div class="form-group">
-            <label for="exampleInputEmail1" class="text-light">Nombre de usuario:</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="Usuario" name="username" id="id_username">
-        </div> -->
         <div class="form-group">
             {{ form.email.errors }}
             <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>

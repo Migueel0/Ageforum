@@ -14,7 +14,7 @@ author_logged_in = None
 post_current = None
 
 
-#Django
+# Django
 def index(request):
     post_list = Post.objects.order_by('-pub_date')[:50]
     context = {
@@ -72,13 +72,24 @@ def author_login_form(request):
             # process the data in form.cleaned_data as required
             author = Author.objects.filter(
                 username=form.cleaned_data['username']).first()
-            password = form.cleaned_data['password']
-            if author.password == password:
-                # set author logged in
-                global author_logged_in
-                author_logged_in = author
-                # redirect to index:
-                return HttpResponseRedirect('/')
+            if author:  # author exists
+                password = form.cleaned_data['password']
+                if author.password == password:
+                    # set author logged in
+                    global author_logged_in
+                    author_logged_in = author
+                    # redirect to index:
+                    return HttpResponseRedirect('/')
+                else:
+                    login_error = True
+            else:
+                login_error = True
+        else:
+            login_error = True
+            
+        form = AuthorLoginForm()
+        return render(request, 'forum/author_login_form.html',
+                              {'form': form, 'author_logged_in': author_logged_in, 'login_error': login_error})
     else:
         form = AuthorLoginForm()
     return render(request, 'forum/author_login_form.html', {'form': form, 'author_logged_in': author_logged_in})
@@ -124,7 +135,7 @@ def response_create(request):
         response_text = form.cleaned_data['response_text']
         pub_date = datetime.datetime.now()
         response = Response(author=author, post=post,
-            response_text=response_text, pub_date=pub_date)
+                            response_text=response_text, pub_date=pub_date)
         response.save()
         return HttpResponseRedirect('/' + str(post.id))
     else:
