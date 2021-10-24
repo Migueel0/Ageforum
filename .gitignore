@@ -3,3 +3,4 @@ forum/__pycache__
 forum/migrations/
 db.sqlite3
 .vscode/
+avatars/
