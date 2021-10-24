@@ -7,14 +7,14 @@ Age of Empires IV will be published Thrusday 28th of October. Lorenzo and I real
 To make it possible we are using the following softwares:
 
 * [Django](https://www.djangoproject.com/) - As web framework
-* [Visual Studio Code](https://code.visualstudio.com/) - Manejador de dependencias
+* [Visual Studio Code](https://code.visualstudio.com/) - As Integrated Development Environment (IDE)
 
 ## CODE STRUCTURE
 We can divide this proyect in 3 different splits:
 
 * **1 Database:** We are working with SQLite database where we are saving all forum data like usersnames,posts etc.Probably,later,we will change the database into another SQL. 
-* **2 Frontend development:** For web development, we´r using HTML for the webpage structure,css and Bootstrap for webpage design and Django for the comunication with the backend.
-* **3 Backend development:** As we´r using Django, the Backend lenguaje used is Python.
+* **2 Frontend development:** For web development, we´re using HTML for the webpage structure,css and Bootstrap for webpage design and Django for the comunication with the backend.
+* **3 Backend development:** As we´re using Django, the Backend lenguaje used is Python.
 
 ## FORUM STRUCTURE
 * As any forum, this will have a posting area that will be sorted with an index where title´s post will be shown.
