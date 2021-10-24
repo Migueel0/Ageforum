@@ -27,7 +27,7 @@
         </a>
     </nav>
 
-    <div class = "text-light w-25 col col-sm-6 col-md-6 col-lg-4 col-xl-3">
+    <div class = "text-light mx-auto  col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
     <form action="{% url 'author_create_form' %}" method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}

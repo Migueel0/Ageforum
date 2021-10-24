@@ -87,7 +87,7 @@
     </div>
     {% if author_logged_in %}
     <div id="actions" class="d-block w-50 mx-auto margin_top_30">
-        <form action="response_create" method="post">
+        <form action="response_create" method="get">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Responder</button>
         </form>

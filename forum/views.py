@@ -128,16 +128,16 @@ def response_create(request):
         # create a form instance and populate it with data from the request:
         form = ResponseForm(request.POST)
         # check whether it's valid:
-        # if form.is_valid():
+        if form.is_valid():
         # process the data in form.cleaned_data as required
-        author = author_logged_in
-        post = post_current
-        response_text = form.cleaned_data['response_text']
-        pub_date = datetime.datetime.now()
-        response = Response(author=author, post=post,
+            author = author_logged_in
+            post = post_current
+            response_text = form.cleaned_data['response_text']
+            pub_date = datetime.datetime.now()
+            response = Response(author=author, post=post,
                             response_text=response_text, pub_date=pub_date)
-        response.save()
-        return HttpResponseRedirect('/' + str(post.id))
+            response.save()
+            return HttpResponseRedirect('/' + str(post.id))
     else:
         form = ResponseForm()
 
