@@ -145,3 +145,4 @@ def response_create(request):
 
 def author_details(request):
     return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in})
+    

@@ -15,7 +15,11 @@ nav {
 }
 
 .yellow_color{
-    color: #d7caa6;
+    color: #d7caa6 !important;
+}
+
+.yellow_background_color{
+    background-color: #d7caa6 !important;
 }
 
 .margin_top_30 {

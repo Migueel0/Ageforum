@@ -104,3 +104,5 @@ class AuthorTests(TestCase):
         except TypeError:
             # login_error not found in context so test has passed
             pass
+
+#TODO add avatar test
