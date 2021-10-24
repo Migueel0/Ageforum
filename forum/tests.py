@@ -98,7 +98,7 @@ class AuthorTests(TestCase):
                      }
         form = AuthorLoginForm(form_data)
         self.assertTrue(form.is_valid())
-        response = self.client.post(reverse('author_login_form'), form_data)
+        response = self.client.post(reverse('author_login'), form_data)
         try:
             self.assertIsNone(response.context['login_error'])
         except TypeError:

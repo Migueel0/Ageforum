@@ -31,7 +31,7 @@ def post_detail(request, post_id):
     return render(request, 'forum/post_detail.html', {'post': post, 'author_logged_in': author_logged_in})
 
 
-def author_create_form(request):
+def author_create(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -60,14 +60,14 @@ def author_create_form(request):
                 # redirect to index:
                 return HttpResponseRedirect('/')
             else:
-                return render(request, 'forum/author_create_form.html', {'form': form, 'author_exist':True})            
+                return render(request, 'forum/author_create.html', {'form': form, 'author_exist':True})            
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AuthorCreateForm()
-    return render(request, 'forum/author_create_form.html', {'form': form})
+    return render(request, 'forum/author_create.html', {'form': form})
 
 
-def author_login_form(request):
+def author_login(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -93,11 +93,11 @@ def author_login_form(request):
             login_error = True
             
         form = AuthorLoginForm()
-        return render(request, 'forum/author_login_form.html',
+        return render(request, 'forum/author_login.html',
                               {'form': form, 'author_logged_in': author_logged_in, 'login_error': login_error})
     else:
         form = AuthorLoginForm()
-    return render(request, 'forum/author_login_form.html', {'form': form, 'author_logged_in': author_logged_in})
+    return render(request, 'forum/author_login.html', {'form': form, 'author_logged_in': author_logged_in})
 
 
 def author_logout(request):

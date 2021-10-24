@@ -52,10 +52,10 @@
                         <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
                     </li>
                     {% else %}
+                
                     <li class="nav-item active">
-                        <a class="nav-link" href="author_create_form">Registrarse</a>
+                        <a class="nav-link" href="author_login">Identificarse</a>
                     </li>
-
                     {% endif %}
                 </ul>
                 <form class="my-2 my-lg-0 d-flex">
@@ -66,25 +66,65 @@
         </nav>
     </div>
 
-    <div class="margin_top_30">
-        <form class="col col-sm-12 col-md-6 col-lg-4 col-xl-3 mx-auto" method="post">
+    <div class="text-light mx-auto  col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3">
+        <form action="{% url 'author_create' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% if login_error %}
-            <div id="loggin_error">
-                <p class="text-danger">Credenciales incorrectas</p>
+            {{ form.non_field_errors }}
+            <div class="form-group margin_top_30">
+                {{ form.username.errors }}
+                <label class="form-label" for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" class="form-control" placeholder="Usuario" name="username" id="id_username"
+                            minlength="4" required>
+                        {% if author_exist %}
+                        <p class="text-danger">El nombre de usuario ya existe</p>
+                        {% endif %}
+                    </div>
+                    <!-- <div class="col-1">
+                        <img id="loading_gif" src="/avatars/loading.gif" alt="Cargando" width="30"
+                            style="display: none">
+                    </div> -->
+                </div>
             </div>
-            {% endif %}
+
             <div class="form-group">
-                <label for="username" class="text-light">Nombre de usuario:</label>
-                <input type="text" class="form-control" placeholder="Usuario" name="username" id="id_username">
+                {{ form.email.errors }}
+                <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
+                <input type="text" class="form-control" placeholder="Email" name="email" id="id_email" maxlength="30"
+                    required>
+            </div>
+
+            <div class="form-group">
+                {{ form.password.errors }}
+                <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+                <input type="password" class="form-control" placeholder="Contraseña" name="password" id="id_password"
+                    required>
             </div>
             <div class="form-group">
-                <label for="password" class="text-light">Contraseña:</label>
-                <input type="password" class="form-control" placeholder="Contraseña" name="password" id="id_password">
+                <label for="{{ form.password_repeat.id_for_label }}">Repita contraseña:</label>
+                <input type="password" class="form-control" placeholder="Repita contraseña" name="password_repeat"
+                    id="id_password_repeat" required>
             </div>
-            <button type="submit" class="btn btn-danger">Identificarse</button>
+            <div class="form-group">
+                <label for="{{ form.avatar.id_for_label }}">Avatar:</label>
+                <input type="file" placeholder="Seleccionar archivo" name="avatar" id="id_avatar">
+            </div>
+            <input type="submit" value="Submit">
         </form>
     </div>
+    <!-- <script> TODO: implement username check
+        $("#id_username").keydown(function () {
+            clearTimeout($.data(this, 'timer'));
+            var waitForUsernameCheck = setTimeout(checkUsername, 500);
+            $(this).data('timer', waitForUsernameCheck);
+        });
+
+        function checkUsername(username) {
+            $("#loading_gif").show();
+            console.log("key pressed");
+        }
+    </script> -->
 </body>
 
 </html>
