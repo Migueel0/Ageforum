@@ -68,6 +68,7 @@
         </nav>
     </div>
 
+    {% if author_logged_in %}
     <div id="author_details_wrapper" class="d-block w-50 mx-auto margin_top_30">
         <h1>Usuario: {{ author_logged_in.username }}</h1>
     </div>
