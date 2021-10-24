@@ -142,3 +142,6 @@ def response_create(request):
         form = ResponseForm()
 
     return render(request, 'forum/response_create.html', {'form': form, 'author_logged_in': author_logged_in, 'post_current': post_current})
+
+def author_details(request):
+    return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in})
