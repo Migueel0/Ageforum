@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from datetime import datetime, timezone
-import pytz
 from forum.forms import *
 from forum.models import *
 

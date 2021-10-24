@@ -14,18 +14,8 @@ nav {
     margin-right: 20px !important;
 }
 
-.new_topic_button, #post_create_form, #post_create_form, #post_detail {
-    margin-top: 30px;
-}
-
-#post_detail {
-    background-color: #d7caa6;
-    padding: 30px;
-}
-
-#post_title_wrapper {
-    color: #f1e9d0;
-    margin-top: 30px;
+.yellow_color{
+    color: #d7caa6;
 }
 
 .margin_top_30 {
