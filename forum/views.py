@@ -48,7 +48,7 @@ def author_create_form(request):
                 raise forms.ValidationError("Passwords do not match")
             author.email = form.cleaned_data['email']
             author.avatar = form.cleaned_data['avatar']
-            author.join_date = datetime.datetime.now()
+            author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
             author.save()
             # set author logged in
             global author_logged_in
@@ -112,7 +112,7 @@ def post_create(request):
             author = author_logged_in
             post_title = form.cleaned_data['post_title']
             post_text = form.cleaned_data['post_text']
-            pub_date = datetime.datetime.now()
+            pub_date = datetime.datetime.now(tz=datetime.timezone.utc)
             post = Post(author=author, post_title=post_title,
                         post_text=post_text, pub_date=pub_date)
             post.save()
@@ -133,7 +133,7 @@ def response_create(request):
             author = author_logged_in
             post = post_current
             response_text = form.cleaned_data['response_text']
-            pub_date = datetime.datetime.now()
+            pub_date = datetime.datetime.now(tz=datetime.timezone.utc)
             response = Response(author=author, post=post,
                             response_text=response_text, pub_date=pub_date)
             response.save()
