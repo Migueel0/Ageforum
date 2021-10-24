@@ -1,0 +1,4 @@
+Ageforum/__pycache__
+forum/__pycache__
+forum/migrations/
+db.sqlite3
