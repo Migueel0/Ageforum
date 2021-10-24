@@ -1,9 +1,9 @@
 from django.db import models
 
 class Author(models.Model):
-    username = models.CharField(max_length=30)
+    username = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=30)
-    email = models.EmailField()
+    email = models.EmailField(max_length=30, unique=True)
     join_date = models.DateTimeField()
     last_login_date = models.DateTimeField(null=True)
     avatar = models.ImageField(upload_to='avatars', null=True)

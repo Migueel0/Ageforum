@@ -41,21 +41,26 @@ def author_create_form(request):
             # process the data in form.cleaned_data as required
             author = Author()
             author.username = form.cleaned_data['username']
-            author.password = form.cleaned_data['password']
-            password_repeat = form.cleaned_data['password_repeat']
-            if(author.password != password_repeat):
-                # TODO raise error in form
-                raise forms.ValidationError("Passwords do not match")
-            author.email = form.cleaned_data['email']
-            author.avatar = form.cleaned_data['avatar']
-            author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
-            author.save()
-            # set author logged in
-            global author_logged_in
-            author_logged_in = author
-            # redirect to index:
-            return HttpResponseRedirect('/')
-
+            #check is username exists
+            authorWithSameUsername = Author.objects.filter(
+                username=author.username)
+            if len(authorWithSameUsername) == 0:
+                author.password = form.cleaned_data['password']
+                password_repeat = form.cleaned_data['password_repeat']
+                if(author.password != password_repeat):
+                    # TODO raise error in form
+                    raise forms.ValidationError("Passwords do not match")
+                author.email = form.cleaned_data['email']
+                author.avatar = form.cleaned_data['avatar']
+                author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
+                author.save()
+                # set author logged in
+                global author_logged_in
+                author_logged_in = author
+                # redirect to index:
+                return HttpResponseRedirect('/')
+            else:
+                return render(request, 'forum/author_create_form.html', {'form': form, 'author_exist':True})            
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AuthorCreateForm()
