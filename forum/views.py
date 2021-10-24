@@ -45,21 +45,28 @@ def author_create(request):
             authorWithSameUsername = Author.objects.filter(
                 username=author.username)
             if len(authorWithSameUsername) == 0:
-                author.password = form.cleaned_data['password']
-                password_repeat = form.cleaned_data['password_repeat']
-                if(author.password != password_repeat):
-                    # TODO raise error in form
-                    raise forms.ValidationError("Passwords do not match")
                 author.email = form.cleaned_data['email']
-                author.avatar = form.cleaned_data['avatar']
-                author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
-                author.save()
-                # set author logged in
-                global author_logged_in
-                author_logged_in = author
-                # redirect to index:
-                return HttpResponseRedirect('/')
+                authorWithSameEmail= Author.objects.filter(
+                email=author.email)
+                if len(authorWithSameEmail) == 0:
+                    author.password = form.cleaned_data['password']
+                    password_repeat = form.cleaned_data['password_repeat']
+                    if(author.password != password_repeat):
+                        # TODO raise error in form
+                        raise forms.ValidationError("Passwords do not match")
+                    author.avatar = form.cleaned_data['avatar']
+                    author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
+                    author.save()
+                    # set author logged in
+                    global author_logged_in
+                    author_logged_in = author
+                    # redirect to index:
+                    return HttpResponseRedirect('/')
+                else:
+                    #email exists
+                    return render(request, 'forum/author_create.html', {'form': form, 'email_exist':True})            
             else:
+                #author_exists
                 return render(request, 'forum/author_create.html', {'form': form, 'author_exist':True})            
     # if a GET (or any other method) we'll create a blank form
     else:

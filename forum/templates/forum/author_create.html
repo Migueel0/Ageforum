@@ -52,7 +52,7 @@
                         <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
                     </li>
                     {% else %}
-                
+
                     <li class="nav-item active">
                         <a class="nav-link" href="author_login">Identificarse</a>
                     </li>
@@ -100,6 +100,9 @@
                 <label for="{{ form.password.id_for_label }}">Contraseña:</label>
                 <input type="password" class="form-control" placeholder="Contraseña" name="password" id="id_password"
                     required>
+                {% if email_exist %}
+                <p class="text-danger">El email ya está registrado</p>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="{{ form.password_repeat.id_for_label }}">Repita contraseña:</label>
