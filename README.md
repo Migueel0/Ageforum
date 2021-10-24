@@ -1,6 +1,6 @@
 # AGE OF EMPIRES IV: SPANISH FORUM
 
-Age of Empires IV will be published Thrusday 28th of October. Lorenzo and I realized that there´s no Spanish forums about this game and we decided to create one of the first forums to the spanish-speaker comunity,
+Age of Empires IV will be published Thrusday 28th of October. Lorenzo and I realized that there´re no Spanish forums about this game and we decided to create one of the first forums to the spanish-speaker comunity,
 
 ## TOOLS:
 
