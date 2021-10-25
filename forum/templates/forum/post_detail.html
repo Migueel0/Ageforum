@@ -82,7 +82,7 @@
 
         {% for response in post.response_set.all %}
         <div>
-            <p>{{ response.response_text }} | By: {{response.author}}</p>
+            <p>{{ response.response_text| safe }} | By: {{response.author}}</p>
         </div>
         {% endfor %}
         <a href="/">Volver al inicio</a>
