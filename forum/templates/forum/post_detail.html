@@ -21,7 +21,7 @@
 
 <body>
     <div id="navbar_wrapper">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
             <div class="container-md">
                 <a class="navbar-brand" href="/">
                     <img src="{% static 'forum/title.png' %}">
@@ -31,93 +31,102 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav ms-auto">
+                <div class="collapse navbar-collapse " id="navbarSupportedContent">
+                    <div class="nav navbar-nav ms-auto d-inline-block">
                         {% if author_logged_in %}
-                        <li class="nav-item text-light">
-                            <p class="d-inline-block">Bienvenido</p>
-                            <a href="author_details" class="nav-link d-inline-block text-light">
-                                <p id="author_username" class="d-inline-block h5 strong"><strong>
+                        <div class="nav-item text-light my-auto d-inline">
+                            <p class="d-inline">Bienvenido</p>
+                            <a href="author_details/{{author_logged_in.id}}" class="nav-link d-inline text-light">
+                                <p id="author_username" class="d-inline h5 strong"><strong>
                                         {{ author_logged_in.username }}
                                     </strong></p>
                                 {% if author_logged_in.avatar %}
-                                <img id="author_avatar" class="d-inline-block img-thumbnail"
+                                <img id="author_avatar" class="d-inline img-thumbnail"
                                     src="{{author_logged_in.avatar.url}}" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline-block img-thumbnail"
+                                <img id="author_avatar" class="d-inline img-thumbnail"
                                     src="/avatars/generic_avatar.png" width="50" height="50" />
                                 {% endif %}
                             </a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
-                        </li>
+                        </div>
+                        <div class="nav-item my-auto d-inline">
+                            <a class="nav-link d-inline-block" href="author_logout">Cerrar sesión</a>
+                        </div>
                         {% else %}
-                        <li class="nav-item active">
-                            <a class="nav-link" href="author_create">Registrarse</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="author_login">Identificarse</a>
-                        </li>
+                        <div class="nav-item d-inline">
+                            <a class="nav-link d-inline" href="author_create">Registrarse</a>
+                        </div>
+                        <div class="nav-item d-inline">
+                            <a class="nav-link d-inline" href="author_login">Identificarse</a>
+                        </div>
                         {% endif %}
-                    </ul>
-                    <form class="my-2 my-lg-0 d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Buscar en el foro">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+                    </div>
+                    <div class="d-inline-block">
+                    <form class="my-2 my-lg-0 ">
+                        <input class="form-control me-2 d-inline-block " type="search" style="width: auto;" placeholder="Buscar en el foro">
+                        <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
                     </form>
+                </div>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div id="post_title_wrapper" class="d-flex text-center w-50 mx-auto yellow_color margin_top_30">
-        <h1 id="post_title">{{ post.post_title }}</h1>
-    </div>
-
-    <div id="post_detail" class="d-block w-50 mx-auto yellow_background_color margin_top_30">
-        <div id="post_author_avatar_wrapper">
-            <a href="author_details/{{post.author.id}}" class="d-flex author_link">
-                {% if post.author.avatar %}
-                <img id="post_author_avatar" class="d-inline-block img-thumbnail" src="{{post.author.avatar.url}}"
-                    width="50" height="50" />
-                {% else %}
-                <img id="post_author_generic_avatar" class="d-inline-block img-thumbnail"
-                    src="/avatars/generic_avatar.png" width="50" height="50" />
-                {% endif %}
-                <p id="author_username" class="ms-3"><strong>{{ post.author.username }}</strong></p>
-            </a>
+    <div id="main_wrapper" class="container-sm mx-auto">
+        <div id="post_title_wrapper" class="d-flex text-center yellow_color margin_top_30">
+            <h1 id="post_title">{{ post.post_title }}</h1>
         </div>
 
-        {{ post.post_text|safe }}
-    </div>
-    <div>
-        {% for response in post.response_set.all %}
-        <div class="d-block w-50 mx-auto yellow_background_color mt-3">
-            <div id="response_author_avatar_wrapper">
-                <a href="author_details/{{response.author.id}}" class="d-flex author_link">
-                    {% if response.author.avatar %}
-                    <img id="response_author_avatar" class="d-inline-block img-thumbnail" src="{{response.author.avatar.url}}"
-                        width="50" height="50" />
+        <div id="post_detail" class="d-block yellow_background_color mt-1 p-3">
+            <div id="post_author_avatar_wrapper">
+                <a href="author_details/{{post.author.id}}" class="author_link">
+                    {% if post.author.avatar %}
+                    <img id="post_author_avatar" class="img-thumbnail d-inline"
+                        src="{{post.author.avatar.url}}" width="50" height="50" />
                     {% else %}
-                    <img id="response_author_generic_avatar" class="d-inline-block img-thumbnail"
+                    <img id="post_author_generic_avatar" class="img-thumbnail d-inline"
                         src="/avatars/generic_avatar.png" width="50" height="50" />
                     {% endif %}
-                    <p id="author_username" class="ms-3"><strong>{{ response.author.username }}</strong></p>
+                    <p id="author_username" class="ms-3 d-inline my-auto"><strong>{{ post.author.username }}</strong>
+                    </p>
                 </a>
             </div>
-            {{ response.response_text| safe }}
+
+            {{ post.post_text|safe }}
         </div>
-        {% endfor %}
-        <a href="/">Volver al inicio</a>
+        <div>
+            {% for response in post.response_set.all %}
+            <div class="d-block mx-auto yellow_background_color mt-3 p-3">
+                <div id="response_author_avatar_wrapper">
+                    <a href="author_details/{{response.author.id}}" class="author_link">
+                        {% if response.author.avatar %}
+                        <img id="response_author_avatar" class="d-inline img-thumbnail"
+                            src="{{response.author.avatar.url}}" width="50" height="50" />
+                        {% else %}
+                        <img id="response_author_generic_avatar" class="d-inline img-thumbnail"
+                            src="/avatars/generic_avatar.png" width="50" height="50" />
+                        {% endif %}
+                        <p id="author_username" class="ms-3 d-inline my-auto"><strong>{{ response.author.username }}</strong></p>
+                    </a>
+                </div>
+                {{ response.response_text| safe }}
+            </div>
+            {% endfor %}
+        </div>
+        {% if author_logged_in %}
+        <div id="actions" class="d-block mx-auto margin_top_30">
+            <form action="response_create" method="get">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary mb-3">Responder</button>
+            </form>
+            <form action="/">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Volver al inicio</button>
+            </form>
+
+        </div>
+        {% endif %}
     </div>
-    {% if author_logged_in %}
-    <div id="actions" class="d-block w-50 mx-auto margin_top_30">
-        <form action="response_create" method="get">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Responder</button>
-        </form>
-    </div>
-    {% endif %}
 </body>
 
 </html>

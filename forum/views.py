@@ -41,13 +41,13 @@ def author_create(request):
             # process the data in form.cleaned_data as required
             author = Author()
             author.username = form.cleaned_data['username']
-            #check is username exists
+            # check is username exists
             authorWithSameUsername = Author.objects.filter(
                 username=author.username)
             if len(authorWithSameUsername) == 0:
                 author.email = form.cleaned_data['email']
-                authorWithSameEmail= Author.objects.filter(
-                email=author.email)
+                authorWithSameEmail = Author.objects.filter(
+                    email=author.email)
                 if len(authorWithSameEmail) == 0:
                     author.password = form.cleaned_data['password']
                     password_repeat = form.cleaned_data['password_repeat']
@@ -55,7 +55,8 @@ def author_create(request):
                         # TODO raise error in form
                         raise forms.ValidationError("Passwords do not match")
                     author.avatar = form.cleaned_data['avatar']
-                    author.join_date = datetime.datetime.now(tz=datetime.timezone.utc)
+                    author.join_date = datetime.datetime.now(
+                        tz=datetime.timezone.utc)
                     author.save()
                     # set author logged in
                     global author_logged_in
@@ -63,11 +64,11 @@ def author_create(request):
                     # redirect to index:
                     return HttpResponseRedirect('/')
                 else:
-                    #email exists
-                    return render(request, 'forum/author_create.html', {'form': form, 'email_exist':True})            
+                    # email exists
+                    return render(request, 'forum/author_create.html', {'form': form, 'email_exist': True})
             else:
-                #author_exists
-                return render(request, 'forum/author_create.html', {'form': form, 'author_exist':True})            
+                # author_exists
+                return render(request, 'forum/author_create.html', {'form': form, 'author_exist': True})
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AuthorCreateForm()
@@ -98,10 +99,10 @@ def author_login(request):
                 login_error = True
         else:
             login_error = True
-            
+
         form = AuthorLoginForm()
         return render(request, 'forum/author_login.html',
-                              {'form': form, 'author_logged_in': author_logged_in, 'login_error': login_error})
+                      {'form': form, 'author_logged_in': author_logged_in, 'login_error': login_error})
     else:
         form = AuthorLoginForm()
     return render(request, 'forum/author_login.html', {'form': form, 'author_logged_in': author_logged_in})
@@ -141,13 +142,13 @@ def response_create(request):
         form = ResponseForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-        # process the data in form.cleaned_data as required
+            # process the data in form.cleaned_data as required
             author = author_logged_in
             post = post_current
             response_text = form.cleaned_data['response_text']
             pub_date = datetime.datetime.now(tz=datetime.timezone.utc)
             response = Response(author=author, post=post,
-                            response_text=response_text, pub_date=pub_date)
+                                response_text=response_text, pub_date=pub_date)
             response.save()
             return HttpResponseRedirect('/' + str(post.id))
     else:
@@ -155,13 +156,10 @@ def response_create(request):
 
     return render(request, 'forum/response_create.html', {'form': form, 'author_logged_in': author_logged_in, 'post_current': post_current})
 
-def author_details(request):
-    return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in})
 
-def author_details(request,author_id):
+def author_details(request, author_id):
     """
     Show author details from author ID
     """
     author = Author.objects.get(pk=author_id)
     return render(request, 'forum/author_details.html', {'author_logged_in': author})
-    
