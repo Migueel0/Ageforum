@@ -157,4 +157,11 @@ def response_create(request):
 
 def author_details(request):
     return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in})
+
+def author_details(request,author_id):
+    """
+    Show author details from author ID
+    """
+    author = Author.objects.get(pk=author_id)
+    return render(request, 'forum/author_details.html', {'author_logged_in': author})
     

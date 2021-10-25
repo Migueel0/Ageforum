@@ -29,3 +29,8 @@ nav {
 textarea {
     resize: none;
 }
+
+a, .author_link{
+    text-decoration-line: none;
+    color: black;
+}

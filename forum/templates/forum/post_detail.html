@@ -26,8 +26,8 @@
                 <a class="navbar-brand" href="/">
                     <img src="{% static 'forum/title.png' %}">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -75,14 +75,37 @@
     </div>
 
     <div id="post_detail" class="d-block w-50 mx-auto yellow_background_color margin_top_30">
+        <div id="post_author_avatar_wrapper">
+            <a href="author_details/{{post.author.id}}" class="d-flex author_link">
+                {% if post.author.avatar %}
+                <img id="post_author_avatar" class="d-inline-block img-thumbnail" src="{{post.author.avatar.url}}"
+                    width="50" height="50" />
+                {% else %}
+                <img id="post_author_generic_avatar" class="d-inline-block img-thumbnail"
+                    src="/avatars/generic_avatar.png" width="50" height="50" />
+                {% endif %}
+                <p id="author_username" class="ms-3"><strong>{{ post.author.username }}</strong></p>
+            </a>
+        </div>
 
         {{ post.post_text|safe }}
-
-        <p>By: {{ post.author }}</p>
-
+    </div>
+    <div>
         {% for response in post.response_set.all %}
-        <div>
-            <p>{{ response.response_text| safe }} | By: {{response.author}}</p>
+        <div class="d-block w-50 mx-auto yellow_background_color mt-3">
+            <div id="response_author_avatar_wrapper">
+                <a href="author_details/{{response.author.id}}" class="d-flex author_link">
+                    {% if response.author.avatar %}
+                    <img id="response_author_avatar" class="d-inline-block img-thumbnail" src="{{response.author.avatar.url}}"
+                        width="50" height="50" />
+                    {% else %}
+                    <img id="response_author_generic_avatar" class="d-inline-block img-thumbnail"
+                        src="/avatars/generic_avatar.png" width="50" height="50" />
+                    {% endif %}
+                    <p id="author_username" class="ms-3"><strong>{{ response.author.username }}</strong></p>
+                </a>
+            </div>
+            {{ response.response_text| safe }}
         </div>
         {% endfor %}
         <a href="/">Volver al inicio</a>
