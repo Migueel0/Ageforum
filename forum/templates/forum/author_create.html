@@ -22,46 +22,48 @@
 <body>
     <div id="navbar_wrapper">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">
-                <img src="{% static 'forum/title.png' %}">
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'forum/title.png' %}">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="nav navbar-nav ms-auto">
-                    {% if author_logged_in %}
-                    <li class="nav-item text-light">
-                        <p class="d-inline-block">Bienvenido</p>
-                        <a href="author_details" class="nav-link d-inline-block text-light">
-                            <p id="author_username" class="d-inline-block h5 strong"><strong>
-                                    {{ author_logged_in.username }}
-                                </strong></p>
-                            {% if author_logged_in.avatar %}
-                            <img id="author_avatar" class="d-inline-block img-thumbnail"
-                                src="{{author_logged_in.avatar.url}}" width="50" height="50" />
-                            {% else %}
-                            <img id="author_avatar" class="d-inline-block img-thumbnail"
-                                src="/avatars/generic_avatar.png" width="50" height="50" />
-                            {% endif %}
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
-                    </li>
-                    {% else %}
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                 <ul class="nav navbar-nav ms-auto">
+                        {% if author_logged_in %}
+                        <li class="nav-item text-light">
+                            <p class="d-inline-block">Bienvenido</p>
+                            <a href="author_details" class="nav-link d-inline-block text-light">
+                                <p id="author_username" class="d-inline-block h5 strong"><strong>
+                                        {{ author_logged_in.username }}
+                                 </strong></p>
+                                {% if author_logged_in.avatar %}
+                                <img id="author_avatar" class="d-inline-block img-thumbnail"
+                                    src="{{author_logged_in.avatar.url}}" width="50" height="50" />
+                                {% else %}
+                                <img id="author_avatar" class="d-inline-block img-thumbnail"
+                                    src="/avatars/generic_avatar.png" width="50" height="50" />
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link d-inline-block text-light" href="author_logout">Cerrar sesión</a>
+                        </li>
+                        {% else %}
 
-                    <li class="nav-item active">
-                        <a class="nav-link" href="author_login">Identificarse</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                <form class="my-2 my-lg-0 d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Buscar en el foro" aria-label="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
-                </form>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="author_login">Identificarse</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <form class="my-2 my-lg-0 d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Buscar en el foro" aria-label="Search">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+                    </form>
+                </div>
             </div>
         </nav>
     </div>
@@ -70,9 +72,9 @@
         <form action="{% url 'author_create' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.non_field_errors }}
-            <div class="form-group margin_top_30">
+            <div class="form-group margin_top_30 mb-3">
                 {{ form.username.errors }}
-                <label class="form-label" for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+                <label class="form-label " for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
                 <div class="row">
                     <div class="col-12">
                         <input type="text" class="form-control" placeholder="Usuario" name="username" id="id_username"
@@ -88,14 +90,14 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.email.errors }}
                 <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
                 <input type="text" class="form-control" placeholder="Email" name="email" id="id_email" maxlength="30"
                     required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.password.errors }}
                 <label for="{{ form.password.id_for_label }}">Contraseña:</label>
                 <input type="password" class="form-control" placeholder="Contraseña" name="password" id="id_password"
@@ -104,16 +106,16 @@
                 <p class="text-danger">El email ya está registrado</p>
                 {% endif %}
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="{{ form.password_repeat.id_for_label }}">Repita contraseña:</label>
                 <input type="password" class="form-control" placeholder="Repita contraseña" name="password_repeat"
                     id="id_password_repeat" required>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="{{ form.avatar.id_for_label }}">Avatar:</label>
                 <input type="file" placeholder="Seleccionar archivo" name="avatar" id="id_avatar">
             </div>
-            <input type="submit" value="Submit">
+            <input type="submit" class="btn btn-primary" value="Submit">
         </form>
     </div>
     <!-- <script> TODO: implement username check
