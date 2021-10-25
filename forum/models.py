@@ -1,4 +1,5 @@
 from django.db import models
+from tinymce.models import HTMLField
 
 class Author(models.Model):
     username = models.CharField(max_length=30, unique=True)
@@ -14,7 +15,7 @@ class Author(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     post_title = models.CharField(max_length=200)
-    post_text = models.TextField()
+    post_text = HTMLField()
     pub_date = models.DateTimeField('date published')
     votes = models.IntegerField(default=0)
 

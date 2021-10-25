@@ -17,6 +17,8 @@
         crossorigin="anonymous"></script>
 
     <title>Foro Age of Empires IV</title>
+
+    {{ form.media }}
 </head>
 
 <body>
@@ -26,8 +28,8 @@
                 <a class="navbar-brand" href="/">
                     <img src="{% static 'forum/title.png' %}">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -88,6 +90,7 @@
         {% else %}
         <h1 class="text-danger">Debe de indentificarse para crear un nuevo tema y comentar</h1>
         {% endif %}
+
     </div>
 </body>
 

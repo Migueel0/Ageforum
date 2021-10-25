@@ -76,7 +76,7 @@
 
     <div id="post_detail" class="d-block w-50 mx-auto yellow_background_color margin_top_30">
 
-        <p>{{ post.post_text }}</p>
+        {{ post.post_text|safe }}
 
         <p>By: {{ post.author }}</p>
 
