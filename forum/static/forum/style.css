@@ -10,11 +10,11 @@ nav {
     margin-top: 15px;
 }
 
-.yellow_color{
+.yellow_color {
     color: #d7caa6 !important;
 }
 
-.yellow_background_color{
+.yellow_background_color {
     background-color: #fff5da !important;
 }
 
@@ -26,7 +26,7 @@ textarea {
     resize: none;
 }
 
-a, .author_link{
+a, .author_link {
     text-decoration-line: none;
     color: black;
 }

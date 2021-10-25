@@ -45,8 +45,8 @@
                                 <img id="author_avatar" class="d-inline img-thumbnail"
                                     src="{{author_logged_in.avatar.url}}" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="/avatars/generic_avatar.png" width="50" height="50" />
+                                <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
+                                    width="50" height="50" />
                                 {% endif %}
                             </a>
                         </div>
@@ -63,32 +63,37 @@
                         {% endif %}
                     </div>
                     <div class="d-inline-block">
-                    <form class="my-2 my-lg-0 ">
-                        <input class="form-control me-2 d-inline-block " type="search" style="width: auto;" placeholder="Buscar en el foro">
-                        <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
-                    </form>
-                </div>
+                        <form class="my-2 my-lg-0 ">
+                            <input class="form-control me-2 d-inline-block " type="search" style="width: auto;"
+                                placeholder="Buscar en el foro">
+                            <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div class="w-50 mx-auto container">
-        {% if author_logged_in %}
-        <div>
-            <a href="post_create" class="margin_top_30 mx-auto btn btn-danger">+ Nuevo tema</a>
-        </div>
-        {% endif %}
-        <div id="post_list" class="list-group">
-            {% if post_list %}
-            {% for post in post_list %}
-            <a href="{{post.id}}" class="list-group-item list-group-item-action yellow_background_color">
-                <h1>{{ post.post_title }}</h1>
-            </a>
-            {% endfor %}
-            {% else %}
-            <p class="text-danger">No hay posts.</p>
-            {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
+                {% if author_logged_in %}
+                <div>
+                    <a href="post_create" class="margin_top_30 mx-auto btn btn-primary">+ Nuevo tema</a>
+                </div>
+                {% endif %}
+                <div id="post_list" class="list-group">
+                    {% if post_list %}
+                    {% for post in post_list %}
+                    <a href="{{post.id}}" class="list-group-item list-group-item-action yellow_background_color">
+                        <h1>{{ post.post_title }}</h1>
+                    </a>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-danger">No hay posts.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </body>

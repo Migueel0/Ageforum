@@ -44,8 +44,8 @@
                                 <img id="author_avatar" class="d-inline img-thumbnail"
                                     src="{{author_logged_in.avatar.url}}" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="/avatars/generic_avatar.png" width="50" height="50" />
+                                <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
+                                    width="50" height="50" />
                                 {% endif %}
                             </a>
                         </div>
@@ -62,11 +62,12 @@
                         {% endif %}
                     </div>
                     <div class="d-inline-block">
-                    <form class="my-2 my-lg-0 ">
-                        <input class="form-control me-2 d-inline-block " type="search" style="width: auto;" placeholder="Buscar en el foro">
-                        <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
-                    </form>
-                </div>
+                        <form class="my-2 my-lg-0 ">
+                            <input class="form-control me-2 d-inline-block " type="search" style="width: auto;"
+                                placeholder="Buscar en el foro">
+                            <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -81,15 +82,16 @@
             <div id="post_author_avatar_wrapper">
                 <a href="author_details/{{post.author.id}}" class="author_link">
                     {% if post.author.avatar %}
-                    <img id="post_author_avatar" class="img-thumbnail d-inline"
-                        src="{{post.author.avatar.url}}" width="50" height="50" />
+                    <img id="post_author_avatar" class="img-thumbnail d-inline" src="{{post.author.avatar.url}}"
+                        width="50" height="50" />
                     {% else %}
                     <img id="post_author_generic_avatar" class="img-thumbnail d-inline"
                         src="/avatars/generic_avatar.png" width="50" height="50" />
                     {% endif %}
-                    <p id="author_username" class="ms-3 d-inline my-auto"><strong>{{ post.author.username }}</strong>
+                    <p id="author_username" class="mx-3 d-inline my-auto"><strong>{{ post.author.username }}</strong>
                     </p>
                 </a>
+                <p class="d-inline">{{ post.pub_date}}</p>
             </div>
 
             {{ post.post_text|safe }}
@@ -106,8 +108,10 @@
                         <img id="response_author_generic_avatar" class="d-inline img-thumbnail"
                             src="/avatars/generic_avatar.png" width="50" height="50" />
                         {% endif %}
-                        <p id="author_username" class="ms-3 d-inline my-auto"><strong>{{ response.author.username }}</strong></p>
+                        <p id="author_username" class="mx-3 d-inline my-auto"><strong>{{ response.author.username }}
+                            </strong></p>
                     </a>
+                    <p class="d-inline">{{ response.pub_date}}</p>
                 </div>
                 {{ response.response_text| safe }}
             </div>
