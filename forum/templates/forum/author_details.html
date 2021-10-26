@@ -50,7 +50,7 @@
                             </a>
                         </div>
                         <div class="nav-item my-auto d-inline">
-                            <a class="nav-link d-inline-block" href="/author_logout">Cerrar sesión</a>
+                            <a class="nav-link d-inline-block" href="author_logout">Cerrar sesión</a>
                         </div>
                         {% else %}
                         <div class="nav-item d-inline">
@@ -74,10 +74,25 @@
     </div>
 
     {% if author_logged_in %}
-    <div id="author_details_wrapper" class="d-block w-50 mx-auto margin_top_30">
+    <div id="author_details_wrapper" class="d-block w-50 mx-auto margin_top_30 text-light">
         <h1>Usuario: {{ author_logged_in.username }}</h1>
+        {% if author_logged_in.avatar %}
+        <img id="author_avatar" class="d-inline img-thumbnail" src="{{author_logged_in.avatar.url}}" width="200"
+            height="200" />
+        {% else %}
+        <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" width="200"
+            height="200" />
+        {% endif %}
+    </div>
+
+    <div id="main_wrapper" class="container-sm mx-auto">
+        <div id="post_title_wrapper" class="d-flex text-center yellow_color margin_top_30">
+            <h1 id="post_title">{{ post.post_title }}</h1>
+        </div>
     </div>
     {% endif %}
+
+
 </body>
 
 </html>
