@@ -6,6 +6,10 @@
     <link rel="icon" type="image/png" href="{% static 'forum/favicon.ico' %}" />
     <link rel="stylesheet" href="{% static 'forum/style.css' %}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
@@ -16,6 +20,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 
+    <script src="{% static 'forum/jquery.cookie.js' %}"></script>
     <title>Foro Age of Empires IV</title>
 </head>
 
@@ -97,6 +102,16 @@
             <div id="post_text">
                 {{ post.post_text|safe }}
             </div>
+            <div id="post_votes_wrapper">
+                <form method="post" id="post_vote_form">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-primary" onclick="post_vote()" {% if not author_logged_in %}
+                        disabled {% endif %}>
+                        <p id="post_votes" class="d-inline">{{ post.votes }}</p>
+                        <i class="fas fa-heart d-inline"></i>
+                    </button>
+                </form>
+            </div>
         </div>
         <div>
             {% for response in post.response_set.all %}
@@ -135,6 +150,34 @@
         </div>
         {% endif %}
     </div>
+
+    <script>
+        var csrftoken = $.cookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        function post_vote() {
+            $.ajax({
+                method: "POST",
+                url: "/post_vote/" + "{{ author_logged_in.id }}" + "/" + "{{ post.id }}",
+            })
+                .done(function (msg) {
+                    $("#post_votes").text() = parseInt($("#post_votes").text) + 1;
+                    alert("Post voted: " + msg);
+                })
+        }
+    </script>
 </body>
 
 </html>

@@ -13,4 +13,5 @@ urlpatterns = [
     path('response_create', views.response_create, name='response_create'),
     path('author_details/<int:author_id>', views.author_details, name='author_details'),
     path('tinymce/', include('tinymce.urls')),
+    path('post_vote/<int:author_id>/<int:post_id>', views.post_vote, name='post_vote'),
 ]

@@ -8,6 +8,8 @@ class Author(models.Model):
     join_date = models.DateTimeField()
     last_login_date = models.DateTimeField(null=True)
     avatar = models.ImageField(upload_to='avatars', null=True)
+    #post vote is a list with the ids of voted posts
+    post_votes = models.CharField(max_length=1000, null=True)
 
     def __str__(self):
         return self.username    

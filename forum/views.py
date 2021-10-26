@@ -9,13 +9,12 @@ from .models import Author, Post, Response
 from .forms import AuthorCreateForm, AuthorLoginForm, PostCreateForm, ResponseForm
 
 import datetime
+import ast
+
+author_logged_in: Author = None
+post_current: Post = None
 
 
-author_logged_in = None
-post_current = None
-
-
-# Django
 def index(request):
     post_list = Post.objects.order_by('-pub_date')[:50]
     context = {
@@ -43,11 +42,11 @@ def author_create(request):
             author = Author()
             author.username = form.cleaned_data['username']
             # check is username exists
-            authorWithSameUsername = Author.objects.filter(
+            authorWithSameUsername = get_object_or_404(
                 username=author.username)
             if len(authorWithSameUsername) == 0:
                 author.email = form.cleaned_data['email']
-                authorWithSameEmail = Author.objects.filter(
+                authorWithSameEmail = get_object_or_404(
                     email=author.email)
                 if len(authorWithSameEmail) == 0:
                     author.password = form.cleaned_data['password']
@@ -175,3 +174,29 @@ def author_details(request, author_id):
     """
     author_details = Author.objects.get(pk=author_id)
     return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in, 'author_details': author_details})
+
+
+def post_vote(request, author_id, post_id):
+    """
+    Vote question
+    """
+    if request.method == 'POST':
+        # search and set author by id
+        author_logged_in = Author.objects.filter(id=author_id).get()
+        # Add vote to author post_vote string list
+        author_post_votes = author_logged_in.post_votes
+        if(author_post_votes):
+            author_post_votes = set(
+                ast.literal_eval(author_logged_in.post_votes))
+        else:
+            author_post_votes = set()
+        if(post_id not in author_post_votes):
+            author_post_votes.add(post_id)
+            author_logged_in.post_votes = str(author_post_votes)
+            # Sum vote to post
+            post_current.votes += 1
+            # save into DB
+            author_logged_in.save()
+            post_current.save()
+        else:
+            raise Exception("Author has already voted this post")
