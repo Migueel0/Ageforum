@@ -92,7 +92,8 @@ def author_login(request):
                 password = form.cleaned_data['password']
                 # check if password encoded is equals to the password store in the DB
                 if check_password(password, author.password):
-                    last_login_date = datetime.datetime.now(tz=datetime.timezone.utc)
+                    last_login_date = datetime.datetime.now(
+                        tz=datetime.timezone.utc)
                     author.last_login_date = last_login_date
                     author.save()
                     # set author logged in
@@ -138,6 +139,8 @@ def post_create(request):
             post.save()
             return HttpResponseRedirect('/')
     else:
+        if author_logged_in == None:
+            return HttpResponseRedirect('/')
         form = PostCreateForm()
     return render(request, 'forum/post_create.html', {'form': form, 'author_logged_in': author_logged_in})
 
@@ -159,6 +162,8 @@ def response_create(request):
             response.save()
             return HttpResponseRedirect('/' + str(post.id))
     else:
+        if author_logged_in == None:
+            return HttpResponseRedirect('/')
         form = ResponseForm()
 
     return render(request, 'forum/response_create.html', {'form': form, 'author_logged_in': author_logged_in, 'post_current': post_current})

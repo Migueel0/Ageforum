@@ -15,7 +15,7 @@ class Author(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     post_title = models.CharField(max_length=200)
-    post_text = HTMLField()
+    post_text = models.TextField(max_length=1000)
     pub_date = models.DateTimeField('date published')
     votes = models.IntegerField(default=0)
 
@@ -25,7 +25,7 @@ class Post(models.Model):
 class Response(models.Model):
     author = models.ForeignKey(Author, on_delete=models.PROTECT)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    response_text = models.TextField(max_length=200)
+    response_text = models.TextField(max_length=1000)
     pub_date = models.DateTimeField('date published')
     votes = models.IntegerField(default=0)
 
