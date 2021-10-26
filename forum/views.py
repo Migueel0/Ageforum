@@ -90,8 +90,11 @@ def author_login(request):
                 username=form.cleaned_data['username']).first()
             if author:  # author exists
                 password = form.cleaned_data['password']
-                #check if password encoded is equals to the password store in the DB
-                if check_password(password,author.password):
+                # check if password encoded is equals to the password store in the DB
+                if check_password(password, author.password):
+                    last_login_date = datetime.datetime.now(tz=datetime.timezone.utc)
+                    author.last_login_date = last_login_date
+                    author.save()
                     # set author logged in
                     global author_logged_in
                     author_logged_in = author
@@ -165,5 +168,5 @@ def author_details(request, author_id):
     """
     Show author details from author ID
     """
-    author = Author.objects.get(pk=author_id)
-    return render(request, 'forum/author_details.html', {'author_logged_in': author})
+    author_details = Author.objects.get(pk=author_id)
+    return render(request, 'forum/author_details.html', {'author_logged_in': author_logged_in, 'author_details': author_details})

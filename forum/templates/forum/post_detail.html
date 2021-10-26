@@ -42,7 +42,7 @@
                                     </strong></p>
                                 {% if author_logged_in.avatar %}
                                 <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="{{author_logged_in.avatar.url}}" width="50" height="50" />
+                                    src="{{author_logged_in.avatar.url}}" width="75" height="75" />
                                 {% else %}
                                 <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
                                     width="50" height="50" />
@@ -82,16 +82,16 @@
             <div id="post_author_avatar_wrapper">
                 <a href="author_details/{{post.author.id}}" class="author_link">
                     {% if post.author.avatar %}
-                    <img id="post_author_avatar" class="img-thumbnail d-inline" src="{{post.author.avatar.url}}"
-                        width="50" height="50" />
+                    <img id="post_author_avatar" class="img-thumbnail d-inline"
+                     src="{{post.author.avatar.url}}" width="75" height="75" />
                     {% else %}
                     <img id="post_author_generic_avatar" class="img-thumbnail d-inline"
-                        src="/avatars/generic_avatar.png" width="50" height="50" />
+                        src="/avatars/generic_avatar.png" width="75" height="75" />
                     {% endif %}
                     <p id="author_username" class="mx-3 d-inline my-auto"><strong>{{ post.author.username }}</strong>
                     </p>
                 </a>
-                <p class="d-inline">{{ post.pub_date}}</p>
+                <p class="d-inline">{{ post.pub_date}} (UTC)</p>
             </div>
 
             {{ post.post_text|safe }}
@@ -103,15 +103,15 @@
                     <a href="author_details/{{response.author.id}}" class="author_link">
                         {% if response.author.avatar %}
                         <img id="response_author_avatar" class="d-inline img-thumbnail"
-                            src="{{response.author.avatar.url}}" width="50" height="50" />
+                            src="{{response.author.avatar.url}}" width="75" height="75" />
                         {% else %}
                         <img id="response_author_generic_avatar" class="d-inline img-thumbnail"
-                            src="/avatars/generic_avatar.png" width="50" height="50" />
+                            src="/avatars/generic_avatar.png" width="75" height="75" />
                         {% endif %}
                         <p id="author_username" class="mx-3 d-inline my-auto"><strong>{{ response.author.username }}
                             </strong></p>
                     </a>
-                    <p class="d-inline">{{ response.pub_date}}</p>
+                    <p class="d-inline">{{ response.pub_date}} (UTC)</p>
                 </div>
                 {{ response.response_text| safe }}
             </div>
