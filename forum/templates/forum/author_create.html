@@ -100,21 +100,24 @@
                 <label class="form-label" for="{{ form.email.id_for_label }}">Email:</label>
                 <input type="text" class="form-control" placeholder="Email" name="email" id="id_email" maxlength="30"
                     required>
+                {% if email_exist %}
+                <p class="text-danger">El email ya está registrado</p>
+                {% endif %}
             </div>
 
             <div class="form-group mb-3">
                 {{ form.password.errors }}
                 <label for="{{ form.password.id_for_label }}">Contraseña:</label>
                 <input type="password" class="form-control" placeholder="Contraseña" name="password" id="id_password"
-                    required>
-                {% if email_exist %}
-                <p class="text-danger">El email ya está registrado</p>
+                    minlength="8" required>
+                {% if password_mismatch %}
+                <p class="text-danger">Las contraseñas no coinciden</p>
                 {% endif %}
             </div>
             <div class="form-group mb-3">
                 <label for="{{ form.password_repeat.id_for_label }}">Repita contraseña:</label>
                 <input type="password" class="form-control" placeholder="Repita contraseña" name="password_repeat"
-                    id="id_password_repeat" required>
+                    id="id_password_repeat" minlength="8" required>
             </div>
             <div class="form-group mb-3">
                 <label for="{{ form.avatar.id_for_label }}">Avatar:</label>

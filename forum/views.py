@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponse, response, HttpResponseRedirect
 from django.template import loader
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.hashers import make_password, check_password
 
 from .models import Author, Post, Response
 from .forms import AuthorCreateForm, AuthorLoginForm, PostCreateForm, ResponseForm
@@ -52,8 +53,10 @@ def author_create(request):
                     author.password = form.cleaned_data['password']
                     password_repeat = form.cleaned_data['password_repeat']
                     if(author.password != password_repeat):
-                        # TODO raise error in form
-                        raise forms.ValidationError("Passwords do not match")
+                        # password mismatch
+                        return render(request, 'forum/author_create.html', {'form': form, 'password_mismatch': True})
+                    # encode password
+                    author.password = make_password(author.password)
                     author.avatar = form.cleaned_data['avatar']
                     author.join_date = datetime.datetime.now(
                         tz=datetime.timezone.utc)
@@ -87,7 +90,8 @@ def author_login(request):
                 username=form.cleaned_data['username']).first()
             if author:  # author exists
                 password = form.cleaned_data['password']
-                if author.password == password:
+                #check if password encoded is equals to the password store in the DB
+                if check_password(password,author.password):
                     # set author logged in
                     global author_logged_in
                     author_logged_in = author
