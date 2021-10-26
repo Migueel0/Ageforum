@@ -26,8 +26,9 @@
                 <a class="navbar-brand" href="/">
                     <img src="{% static 'forum/title.png' %}">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -82,8 +83,8 @@
             <div id="post_author_avatar_wrapper">
                 <a href="author_details/{{post.author.id}}" class="author_link">
                     {% if post.author.avatar %}
-                    <img id="post_author_avatar" class="img-thumbnail d-inline"
-                     src="{{post.author.avatar.url}}" width="75" height="75" />
+                    <img id="post_author_avatar" class="img-thumbnail d-inline" src="{{post.author.avatar.url}}"
+                        width="75" height="75" />
                     {% else %}
                     <img id="post_author_generic_avatar" class="img-thumbnail d-inline"
                         src="/avatars/generic_avatar.png" width="75" height="75" />
@@ -93,8 +94,9 @@
                 </a>
                 <p class="d-inline">{{ post.pub_date}} (UTC)</p>
             </div>
-
-            {{ post.post_text|safe }}
+            <div id="post_text">
+                {{ post.post_text|safe }}
+            </div>
         </div>
         <div>
             {% for response in post.response_set.all %}
@@ -113,7 +115,9 @@
                     </a>
                     <p class="d-inline">{{ response.pub_date}} (UTC)</p>
                 </div>
-                {{ response.response_text| safe }}
+                <div id="response_text">
+                    {{ response.response_text| safe }}
+                </div>
             </div>
             {% endfor %}
         </div>

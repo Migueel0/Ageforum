@@ -28,8 +28,9 @@
                 <a class="navbar-brand" href="/">
                     <img src="{% static 'forum/title.png' %}">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -46,8 +47,8 @@
                                 <img id="author_avatar" class="d-inline img-thumbnail"
                                     src="{{author_logged_in.avatar.url}}" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="/avatars/generic_avatar.png" width="50" height="50" />
+                                <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
+                                    width="50" height="50" />
                                 {% endif %}
                             </a>
                         </div>
@@ -64,11 +65,12 @@
                         {% endif %}
                     </div>
                     <div class="d-inline-block">
-                    <form class="my-2 my-lg-0 ">
-                        <input class="form-control me-2 d-inline-block " type="search" style="width: auto;" placeholder="Buscar en el foro">
-                        <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
-                    </form>
-                </div>
+                        <form class="my-2 my-lg-0 ">
+                            <input class="form-control me-2 d-inline-block " type="search" style="width: auto;"
+                                placeholder="Buscar en el foro">
+                            <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>
