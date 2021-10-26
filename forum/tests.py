@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.hashers import make_password
 
 from datetime import datetime, timezone
 from forum.forms import *
 from forum.models import *
+PASSWORD = "12345678"
 
 
 def create_author(username, email):
@@ -12,7 +14,8 @@ def create_author(username, email):
     """
     join_date = datetime.now(tz=timezone.utc)
     last_login_date = datetime.now(tz=timezone.utc)
-    return Author.objects.create(username=username, password="1234", email=email,
+    password_encoded = make_password(PASSWORD)
+    return Author.objects.create(username=username, password=password_encoded, email=email,
                                  join_date=join_date, last_login_date=last_login_date)
 
 
@@ -69,8 +72,8 @@ class AuthorTests(TestCase):
         """
         form_data = {"username": "author",
                      "email": "q@q.com",
-                     "password": "1234",
-                     "password_repeat": "1234",
+                     "password": PASSWORD,
+                     "password_repeat": PASSWORD,
                      }
         form = AuthorCreateForm(form_data)
         self.assertTrue(form.is_valid())
@@ -80,8 +83,8 @@ class AuthorTests(TestCase):
         Creates a wrong AuthorCreateForm and checks if it is invalid.
         """
         form_data = {"username": "author",
-                     "password": "1234",
-                     "password_repeat": "1234",
+                     "password": PASSWORD,
+                     "password_repeat": PASSWORD,
                      }
         form = AuthorCreateForm(form_data)
         self.assertFalse(form.is_valid())
@@ -91,10 +94,10 @@ class AuthorTests(TestCase):
         Logins an author and checks if it is valid.
         """
         username = "author"
-        password = "1234"
-        create_author(username, password)
+        email = "123@123.com"
+        create_author(username, email)
         form_data = {"username": username,
-                     "password": password,
+                     "password": PASSWORD,
                      }
         form = AuthorLoginForm(form_data)
         self.assertTrue(form.is_valid())
@@ -105,4 +108,4 @@ class AuthorTests(TestCase):
             # login_error not found in context so test has passed
             pass
 
-#TODO add avatar test
+# TODO add avatar test

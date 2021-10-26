@@ -4,8 +4,8 @@ from tinymce.widgets import TinyMCE
 class AuthorCreateForm(forms.Form):
     username = forms.CharField(label='Nombre de usuario', max_length=100)
     email = forms.EmailField(label='Email', max_length=100)
-    password = forms.CharField(label='Contraseña', max_length=100, widget=forms.PasswordInput)
-    password_repeat = forms.CharField(label='Repita contraseña', max_length=100, widget=forms.PasswordInput)
+    password = forms.CharField(label='Contraseña', min_length=8, max_length=100, widget=forms.PasswordInput)
+    password_repeat = forms.CharField(label='Repita contraseña', min_length=8, max_length=100, widget=forms.PasswordInput)
     avatar = forms.ImageField(label='Avatar', required=False)
 
 
