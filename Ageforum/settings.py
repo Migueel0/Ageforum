@@ -126,11 +126,11 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
+TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/z3c3jfm1yunepfyfaeynykplnfhsqor7qwq3jn50hvtv9vbx/tinymce/5/tinymce.min.js'
 TINYMCE_DEFAULT_CONFIG = {
     "height": "320px",
     "width": "960px",
-    "menubar": False, #"file edit view insert format tools table help",
+    "menubar": False,  # "file edit view insert format tools table help",
     "plugins": "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
     "fullscreen insertdatetime media table paste code help wordcount spellchecker",
     "toolbar": "undo redo | bold italic underline strikethrough | fontselect | alignleft "
@@ -139,8 +139,8 @@ TINYMCE_DEFAULT_CONFIG = {
     "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
     "a11ycheck ltr rtl | showcomments addcomment code",
     "custom_undo_redo_levels": 10,
-    "language": "es_ES",  # To force a specific language instead of the Django current language.
+    # To force a specific language instead of the Django current language.
+    "language": "es_ES",
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_COMPRESSOR = False
-
