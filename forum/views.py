@@ -14,8 +14,8 @@ import ast
 ROOT_URL = '/'
 AUTHOR_CREATE_URL = 'forum/author_create.html'
 
-author_logged_in: Author
-post_current: Post
+author_logged_in = None
+post_current = None
 
 
 def index(request):
