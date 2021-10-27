@@ -74,7 +74,7 @@ class AuthorTests(TestCase):
         Creates an AuthorCreateForm and checks if it is valid.
         """
         form_data = {"username": "author",
-                     EMAIL: EMAIL,
+                     "email": EMAIL,
                      "password": PASSWORD,
                      "password_repeat": PASSWORD,
                      }
