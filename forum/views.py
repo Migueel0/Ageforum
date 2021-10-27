@@ -36,7 +36,8 @@ def post_detail(request, post_id):
         author = get_object_or_404(Author, pk=author_logged_in.id)
         author_logged_in = author
         author_post_votes = set(ast.literal_eval(author_logged_in.post_votes))
-        author_response_votes = set(ast.literal_eval(author_logged_in.response_votes))
+        author_response_votes = set(
+            ast.literal_eval(author_logged_in.response_votes))
         context['author_post_votes'] = author_post_votes
         context['author_response_votes'] = author_response_votes
     return render(request, 'forum/post_detail.html', context)
@@ -53,13 +54,13 @@ def author_create(request):
             author = Author()
             author.username = form.cleaned_data['username']
             # check is username exists
-            authorWithSameUsername = get_object_or_404(Author,
-                                                       username=author.username)
-            if len(authorWithSameUsername) == 0:
+            numAuthorsWithSameUsername = Author.objects.filter(
+                username=author.username).count()
+            if numAuthorsWithSameUsername == 0:
                 author.email = form.cleaned_data['email']
-                authorWithSameEmail = get_object_or_404(Author,
-                                                        email=author.email)
-                if len(authorWithSameEmail) == 0:
+                numAuthorsWithSameEmail = Author.objects.filter(
+                    email=author.email).count()
+                if numAuthorsWithSameEmail == 0:
                     author.password = form.cleaned_data['password']
                     password_repeat = form.cleaned_data['password_repeat']
                     if(author.password != password_repeat):
@@ -189,20 +190,17 @@ def author_details(request, author_id):
 
 def post_vote(request, author_id, post_id):
     """
-    Vote question
+    Vote or unvote question
+    :returns 'Vote' if upvote is made. 'Unvote' is unvote is made
     """
     if request.method == 'POST':
         # search and set author by id
         global author_logged_in
         author_logged_in = get_object_or_404(Author, id=author_id)
         # Add vote to author post_vote string list
-        author_post_votes = author_logged_in.post_votes
-        if(author_post_votes):
-            author_post_votes = set(
-                ast.literal_eval(author_logged_in.post_votes))
-        else:
-            author_post_votes = set()
-        if(post_id not in author_post_votes):
+        author_post_votes = set(
+            ast.literal_eval(author_logged_in.post_votes))
+        if(post_id not in author_post_votes):  # vote
             author_post_votes.add(post_id)
             author_logged_in.post_votes = str(author_post_votes)
             # Sum vote to post
@@ -210,35 +208,47 @@ def post_vote(request, author_id, post_id):
             # save into DB
             author_logged_in.save()
             post_current.save()
-            return HttpResponse("True")
-        else:
-            raise Exception("Author has already voted this post")
+            return HttpResponse("Vote")
+        else:  # unvote
+            author_post_votes.remove(post_id)
+            author_logged_in.post_votes = str(author_post_votes)
+            # Subtract vote to post
+            post_current.votes -= 1
+            # save into DB
+            author_logged_in.save()
+            post_current.save()
+            return HttpResponse("Unvote")
 
 
 def response_vote(request, author_id, response_id):
     """
-    Vote response
+    Vote or unvote response. 
+    :returns 'Vote' if upvote is made. 'Unvote' is unvote is made
     """
     if request.method == 'POST':
         # search and set author by id
         global author_logged_in
-        author_logged_in = get_object_or_404(Author, id=author_id)
+        author_logged_in = Author.objects.get(id=author_id)
         # Add vote to author response_vote string list
-        author_response_votes = author_logged_in.response_votes
-        if(author_response_votes):
-            author_response_votes = set(
-                ast.literal_eval(author_logged_in.response_votes))
-        else:  # None case
-            author_response_votes = set()
-        if(response_id not in author_response_votes):
+        author_response_votes = set(
+            ast.literal_eval(author_logged_in.response_votes))
+        if(response_id not in author_response_votes):  # vote
             author_response_votes.add(response_id)
             author_logged_in.response_votes = str(author_response_votes)
             # Sum vote to response
-            response = get_object_or_404(Response, id=response_id)
+            response = Response.objects.get(id=response_id)
             response.votes += 1
             # save into DB
             author_logged_in.save()
             response.save()
-            return HttpResponse("True")
-        else:
-            raise Exception("Author has already voted this response")
+            return HttpResponse("Vote")
+        else:  # unvote
+            author_response_votes.remove(response_id)
+            author_logged_in.response_votes = str(author_response_votes)
+            # Subtract vote to response
+            response = Response.objects.get(id=response_id)
+            response.votes -= 1
+            # save into DB
+            author_logged_in.save()
+            response.save()
+            return HttpResponse("Unvote")

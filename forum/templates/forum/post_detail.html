@@ -99,25 +99,22 @@
                 </a>
                 <p class="d-inline">{{ post.pub_date}} (UTC)</p>
             </div>
-            <div id="post_text">
+            <div id="post_text" class="my-3">
                 {{ post.post_text|safe }}
             </div>
             <div id="post_votes_wrapper">
                 <form method="post" id="post_vote_form">
                     {% csrf_token %}
-                    {% if author_logged_in and not post.id in author_post_votes %}
-                    <!-- Enabled button -->
                     <button id="post_vote_button" type="button" class="btn btn-primary" onclick="post_vote()">
                         <p id="post_votes" class="d-inline">{{ post.votes }}</p>
-                        <i class="fas fa-heart d-inline"></i>
+                        {% if author_logged_in and not post.id in author_post_votes %}
+                        <!-- Empty hearth -->
+                        <i id="post_vote_icon" class="far fa-heart d-inline"></i>
+                        {% else %}
+                        <!-- Filled hearth -->
+                        <i id="post_vote_icon" class="fas fa-heart d-inline"></i>
+                        {% endif %}
                     </button>
-                    {% else %}
-                    <!-- Disabled button -->
-                    <button id="post_vote_button" type="button" class="btn btn-primary" disabled>
-                        <p id="post_votes" class="d-inline">{{ post.votes }}</p>
-                        <i class="fas fa-heart d-inline"></i>
-                    </button>
-                    {% endif %}
                 </form>
             </div>
         </div>
@@ -138,23 +135,23 @@
                     </a>
                     <p class="d-inline">{{ response.pub_date}} (UTC)</p>
                 </div>
-                <div id="response_text_{{response.id}}">
+                <div id="response_text_{{response.id}}" class="my-3">
                     {{ response.response_text| safe }}
                 </div>
                 <div id="reponse_votes_wrapper_{{response.id}}">
                     <form method="post" id="response_vote_form_{{response.id}}">
                         {% csrf_token %}
-                        {% if author_logged_in and not response.id in author_response_votes %}
-                        <button id="response_vote_button_{{ response.id }}" type="button" class="btn btn-primary" onclick="response_vote('{{ response.id }}')">
+                        <button id="response_vote_button_{{ response.id }}" type="button"
+                            class="btn btn-primary response_vote_button" onclick="response_vote('{{ response.id }}')">
                             <p id="response_votes_{{response.id}}" class="d-inline">{{ response.votes }}</p>
-                            <i class="fas fa-heart d-inline"></i>
+                            {% if author_logged_in and not response.id in author_response_votes %}
+                            <!-- Empty hearth -->
+                            <i id="response_vote_icon_{{response.id}}" class="far fa-heart d-inline"></i>
+                            {% else %}
+                            <!-- Filled hearth -->
+                            <i id="response_vote_icon_{{response.id}}" class="fas fa-heart d-inline"></i>
+                            {% endif %}
                         </button>
-                        {% else %}
-                        <button id="response_vote_button_{{ response.id }}" type="button" class="btn btn-primary" disabled>
-                            <p id="response_votes_{{response.id}}" class="d-inline">{{ response.votes }}</p>
-                            <i class="fas fa-heart d-inline"></i>
-                        </button>
-                        {% endif %}
                     </form>
                 </div>
             </div>
@@ -191,6 +188,20 @@
                 }
             }
         });
+
+        // Initialize buttons disable property if no author is logged in
+        function disableVoteButtonsIfNoAuthorIsLogged() {
+            author_is_logged_in = '{{author_logged_in}}' == 'None' ? false : true;
+            if (!author_is_logged_in) {
+                $("#post_vote_button").prop("disabled", true);
+                $(".response_vote_button").prop("disabled", true)
+            }
+        }
+
+        // Execute when page is loaded
+        $(document).ready(function () {
+            disableVoteButtonsIfNoAuthorIsLogged();
+        });
         //initialization end
 
         function post_vote() {
@@ -199,8 +210,15 @@
                 url: "/post_vote/" + "{{ author_logged_in.id }}" + "/" + "{{ post.id }}",
             })
                 .done(function (msg) {
-                    $("#post_votes").text(parseInt($("#post_votes").text()) + 1);
-                    $("#post_vote_button").prop("disabled",true);
+                    if (msg == "Vote") {
+                        $("#post_votes").text(parseInt($("#post_votes").text()) + 1);
+                        $("#post_vote_icon").removeClass("far");
+                        $("#post_vote_icon").addClass("fas");
+                    } else if (msg == "Unvote") {
+                        $("#post_votes").text(parseInt($("#post_votes").text()) - 1);
+                        $("#post_vote_icon").removeClass("fas");
+                        $("#post_vote_icon").addClass("far");
+                    }
                 })
         }
 
@@ -210,8 +228,15 @@
                 url: "/response_vote/" + "{{ author_logged_in.id }}" + "/" + response_id,
             })
                 .done(function (msg) {
-                    $("#response_votes_" + response_id).text(parseInt($("#response_votes_" + response_id).text()) + 1);
-                    $("#response_vote_button_" + response_id).prop("disabled",true);
+                    if (msg == "Vote") {
+                        $("#response_votes_" + response_id).text(parseInt($("#response_votes_" + response_id).text()) + 1);
+                        $("#response_vote_icon_" + response_id).removeClass("far");
+                        $("#response_vote_icon_" + response_id).addClass("fas");
+                    }else if (msg == "Unvote") {
+                        $("#response_votes_" + response_id).text(parseInt($("#response_votes_" + response_id).text()) - 1);
+                        $("#response_vote_icon_" + response_id).removeClass("fas");
+                        $("#response_vote_icon_" + response_id).addClass("far");
+                    }
                 })
         }
     </script>
