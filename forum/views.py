@@ -38,9 +38,9 @@ def post_detail(request, post_id):
     if author_logged_in:
         author = get_object_or_404(Author, pk=author_logged_in.id)
         author_logged_in = author
-        author_post_votes = set(ast.literal_eval(author_logged_in.post_votes))
-        author_response_votes = set(
-            ast.literal_eval(author_logged_in.response_votes))
+        author_post_votes = ast.literal_eval(author_logged_in.post_votes)
+        author_response_votes = ast.literal_eval(
+            author_logged_in.response_votes)
         context['author_post_votes'] = author_post_votes
         context['author_response_votes'] = author_response_votes
     return render(request, 'forum/post_detail.html', context)
@@ -199,8 +199,7 @@ def post_vote(request, author_id, post_id):
         global author_logged_in
         author_logged_in = get_object_or_404(Author, id=author_id)
         # Add vote to author post_vote string list
-        author_post_votes = set(
-            ast.literal_eval(author_logged_in.post_votes))
+        author_post_votes = ast.literal_eval(author_logged_in.post_votes)
         if(post_id not in author_post_votes):  # vote
             author_post_votes.add(post_id)
             author_logged_in.post_votes = str(author_post_votes)
@@ -231,8 +230,8 @@ def response_vote(request, author_id, response_id):
         global author_logged_in
         author_logged_in = Author.objects.get(id=author_id)
         # Add vote to author response_vote string list
-        author_response_votes = set(
-            ast.literal_eval(author_logged_in.response_votes))
+        author_response_votes = ast.literal_eval(
+            author_logged_in.response_votes)
         if(response_id not in author_response_votes):  # vote
             author_response_votes.add(response_id)
             author_logged_in.response_votes = str(author_response_votes)
