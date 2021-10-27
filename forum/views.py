@@ -97,8 +97,7 @@ def author_login(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            author = get_object_or_404(Author,
-                                       username=form.cleaned_data['username'])
+            author = Author.objects.filter(username=form.cleaned_data['username']).first()
             if author:  # author exists
                 password = form.cleaned_data['password']
                 # check if password encoded is equals to the password store in the DB
