@@ -36,4 +36,4 @@ class Response(models.Model):
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return 'Response of: ' + self.post.post_title
+        return 'Response of: ' + self.post.post_title + " | Response text: " + self.response_text[:200] 
