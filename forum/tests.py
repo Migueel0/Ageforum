@@ -7,6 +7,7 @@ from forum.forms import AuthorCreateForm, AuthorLoginForm
 
 from forum.models import Author, Post
 
+USERNAME = "author"
 PASSWORD = "12345678"
 EMAIL= "q@q.com"
 
@@ -45,7 +46,7 @@ class IndexViewTests(TestCase):
         """"
         If posts exist, post is in post_list and no error mensaje is disaplayed.
         """
-        author = create_author("author", EMAIL)
+        author = create_author(USERNAME, EMAIL)
         post = create_post(author, "This is a post", "This is a post message")
         response = self.client.get(reverse('index'))
         self.assertQuerysetEqual(
@@ -60,7 +61,7 @@ class PostDetailViewTests(TestCase):
         """
         If posts exist, post is in post_detail must be disaplayed.
         """
-        author = create_author("author", EMAIL)
+        author = create_author(USERNAME, EMAIL)
         post = create_post(author, "This is a post",
                            "This is a post message")
         response = self.client.get(
@@ -73,7 +74,7 @@ class AuthorTests(TestCase):
         """
         Creates an AuthorCreateForm and checks if it is valid.
         """
-        form_data = {"username": "author",
+        form_data = {"username": USERNAME,
                      "email": EMAIL,
                      "password": PASSWORD,
                      "password_repeat": PASSWORD,
@@ -85,7 +86,7 @@ class AuthorTests(TestCase):
         """
         Creates a wrong AuthorCreateForm and checks if it is invalid.
         """
-        form_data = {"username": "author",
+        form_data = {"username": USERNAME,
                      "password": PASSWORD,
                      "password_repeat": PASSWORD,
                      }
@@ -96,7 +97,7 @@ class AuthorTests(TestCase):
         """
         Logins an author and checks if it is valid.
         """
-        username = "author"
+        username = USERNAME
         email = "123@123.com"
         create_author(username, email)
         form_data = {"username": username,
