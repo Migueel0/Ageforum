@@ -25,10 +25,21 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
     global post_current
+    global author_logged_in
+    post = get_object_or_404(Post, pk=post_id)
     post_current = post
-    return render(request, 'forum/post_detail.html', {'post': post, 'author_logged_in': author_logged_in})
+    context = {'post': post,
+               'author_logged_in': author_logged_in,
+               }
+    if author_logged_in:
+        author = get_object_or_404(Author, pk=author_logged_in.id)
+        author_logged_in = author
+        author_post_votes = set(ast.literal_eval(author_logged_in.post_votes))
+        author_response_votes = set(ast.literal_eval(author_logged_in.response_votes))
+        context['author_post_votes'] = author_post_votes
+        context['author_response_votes'] = author_response_votes
+    return render(request, 'forum/post_detail.html', context)
 
 
 def author_create(request):
@@ -42,12 +53,12 @@ def author_create(request):
             author = Author()
             author.username = form.cleaned_data['username']
             # check is username exists
-            authorWithSameUsername = get_object_or_404(
-                username=author.username)
+            authorWithSameUsername = get_object_or_404(Author,
+                                                       username=author.username)
             if len(authorWithSameUsername) == 0:
                 author.email = form.cleaned_data['email']
-                authorWithSameEmail = get_object_or_404(
-                    email=author.email)
+                authorWithSameEmail = get_object_or_404(Author,
+                                                        email=author.email)
                 if len(authorWithSameEmail) == 0:
                     author.password = form.cleaned_data['password']
                     password_repeat = form.cleaned_data['password_repeat']
@@ -85,8 +96,8 @@ def author_login(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            author = Author.objects.filter(
-                username=form.cleaned_data['username']).first()
+            author = get_object_or_404(Author,
+                                       username=form.cleaned_data['username'])
             if author:  # author exists
                 password = form.cleaned_data['password']
                 # check if password encoded is equals to the password store in the DB
@@ -182,7 +193,8 @@ def post_vote(request, author_id, post_id):
     """
     if request.method == 'POST':
         # search and set author by id
-        author_logged_in = Author.objects.filter(id=author_id).get()
+        global author_logged_in
+        author_logged_in = get_object_or_404(Author, id=author_id)
         # Add vote to author post_vote string list
         author_post_votes = author_logged_in.post_votes
         if(author_post_votes):
@@ -198,5 +210,35 @@ def post_vote(request, author_id, post_id):
             # save into DB
             author_logged_in.save()
             post_current.save()
+            return HttpResponse("True")
         else:
             raise Exception("Author has already voted this post")
+
+
+def response_vote(request, author_id, response_id):
+    """
+    Vote response
+    """
+    if request.method == 'POST':
+        # search and set author by id
+        global author_logged_in
+        author_logged_in = get_object_or_404(Author, id=author_id)
+        # Add vote to author response_vote string list
+        author_response_votes = author_logged_in.response_votes
+        if(author_response_votes):
+            author_response_votes = set(
+                ast.literal_eval(author_logged_in.response_votes))
+        else:  # None case
+            author_response_votes = set()
+        if(response_id not in author_response_votes):
+            author_response_votes.add(response_id)
+            author_logged_in.response_votes = str(author_response_votes)
+            # Sum vote to response
+            response = get_object_or_404(Response, id=response_id)
+            response.votes += 1
+            # save into DB
+            author_logged_in.save()
+            response.save()
+            return HttpResponse("True")
+        else:
+            raise Exception("Author has already voted this response")

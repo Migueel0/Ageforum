@@ -105,11 +105,19 @@
             <div id="post_votes_wrapper">
                 <form method="post" id="post_vote_form">
                     {% csrf_token %}
-                    <button type="button" class="btn btn-primary" onclick="post_vote()" {% if not author_logged_in %}
-                        disabled {% endif %}>
+                    {% if author_logged_in and not post.id in author_post_votes %}
+                    <!-- Enabled button -->
+                    <button id="post_vote_button" type="button" class="btn btn-primary" onclick="post_vote()">
                         <p id="post_votes" class="d-inline">{{ post.votes }}</p>
                         <i class="fas fa-heart d-inline"></i>
                     </button>
+                    {% else %}
+                    <!-- Disabled button -->
+                    <button id="post_vote_button" type="button" class="btn btn-primary" disabled>
+                        <p id="post_votes" class="d-inline">{{ post.votes }}</p>
+                        <i class="fas fa-heart d-inline"></i>
+                    </button>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -130,8 +138,24 @@
                     </a>
                     <p class="d-inline">{{ response.pub_date}} (UTC)</p>
                 </div>
-                <div id="response_text">
+                <div id="response_text_{{response.id}}">
                     {{ response.response_text| safe }}
+                </div>
+                <div id="reponse_votes_wrapper_{{response.id}}">
+                    <form method="post" id="response_vote_form_{{response.id}}">
+                        {% csrf_token %}
+                        {% if author_logged_in and not response.id in author_response_votes %}
+                        <button id="response_vote_button_{{ response.id }}" type="button" class="btn btn-primary" onclick="response_vote('{{ response.id }}')">
+                            <p id="response_votes_{{response.id}}" class="d-inline">{{ response.votes }}</p>
+                            <i class="fas fa-heart d-inline"></i>
+                        </button>
+                        {% else %}
+                        <button id="response_vote_button_{{ response.id }}" type="button" class="btn btn-primary" disabled>
+                            <p id="response_votes_{{response.id}}" class="d-inline">{{ response.votes }}</p>
+                            <i class="fas fa-heart d-inline"></i>
+                        </button>
+                        {% endif %}
+                    </form>
                 </div>
             </div>
             {% endfor %}
@@ -152,6 +176,7 @@
     </div>
 
     <script>
+        //initialization for post and responses vote
         var csrftoken = $.cookie('csrftoken');
 
         function csrfSafeMethod(method) {
@@ -166,6 +191,7 @@
                 }
             }
         });
+        //initialization end
 
         function post_vote() {
             $.ajax({
@@ -173,8 +199,19 @@
                 url: "/post_vote/" + "{{ author_logged_in.id }}" + "/" + "{{ post.id }}",
             })
                 .done(function (msg) {
-                    $("#post_votes").text() = parseInt($("#post_votes").text) + 1;
-                    alert("Post voted: " + msg);
+                    $("#post_votes").text(parseInt($("#post_votes").text()) + 1);
+                    $("#post_vote_button").prop("disabled",true);
+                })
+        }
+
+        function response_vote(response_id) {
+            $.ajax({
+                method: "POST",
+                url: "/response_vote/" + "{{ author_logged_in.id }}" + "/" + response_id,
+            })
+                .done(function (msg) {
+                    $("#response_votes_" + response_id).text(parseInt($("#response_votes_" + response_id).text()) + 1);
+                    $("#response_vote_button_" + response_id).prop("disabled",true);
                 })
         }
     </script>
