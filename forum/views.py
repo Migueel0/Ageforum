@@ -11,8 +11,11 @@ from .forms import AuthorCreateForm, AuthorLoginForm, PostCreateForm, ResponseFo
 import datetime
 import ast
 
-author_logged_in: Author = None
-post_current: Post = None
+ROOT_URL = '/'
+AUTHOR_CREATE_URL = 'forum/author_create.html'
+
+author_logged_in: Author
+post_current: Post
 
 
 def index(request):
@@ -54,39 +57,37 @@ def author_create(request):
             author = Author()
             author.username = form.cleaned_data['username']
             # check is username exists
-            numAuthorsWithSameUsername = Author.objects.filter(
+            number_authors_with_same_username = Author.objects.filter(
                 username=author.username).count()
-            if numAuthorsWithSameUsername == 0:
-                author.email = form.cleaned_data['email']
-                numAuthorsWithSameEmail = Author.objects.filter(
-                    email=author.email).count()
-                if numAuthorsWithSameEmail == 0:
-                    author.password = form.cleaned_data['password']
-                    password_repeat = form.cleaned_data['password_repeat']
-                    if(author.password != password_repeat):
-                        # password mismatch
-                        return render(request, 'forum/author_create.html', {'form': form, 'password_mismatch': True})
-                    # encode password
-                    author.password = make_password(author.password)
-                    author.avatar = form.cleaned_data['avatar']
-                    author.join_date = datetime.datetime.now(
-                        tz=datetime.timezone.utc)
-                    author.save()
-                    # set author logged in
-                    global author_logged_in
-                    author_logged_in = author
-                    # redirect to index:
-                    return HttpResponseRedirect('/')
-                else:
-                    # email exists
-                    return render(request, 'forum/author_create.html', {'form': form, 'email_exist': True})
-            else:
+            if number_authors_with_same_username != 0:
                 # author_exists
-                return render(request, 'forum/author_create.html', {'form': form, 'author_exist': True})
+                return render(request, AUTHOR_CREATE_URL, {'form': form, 'author_exist': True})
+            author.email = form.cleaned_data['email']
+            number_authors_with_same_email = Author.objects.filter(
+                email=author.email).count()
+            if number_authors_with_same_email != 0:
+                # email exists
+                return render(request, AUTHOR_CREATE_URL, {'form': form, 'email_exist': True})
+            author.password = form.cleaned_data['password']
+            password_repeat = form.cleaned_data['password_repeat']
+            if(author.password != password_repeat):
+                # password mismatch
+                return render(request, AUTHOR_CREATE_URL, {'form': form, 'password_mismatch': True})
+            # encode password
+            author.password = make_password(author.password)
+            author.avatar = form.cleaned_data['avatar']
+            author.join_date = datetime.datetime.now(
+                tz=datetime.timezone.utc)
+            author.save()
+            # set author logged in
+            global author_logged_in
+            author_logged_in = author
+            # redirect to index:
+            return HttpResponseRedirect(ROOT_URL)
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AuthorCreateForm()
-    return render(request, 'forum/author_create.html', {'form': form})
+    return render(request, AUTHOR_CREATE_URL, {'form': form})
 
 
 def author_login(request):
@@ -97,7 +98,8 @@ def author_login(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            author = Author.objects.filter(username=form.cleaned_data['username']).first()
+            author = Author.objects.filter(
+                username=form.cleaned_data['username']).first()
             if author:  # author exists
                 password = form.cleaned_data['password']
                 # check if password encoded is equals to the password store in the DB
@@ -110,7 +112,7 @@ def author_login(request):
                     global author_logged_in
                     author_logged_in = author
                     # redirect to index:
-                    return HttpResponseRedirect('/')
+                    return HttpResponseRedirect(ROOT_URL)
                 else:
                     login_error = True
             else:
@@ -129,7 +131,7 @@ def author_login(request):
 def author_logout(request):
     global author_logged_in
     author_logged_in = None
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(ROOT_URL)
 
 
 def post_create(request):
@@ -147,10 +149,10 @@ def post_create(request):
             post = Post(author=author, post_title=post_title,
                         post_text=post_text, pub_date=pub_date)
             post.save()
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(ROOT_URL)
     else:
         if author_logged_in == None:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(ROOT_URL)
         form = PostCreateForm()
     return render(request, 'forum/post_create.html', {'form': form, 'author_logged_in': author_logged_in})
 
@@ -170,10 +172,10 @@ def response_create(request):
             response = Response(author=author, post=post,
                                 response_text=response_text, pub_date=pub_date)
             response.save()
-            return HttpResponseRedirect('/' + str(post.id))
+            return HttpResponseRedirect(ROOT_URL + str(post.id))
     else:
         if author_logged_in == None:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(ROOT_URL)
         form = ResponseForm()
 
     return render(request, 'forum/response_create.html', {'form': form, 'author_logged_in': author_logged_in, 'post_current': post_current})

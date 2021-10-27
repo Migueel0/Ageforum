@@ -3,9 +3,12 @@ from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 
 from datetime import datetime, timezone
-from forum.forms import *
-from forum.models import *
+from forum.forms import AuthorCreateForm, AuthorLoginForm
+
+from forum.models import Author, Post
+
 PASSWORD = "12345678"
+EMAIL= "q@q.com"
 
 
 def create_author(username, email):
@@ -42,7 +45,7 @@ class IndexViewTests(TestCase):
         """"
         If posts exist, post is in post_list and no error mensaje is disaplayed.
         """
-        author = create_author("author", "q@q.com")
+        author = create_author("author", EMAIL)
         post = create_post(author, "This is a post", "This is a post message")
         response = self.client.get(reverse('index'))
         self.assertQuerysetEqual(
@@ -57,7 +60,7 @@ class PostDetailViewTests(TestCase):
         """
         If posts exist, post is in post_detail must be disaplayed.
         """
-        author = create_author("author", "q@q.com")
+        author = create_author("author", EMAIL)
         post = create_post(author, "This is a post",
                            "This is a post message")
         response = self.client.get(
@@ -71,7 +74,7 @@ class AuthorTests(TestCase):
         Creates an AuthorCreateForm and checks if it is valid.
         """
         form_data = {"username": "author",
-                     "email": "q@q.com",
+                     EMAIL: EMAIL,
                      "password": PASSWORD,
                      "password_repeat": PASSWORD,
                      }
