@@ -60,7 +60,7 @@
                             <a class="nav-link d-inline" href="/accounts/sign_up">Registrarse</a>
                         </div>
                         <div class="nav-item d-inline">
-                            <a class="nav-link d-inline" href="/accounts/login">Identificarse</a>
+                            <a class="nav-link d-inline" href="/accounts/login?next={{request.path}}">Identificarse</a>
                         </div>
                         {% endif %}
                     </div>

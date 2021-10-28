@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
+from django.urls.base import reverse
 from django.views import generic
 from django.shortcuts import render
-
+from django.contrib.auth.views import LoginView
 from accounts.forms import SignUpForm
 
 
