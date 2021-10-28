@@ -4,8 +4,8 @@
 <div class="container text-light mt-5">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Identificarse</button>
+        {{ user.username }}
+        <button type="submit" class="btn btn-primary">Editar usuario</button>
     </form>
 </div>
 {% endblock %}
