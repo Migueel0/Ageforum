@@ -18,7 +18,7 @@ class Discussion(Message):
     title = models.CharField(max_length=1000)
 
 class Response(Message):
-    discussion = models.ForeignKey(Discussion, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Discussion, on_delete=models.CASCADE)
 
 class Vote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
