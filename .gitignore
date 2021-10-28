@@ -1,6 +1,8 @@
 Ageforum/__pycache__
 forum/__pycache__
 forum/migrations/
+accounts/__pycache__
+accounts/migrations/
 db.sqlite3
 .vscode/
 avatars/

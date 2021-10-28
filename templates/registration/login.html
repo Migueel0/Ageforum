@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
             <div class="container-md">
                 <a class="navbar-brand" href="/">
-                    <img src="{% static 'forum/title.png' %}">
+                    <img src="{% static 'forum/title.png' %}" alt="Age of Empires">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -43,11 +43,10 @@
                                     </strong></p>
                                 {% if author_logged_in.avatar %}
                                 <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="{{author_logged_in.avatar.url}}" width="50" height="50"
-                                    alt="Avatar" />
+                                    src="{{author_logged_in.avatar.url}}" width="50" height="50" alt="Avatar" />
                                 {% else %}
                                 <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
-                                    width="50" height="50" alt="Avatar"/>
+                                    width="50" height="50" alt="Avatar" />
                                 {% endif %}
                             </a>
                         </div>
@@ -56,10 +55,10 @@
                         </div>
                         {% else %}
                         <div class="nav-item d-inline">
-                            <a class="nav-link d-inline" href="author_create">Registrarse</a>
+                            <a class="nav-link d-inline" href="sign_up">Registrarse</a>
                         </div>
                         <div class="nav-item d-inline">
-                            <a class="nav-link d-inline" href="author_login">Identificarse</a>
+                            <a class="nav-link d-inline" href="login">Identificarse</a>
                         </div>
                         {% endif %}
                     </div>
@@ -79,7 +78,7 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Registrarse</button>
+            <button type="submit" class="btn btn-primary">Identificarse</button>
         </form>
     </div>
 
