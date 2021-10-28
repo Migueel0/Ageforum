@@ -1,7 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin.options import ModelAdmin
+from .models import User
 
-from .models import Author,Post,Response
-
-admin.site.register(Author)
-admin.site.register(Post)
-admin.site.register(Response)
+admin.site.register(User, ModelAdmin)

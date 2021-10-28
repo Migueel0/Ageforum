@@ -46,7 +46,7 @@
                                     </strong></p>
                                 {% if author_logged_in.avatar %}
                                 <img id="author_avatar" class="d-inline img-thumbnail"
-                                    src="{{author_logged_in.avatar.url}}" width="50" height="50" />
+                                    src="{{author_logged_in.avatar.url}}" alt="avatar" width="50" height="50" />
                                 {% else %}
                                 <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
                                     width="50" height="50" />
@@ -58,7 +58,7 @@
                         </div>
                         {% else %}
                         <div class="nav-item d-inline">
-                            <a class="nav-link d-inline" href="author_create">Registrarse</a>
+                            <a class="nav-link d-inline" href="author_sign_up">Registrarse</a>
                         </div>
                         <div class="nav-item d-inline">
                             <a class="nav-link d-inline" href="author_login">Identificarse</a>
@@ -69,7 +69,7 @@
                         <form class="my-2 my-lg-0 ">
                             <input class="form-control me-2 d-inline-block " type="search" style="width: auto;"
                                 placeholder="Buscar en el foro">
-                            <button class="btn btn-secondary my-2 d-inline-block" type="submit" disabled>Buscar</button>
+                            <button class="btn btn-secondary my-2 d-inline-block" type="submit">Buscar</button>
                         </form>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
     <div class="container">
         <div class="row">
             <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
-                <h1 class="mt-3 yellow_color">Bienvenid@ a la primera comunidad de Age of Empires 4 para
+                <h1 class="mt-5 yellow_color">Bienvenid@ a la primera comunidad de Age of Empires IV para
                     hispanohablantes</h1>
                 {% if author_logged_in %}
                 <div>
@@ -91,11 +91,11 @@
                     {% if post_list %}
                     {% for post in post_list %}
                     <a href="{{post.id}}" class="list-group-item list-group-item-action yellow_background_color">
-                        <h1>{{ post.post_title }}</h1>
+                        <h1>{{ post.title }}</h1>
                     </a>
                     {% endfor %}
                     {% else %}
-                    <p class="text-danger">No hay posts.</p>
+                    <h1 class="text-danger">No hay posts</h1>
                     {% endif %}
                 </div>
             </div>
