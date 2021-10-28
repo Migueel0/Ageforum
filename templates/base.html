@@ -39,7 +39,7 @@
                         {% if request.user.id %}
                         <div class="nav-item text-light my-auto d-inline">
                             <p class="d-inline">Bienvenido</p>
-                            <a href="profile/{{request.user.id}}" class="nav-link d-inline text-light">
+                            <a href="/accounts/profile/" class="nav-link d-inline text-light">
                                 <p id="author_username" class="d-inline h5 strong"><strong>
                                         {{ request.user.username }}
                                     </strong></p>
