@@ -134,7 +134,7 @@ TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/z3c3jfm1yunepfyfaeynykplnfhsqor7qwq3j
 TINYMCE_DEFAULT_CONFIG = {
     "height": "320px",
     "width": "960px",
-    "menubar": False,  # "file edit view insert format tools table help",
+    "menubar": False,
     "plugins": "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
     "fullscreen insertdatetime media table paste code help wordcount spellchecker",
     "toolbar": "undo redo | bold italic underline strikethrough | fontselect | alignleft "
@@ -144,7 +144,7 @@ TINYMCE_DEFAULT_CONFIG = {
     "a11ycheck ltr rtl | showcomments addcomment code",
     "custom_undo_redo_levels": 10,
     # To force a specific language instead of the Django current language.
-    "language": "es_ES",
+    "language": "es",
 }
 TINYMCE_SPELLCHECKER = True
 TINYMCE_COMPRESSOR = False
