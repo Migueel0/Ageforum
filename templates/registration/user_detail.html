@@ -4,8 +4,8 @@
 <div class="container text-light mt-5">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ user.username }}
-        <button type="submit" class="btn btn-primary">Editar usuario</button>
+        <p class='d-block'>Nombre de usuario: {{ user.username }}</p>
+        <button type="submit" class="btn btn-primary d-block" disabled>Editar usuario</button>
     </form>
 </div>
 {% endblock %}
