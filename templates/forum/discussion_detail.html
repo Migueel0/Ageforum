@@ -1,13 +1,92 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container text-light">
+<div class="container">
     <div class="row mt-5">
         <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
-
-            {% if request.user.id %}
+            <div id="discussion_title_wrapper" class="d-flex text-center yellow_color margin_top_30">
+                <h1 id="discussion_title">{{ discussion.title }}</h1>
+            </div>
+            <div id="discussion_detail" class="d-block yellow_background_color mt-1 p-3">
+                <div id="discussion_user_avatar_wrapper">
+                    <a href="user_details/{{discussion.user.id}}" class="user_link">
+                        {% if discussion.user.avatar %}
+                        <img id="discussion_user_avatar" class="img-thumbnail d-inline"
+                            src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
+                        {% else %}
+                        <img id="discussion_user_generic_avatar" class="img-thumbnail d-inline"
+                            src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
+                        {% endif %}
+                        <p id="user_username" class="mx-3 d-inline my-auto">
+                            <strong>{{ discussion.user.username }}</strong>
+                        </p>
+                    </a>
+                    <p class="d-inline">{{ discussion.date_publication}} (UTC)</p>
+                </div>
+                <div id="discussion_text" class="my-3">
+                    {{ discussion.text|safe }}
+                </div>
+                <div id="discussion_votes_wrapper">
+                    <button id="message_vote_button_{{discussion.id}}" type="button"
+                        class="btn btn-primary message_vote_button" onclick="message_vote('{{discussion.id}}')">
+                        <p id="message_votes_{{discussion.id}}" class="d-inline">
+                            {{ vote_count_dict|get_item_from_dict:discussion.id }}</p>
+                        {% if request.user.id and discussion in messages_voted_by_user_list %}
+                        <!-- Filled hearth -->
+                        <em id="message_vote_icon_{{discussion.id}}" class="fas fa-heart d-inline" alt="filled_heart"></em>
+                        {% else %}
+                        <!-- Empty hearth -->
+                        <em id="message_vote_icon_{{discussion.id}}" class="far fa-heart d-inline" alt="empty_heart"></em>
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+            <div id="responses_wrapper">
+                {% for response in response_list %}
+                <div class="d-block mx-auto yellow_background_color mt-3 p-3">
+                    <div id="response_user_avatar_wrapper">
+                        <a href="user_details/{{response.user.id}}" class="user_link">
+                            {% if response.user.avatar %}
+                            <img id="response_user_avatar" class="d-inline img-thumbnail"
+                                src="{{response.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
+                            {% else %}
+                            <img id="response_user_generic_avatar" class="d-inline img-thumbnail"
+                                src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
+                            {% endif %}
+                            <p id="user_username" class="mx-3 d-inline my-auto"><strong>{{ response.user.username }}
+                                </strong></p>
+                        </a>
+                        <p class="d-inline">{{ response.date_publication}} (UTC)</p>
+                    </div>
+                    <div id="response_text_{{response.id}}" class="my-3">
+                        {{ response.text| safe }}
+                    </div>
+                    <div id="reponse_votes_wrapper_{{response.id}}">
+                        <form method="post" id="message_vote_form_{{response.id}}">
+                            {% csrf_token %}
+                            <button id="message_vote_button_{{ response.id }}" type="button"
+                                class="btn btn-primary message_vote_button"
+                                onclick="message_vote('{{ response.id }}')">
+                                <p id="message_votes_{{response.id}}" class="d-inline">
+                                    {{ vote_count_dict|get_item_from_dict:response.id }}</p>
+                                {% if request.user.id and response in messages_voted_by_user_list %}
+                                <!-- Filled hearth -->
+                                <em id="message_vote_icon_{{response.id}}" class="fas fa-heart d-inline"
+                                    alt="filled_heart"></em>
+                                {% else %}
+                                <!-- Empty hearth -->
+                                <em id="message_vote_icon_{{response.id}}" class="far fa-heart d-inline"
+                                    alt="hearth"></em>
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             <div id="actions" class="d-block mx-auto margin_top_30">
-                <form action="response_create">
+                {% if request.user.id %}
+                <form action="response_create/{{ discussion.id }}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary mb-3">Responder</button>
                 </form>
@@ -20,4 +99,56 @@
         </div>
     </div>
 </div>
+
+<script>
+    //initialization for post and responses vote
+    var csrftoken = $.cookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    // Initialize buttons disable property if no user is logged in
+    function disableVoteButtonsIfNoUserIsLogged() {
+        user_logged_in = '{{request.user.id}}' == 'None' ? false : true;
+        if (!user_logged_in) {
+            $(".message_vote_button").prop("disabled", true)
+        }
+    }
+
+    // Execute when page is loaded
+    $(document).ready(function () {
+        disableVoteButtonsIfNoUserIsLogged();
+    });
+    //initialization end
+
+    function message_vote(message_id) {
+        $.ajax({
+                method: "POST",
+                url: "/message_vote/" + message_id,
+            })
+            .done(function (msg) {
+                const MESSAGE_VOTE_ID_HTML = "#message_votes_" + message_id
+                const MESSAGE_VOTE_ICON_ID_HTML = "#message_vote_icon_" + message_id
+                if (msg == "vote") {
+                    $(MESSAGE_VOTE_ID_HTML).text(parseInt($(MESSAGE_VOTE_ID_HTML).text()) + 1);
+                    $(MESSAGE_VOTE_ICON_ID_HTML).removeClass("far");
+                    $(MESSAGE_VOTE_ICON_ID_HTML).addClass("fas");
+                } else if (msg == "unvote") {
+                    $(MESSAGE_VOTE_ID_HTML).text(parseInt($(MESSAGE_VOTE_ID_HTML).text()) - 1);
+                    $(MESSAGE_VOTE_ICON_ID_HTML).removeClass("fas");
+                    $(MESSAGE_VOTE_ICON_ID_HTML).addClass("far");
+                }
+            })
+    }
+</script>
 {% endblock %}

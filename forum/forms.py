@@ -7,8 +7,8 @@ from forum.models import Discussion, Message
 
 
 class MessageCreateForm(ModelForm):
-    text = forms.CharField(
-        widget=TinyMCE(attrs={'cols': 40, 'rows': 30}))
+    text = forms.CharField(label="Texto",
+                           widget=TinyMCE(attrs={'cols': 40, 'rows': 30}))
 
     class Meta:
         model = Message
@@ -16,6 +16,10 @@ class MessageCreateForm(ModelForm):
 
 
 class DiscussionCreateForm(MessageCreateForm):
+    def __init__(self, *args, **kwargs):
+        super(DiscussionCreateForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "Título"
+
     class Meta(MessageCreateForm.Meta):
         model = Discussion
         fields = ('title', 'text')

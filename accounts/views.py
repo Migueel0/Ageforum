@@ -4,7 +4,7 @@ from django.shortcuts import render
 from accounts.forms import SignUpForm
 
 
-PROFILE_INFO_TEMPLATE = "registration/user_info.html"
+PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 
 
 class SignUpView(generic.CreateView):
@@ -13,7 +13,7 @@ class SignUpView(generic.CreateView):
     template_name = 'registration/sign_up.html'
 
 
-def user_info(request):
+def user_detail(request):
     """
     Show user profile info
     """
