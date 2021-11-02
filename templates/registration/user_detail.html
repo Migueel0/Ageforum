@@ -4,8 +4,13 @@
 <div class="container text-light mt-5">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <p class='d-block'>Nombre de usuario: {{ user.username }}</p>
-        <button type="submit" class="btn btn-primary d-block" disabled>Editar usuario</button>
+        <div class="mb-3">
+            <h1 class='d-block'>{{ user.username }}</h1>
+            <img id="author_avatar" class="d-inline img-thumbnail" src="{{request.user.avatar.url}}" alt="avatar" width="200"
+                height="200" />
+        </div>
+        {% comment %} <button type="submit" class="btn btn-primary d-block" disabled>Editar usuario</button> {% endcomment %}
     </form>
 </div>
-{% endblock %}
+{% endblock %} 
+
