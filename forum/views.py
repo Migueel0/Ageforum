@@ -4,6 +4,9 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.template.defaulttags import register
+from django.core.exceptions import PermissionDenied
+
+from Ageforum.settings import ROOT_URLCONF
 
 from forum.forms import DiscussionCreateForm, MessageCreateForm
 
@@ -22,7 +25,7 @@ def index(request):
     """
     Show all discussions
     """
-    discussion_list = Discussion.objects.order_by('date_publication')[:50]
+    discussion_list = Discussion.objects.order_by('date_publication')
     context = {
         'discussion_list': discussion_list,
     }
@@ -31,14 +34,16 @@ def index(request):
 
 def discussion_create(request):
     """
-    Show form to create a discussion when GET and create a discussion when
+    Show form to create a discussion when GET and create a discussion when POST. Otherwise, if user is not logged in redirects to index page
     """
+    if not request.user.id:
+        raise PermissionDenied()
     if request.method == 'GET':
-        form = DiscussionCreateForm()
-        context = {
-            'form': form
-        }
-        return render(request, DISCUSSION_CREATE_TEMPLATE, context)
+            form = DiscussionCreateForm()
+            context = {
+                'form': form
+            }
+            return render(request, DISCUSSION_CREATE_TEMPLATE, context)
     elif request.method == 'POST':
         form = DiscussionCreateForm(data=request.POST)
         if form.is_valid():
@@ -47,16 +52,16 @@ def discussion_create(request):
             discussion.title = form.cleaned_data['title']
             discussion.text = form.cleaned_data['text']
             discussion.save()
-            context = {
-                'discussion': discussion
-            }
-            return render(request, DISCUSSION_DETAIL_TEMPLATE, context)
-
+            return HttpResponseRedirect(INDEX_ROUTE + str(discussion.id))
+    else:
+        raise PermissionDenied()
 
 def response_create(request, discussion_id):
     """
     Show form to create a discussion when GET and create a response when POST
     """
+    if not request.user.id:
+        raise PermissionDenied()
     if request.method == 'GET':
         form = MessageCreateForm()
         context = {
@@ -73,7 +78,8 @@ def response_create(request, discussion_id):
             response.text = form.cleaned_data['text']
             response.save()
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
-
+    else:
+        raise PermissionDenied()
 
 def discussion_detail(request, discussion_id):
     """
@@ -89,12 +95,14 @@ def discussion_detail(request, discussion_id):
             'response_list': response_list,
             'vote_count_dict': vote_count_dict,
         }
+        #if user is logged in retrieve list of votes for that user and discussion
         if request.user.id:
             messages_voted_by_user_list = retrieve_user_discussion_votes(
                 request.user, discussion)
             context['messages_voted_by_user_list'] = messages_voted_by_user_list
         return render(request, DISCUSSION_DETAIL_TEMPLATE, context)
-
+    else:
+        raise PermissionDenied()
 
 def retrieve_discussion_votes(discussion, response_list):
     """
@@ -115,11 +123,13 @@ def retrieve_user_discussion_votes(user, discussion):
     """
     discussion_and_responses = [discussion]
     discussion_and_responses += Response.objects.filter(topic=discussion)
-    user_discussion_votes = Vote.objects.filter(message__in=discussion_and_responses).filter(user=user)
+    user_discussion_votes = Vote.objects.filter(
+        message__in=discussion_and_responses).filter(user=user)
     messages_voted_by_user_list = []
     for vote in user_discussion_votes:
         messages_voted_by_user_list.append(vote.message)
     return messages_voted_by_user_list
+
 
 @register.filter
 def get_item_from_dict(dictionary, key):
@@ -128,15 +138,17 @@ def get_item_from_dict(dictionary, key):
     """
     return dictionary[key]
 
-def message_vote(request,message_id):
+
+def message_vote(request, message_id):
     """
     Add or remove vote
     """
     if request.method == 'POST':
-        message = get_object_or_404(Message,id=message_id)
-        vote_user_message = Vote.objects.filter(user=request.user).filter(message=message)
+        message = get_object_or_404(Message, id=message_id)
+        vote_user_message = Vote.objects.filter(
+            user=request.user).filter(message=message)
         if(vote_user_message.count() == 0):
-            new_vote = Vote(user=request.user,message=message)
+            new_vote = Vote(user=request.user, message=message)
             new_vote.save()
             return HttpResponse('vote')
         elif(vote_user_message.count() == 1):
