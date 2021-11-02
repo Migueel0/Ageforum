@@ -1,0 +1,14 @@
+# .coveragerc to control coverage.py
+[run]
+branch = True
+omit=
+    */tests.py
+    */__init__.py
+    */settings.py
+    */urls.py
+    */admin.py
+    */apps.py
+    */forms.py
+    */models.py
+    */migrations/*
+    manage.py

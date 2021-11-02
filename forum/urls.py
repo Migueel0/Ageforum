@@ -10,5 +10,3 @@ urlpatterns = [
     path('<int:discussion_id>', views.discussion_detail, name='discussion_detail'),
     path('message_vote/<int:message_id>', views.message_vote, name='message_vote'),
 ]
-
-
