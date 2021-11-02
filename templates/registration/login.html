@@ -6,8 +6,12 @@
         <div class='text-light mx-auto col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 '>
             {% csrf_token %}
             {{ form.as_p }}
-          <button type="submit" class="btn btn-primary">Identificarse</button>
+            <button type="submit" class="btn btn-primary">Identificarse</button>
         </div>
     </form>
 </div>
+<script>
+    $("#id_username").addClass("form-control")
+    $("#id_password").addClass("form-control")
+</script>
 {% endblock %}
