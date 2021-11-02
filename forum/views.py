@@ -39,11 +39,11 @@ def discussion_create(request):
     if not request.user.id:
         raise PermissionDenied()
     if request.method == 'GET':
-            form = DiscussionCreateForm()
-            context = {
-                'form': form
-            }
-            return render(request, DISCUSSION_CREATE_TEMPLATE, context)
+        form = DiscussionCreateForm()
+        context = {
+            'form': form
+        }
+        return render(request, DISCUSSION_CREATE_TEMPLATE, context)
     elif request.method == 'POST':
         form = DiscussionCreateForm(data=request.POST)
         if form.is_valid():
@@ -55,6 +55,7 @@ def discussion_create(request):
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion.id))
     else:
         raise PermissionDenied()
+
 
 def response_create(request, discussion_id):
     """
@@ -81,6 +82,7 @@ def response_create(request, discussion_id):
     else:
         raise PermissionDenied()
 
+
 def discussion_detail(request, discussion_id):
     """
     Show discussion and responses
@@ -95,7 +97,7 @@ def discussion_detail(request, discussion_id):
             'response_list': response_list,
             'vote_count_dict': vote_count_dict,
         }
-        #if user is logged in retrieve list of votes for that user and discussion
+        # if user is logged in retrieve list of votes for that user and discussion
         if request.user.id:
             messages_voted_by_user_list = retrieve_user_discussion_votes(
                 request.user, discussion)
@@ -103,6 +105,7 @@ def discussion_detail(request, discussion_id):
         return render(request, DISCUSSION_DETAIL_TEMPLATE, context)
     else:
         raise PermissionDenied()
+
 
 def retrieve_discussion_votes(discussion, response_list):
     """
@@ -154,3 +157,5 @@ def message_vote(request, message_id):
         elif(vote_user_message.count() == 1):
             vote_user_message.delete()
             return HttpResponse('unvote')
+    else:
+        raise PermissionDenied()

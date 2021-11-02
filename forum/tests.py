@@ -4,8 +4,9 @@ from django.http.response import HttpResponse
 from django.test import TestCase
 from django.urls import reverse
 
-from forum.models import Discussion, Response, User
-from forum.views import DISCUSSION_CREATE_TEMPLATE, INDEX_ROUTE
+from forum.models import Discussion, Message, Response, User, Vote
+from forum.views import INDEX_ROUTE
+from . import views
 
 USERNAME = "user"
 PASSWORD = "8cKk7fY9JXydWf"
@@ -182,4 +183,32 @@ class DiscussionDetailViewTests(TestCase):
         self.assertContains(http_response, LOREM_IPSUM)
 
 
-    
+class MessageVoteTests(TestCase):
+    def test_message_vote(self):
+        """
+        Check voting up a message
+        """
+        create_user(USERNAME, EMAIL)
+        self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
+                                                   'password': PASSWORD})
+        self.client.post(reverse(DISCUSSION_CREATE_URL_NAME), {'title': DISCUSSION_TITLE,
+                                                               'text': LOREM_IPSUM})
+        http_response = self.client.post(
+            reverse('message_vote', kwargs={'message_id': '1'}), {'text': LOREM_IPSUM})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response, 'vote')
+
+    def test_message_unvote(self):
+        """
+        Check voting up a message
+        """
+        user = create_user(USERNAME, EMAIL)
+        self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
+                                                   'password': PASSWORD})
+        self.client.post(reverse(DISCUSSION_CREATE_URL_NAME), {'title': DISCUSSION_TITLE,
+                                                               'text': LOREM_IPSUM})
+        Vote(user=user, message=Message.objects.first()).save()
+        http_response = self.client.post(
+            reverse('message_vote', kwargs={'message_id': '1'}), {'text': LOREM_IPSUM})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response, 'unvote')
