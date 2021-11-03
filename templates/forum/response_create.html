@@ -4,11 +4,16 @@
 <div class="container text-light">
     <div class="row mt-5">
         <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
-            <form action="/response_create/{{ discussion_id }}" method="post">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary">Publicar</button>
-            </form>
+            {% if message_to_reply %}
+            <p>Respuesta a: {{message_to_reply.text|safe|truncatechars_html:50 }}</p>
+            <form action="/response_reply_create/{{ discussion_id }}/{{message_to_reply.id}}" method="post">
+                {% else %}
+                <form action="/response_create/{{ discussion_id }}" method="post">
+                    {%endif%}
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-primary">Publicar</button>
+                </form>
         </div>
     </div>
 </div>

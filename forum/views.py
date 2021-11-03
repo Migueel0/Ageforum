@@ -59,7 +59,7 @@ def discussion_create(request):
 
 def response_create(request, discussion_id):
     """
-    Show form to create a discussion when GET and create a response when POST
+    Show form to create a response when GET and create a response when POST
     """
     if not request.user.id:
         raise PermissionDenied()
@@ -157,5 +157,35 @@ def message_vote(request, message_id):
         elif(vote_user_message.count() == 1):
             vote_user_message.delete()
             return HttpResponse('unvote')
+    else:
+        raise PermissionDenied()
+
+
+def response_reply_create(request, discussion_id, message_id):
+    """
+    Show form to create a reply to a message when GET and create a reply for given message when POST
+    """
+    if not request.user.id:
+        raise PermissionDenied()
+    message_to_reply = Message.objects.get(id=message_id)
+    if request.method == 'GET':
+        form = MessageCreateForm()
+        context = {
+            'form': form,
+            'discussion_id': discussion_id,
+            'message_to_reply': message_to_reply
+        }
+        return render(request, RESPONSE_CREATE_TEMPLATE, context)
+    elif request.method == 'POST':
+        form = MessageCreateForm(data=request.POST)
+        if form.is_valid():
+            response = Response()
+            response.topic = get_object_or_404(
+                Discussion, id=discussion_id)
+            response.reply_to = message_to_reply
+            response.user = request.user
+            response.text = form.cleaned_data['text']
+            response.save()
+            return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()

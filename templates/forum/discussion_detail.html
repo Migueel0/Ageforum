@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
             <div id="discussion_title_wrapper" class="d-flex text-center yellow_color margin_top_30">
                 <h1 id="discussion_title">{{ discussion.title }}</h1>
@@ -26,19 +26,29 @@
                 <div id="discussion_text" class="my-3">
                     {{ discussion.text|safe }}
                 </div>
-                <div id="discussion_votes_wrapper">
+                <div id="discussion_actions_wrapper">
                     <button id="message_vote_button_{{discussion.id}}" type="button"
                         class="btn btn-primary message_vote_button" onclick="message_vote('{{discussion.id}}')">
                         <p id="message_votes_{{discussion.id}}" class="d-inline">
                             {{ vote_count_dict|get_item_from_dict:discussion.id }}</p>
                         {% if request.user.id and discussion in messages_voted_by_user_list %}
                         <!-- Filled hearth -->
-                        <em id="message_vote_icon_{{discussion.id}}" class="fas fa-heart d-inline" alt="filled_heart"></em>
+                        <em id="message_vote_icon_{{discussion.id}}" class="fas fa-heart d-inline"
+                            alt="filled_heart"></em>
                         {% else %}
                         <!-- Empty hearth -->
-                        <em id="message_vote_icon_{{discussion.id}}" class="far fa-heart d-inline" alt="empty_heart"></em>
+                        <em id="message_vote_icon_{{discussion.id}}" class="far fa-heart d-inline"
+                            alt="empty_heart"></em>
                         {% endif %}
                     </button>
+                    <form action="response_reply_create/{{ discussion.id }}/{{ discussion.id }}" class="d-inline">
+                        {% csrf_token %}
+                        <button id="message_reply_button_{{discussion.id}}" type="submit"
+                            class="btn btn-primary message_vote_button" title="Responder a este mensaje">
+                            <em class="fas fa-reply"></em>
+                            <p class="d-inline">Responder</p>
+                        </button>
+                    </form>
                 </div>
             </div>
             <div id="responses_wrapper">
@@ -58,15 +68,23 @@
                         </a>
                         <p class="d-inline">{{ response.date_publication}} (UTC)</p>
                     </div>
+                    {% if response.reply_to.id %}
+                    <div id="response_text_{{response.id}}_reply_to_{{response.reply_to.id}}"
+                        class="white_background_color mt-3 p-3">
+                        <span>En respuesta a:</span>
+                        <div class="my-3">
+                            {{ response.reply_to.text|safe }}
+                        </div>
+                    </div>
+                    {% endif %}
                     <div id="response_text_{{response.id}}" class="my-3">
                         {{ response.text| safe }}
                     </div>
-                    <div id="reponse_votes_wrapper_{{response.id}}">
-                        <form method="post" id="message_vote_form_{{response.id}}">
+                    <div id="reponse_actions_wrapper_{{response.id}}">
+                        <form method="post" id="message_vote_form_{{response.id}}" class="d-inline">
                             {% csrf_token %}
                             <button id="message_vote_button_{{ response.id }}" type="button"
-                                class="btn btn-primary message_vote_button"
-                                onclick="message_vote('{{ response.id }}')">
+                                class="btn btn-primary message_vote_button" onclick="message_vote('{{ response.id }}')">
                                 <p id="message_votes_{{response.id}}" class="d-inline">
                                     {{ vote_count_dict|get_item_from_dict:response.id }}</p>
                                 {% if request.user.id and response in messages_voted_by_user_list %}
@@ -78,6 +96,14 @@
                                 <em id="message_vote_icon_{{response.id}}" class="far fa-heart d-inline"
                                     alt="hearth"></em>
                                 {% endif %}
+                            </button>
+                        </form>
+                        <form action="response_reply_create/{{ discussion.id }}/{{ response.id }}" class="d-inline">
+                            {% csrf_token %}
+                            <button id="message_reply_button_{{discussion.id}}" type="submit"
+                                class="btn btn-primary message_vote_button d-inline" title="Responder a este mensaje">
+                                <em class="fas fa-reply d-inline"></em>
+                                <p class="d-inline">Responder</p>
                             </button>
                         </form>
                     </div>
@@ -108,7 +134,7 @@
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
-    
+
     $.ajaxSetup({
         beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
