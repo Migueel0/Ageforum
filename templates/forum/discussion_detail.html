@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="container">
     <div class="row mt-3">
@@ -21,7 +20,8 @@
                             <strong>{{ discussion.user.username }}</strong>
                         </p>
                     </a>
-                    <p class="d-inline">{{ discussion.date_publication}} (UTC)</p>
+                    <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
+                    </p>
                 </div>
                 <div id="discussion_text" class="my-3">
                     {{ discussion.text|safe }}
@@ -66,7 +66,7 @@
                             <p id="user_username" class="mx-3 d-inline my-auto"><strong>{{ response.user.username }}
                                 </strong></p>
                         </a>
-                        <p class="d-inline">{{ response.date_publication}} (UTC)</p>
+                        <p class="d-inline date_publication">{{ response.date_publication | date:"U"}}</p>
                     </div>
                     {% if response.reply_to.id %}
                     <div id="response_text_{{response.id}}_reply_to_{{response.reply_to.id}}"
@@ -154,6 +154,7 @@
     // Execute when page is loaded
     $(document).ready(function () {
         disableVoteButtonsIfNoUserIsLogged();
+        convertDates();
     });
     //initialization end
 
@@ -175,6 +176,12 @@
                     $(MESSAGE_VOTE_ICON_ID_HTML).addClass("far");
                 }
             })
+    }
+
+    function convertDates() {
+        $(".date_publication").each(function () {
+            $(this).text(new Date(parseInt($(this).text()) * 1000).toLocaleString('es'));
+        });
     }
 </script>
 {% endblock %}
