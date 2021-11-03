@@ -6,3 +6,5 @@ accounts/migrations/
 db.sqlite3
 .vscode/
 avatars/
+.coverage
+__pycache__
