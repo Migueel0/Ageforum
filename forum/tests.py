@@ -6,7 +6,6 @@ from django.urls import reverse
 
 from forum.models import Discussion, Message, Response, User, Vote
 from forum.views import INDEX_ROUTE
-from . import views
 
 USERNAME = "user"
 PASSWORD = "8cKk7fY9JXydWf"
@@ -19,6 +18,7 @@ HTTP_FORBIDDEN = 403
 DISCUSSION_CREATE_URL_NAME = 'discussion_create'
 RESPONSE_CREATE_URL_NAME = 'response_create'
 LOGIN_URL_NAME = 'login'
+REPLAY_URL_NAME = 'response_reply_create'
 
 DISCUSSION_TITLE = 'Discussion title'
 NO_DISCUSSIONS_MESSAGE = "No hay discusiones"
@@ -200,7 +200,7 @@ class MessageVoteTests(TestCase):
 
     def test_message_unvote(self):
         """
-        Check voting up a message
+        Check unvoting a message
         """
         user = create_user(USERNAME, EMAIL)
         self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
@@ -212,3 +212,59 @@ class MessageVoteTests(TestCase):
             reverse('message_vote', kwargs={'message_id': '1'}), {'text': LOREM_IPSUM})
         self.assertEqual(http_response.status_code, HTTP_OK_CODE)
         self.assertContains(http_response, 'unvote')
+
+
+class ReplyTests(TestCase):
+    def test_reply_discussion(self):
+        """
+        Check if Disussion reply functionallity is working
+        """
+        create_user(USERNAME, EMAIL)
+        self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
+                                                   'password': PASSWORD})
+        self.client.post(reverse(DISCUSSION_CREATE_URL_NAME), {'title': DISCUSSION_TITLE,
+                                                               'text': LOREM_IPSUM})
+        self.client.post(
+            reverse(RESPONSE_CREATE_URL_NAME, kwargs={'discussion_id': '1'}), {'text': LOREM_IPSUM})
+        http_response = self.client.post(reverse(REPLAY_URL_NAME, kwargs={
+            'discussion_id': '1', 'message_id': '1'}), {'text': LOREM_IPSUM})
+        self.assertRedirects(http_response, INDEX_ROUTE + '1', status_code=HTTP_REDIRECT_CODE,
+                             target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
+        http_response = self.client.get(reverse('discussion_detail', kwargs={
+            'discussion_id': '1'}), {'text': LOREM_IPSUM})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response, LOREM_IPSUM, 4)
+
+    def test_reply_response(self):
+        """
+        Check if Response reply functionallity is working
+        """
+        create_user(USERNAME, EMAIL)
+        self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
+                                                   'password': PASSWORD})
+        self.client.post(reverse(DISCUSSION_CREATE_URL_NAME), {'title': DISCUSSION_TITLE,
+                                                               'text': LOREM_IPSUM})
+        self.client.post(
+            reverse(RESPONSE_CREATE_URL_NAME, kwargs={'discussion_id': '1'}), {'text': LOREM_IPSUM})
+        http_response = self.client.post(reverse(REPLAY_URL_NAME, kwargs={
+            'discussion_id': '1', 'message_id': '2'}), {'text': LOREM_IPSUM})
+        self.assertRedirects(http_response, INDEX_ROUTE + '1', status_code=HTTP_REDIRECT_CODE,
+                             target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
+        http_response = self.client.get(reverse('discussion_detail', kwargs={
+            'discussion_id': '1'}), {'text': LOREM_IPSUM})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response, LOREM_IPSUM, 4)
+
+    def test_reply_form(self):
+        """
+        Check if Response reply functionallity is working
+        """
+        create_user(USERNAME, EMAIL)
+        self.client.post(reverse(LOGIN_URL_NAME), {'username': USERNAME,
+                                                   'password': PASSWORD})
+        self.client.post(reverse(DISCUSSION_CREATE_URL_NAME), {'title': DISCUSSION_TITLE,
+                                                               'text': LOREM_IPSUM})
+        http_response = self.client.get(reverse(REPLAY_URL_NAME, kwargs={
+            'discussion_id': '1', 'message_id': '1'}))
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response, 'Respuesta a:')
