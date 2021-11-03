@@ -6,16 +6,16 @@
         {% csrf_token %}
         <div class="mb-3">
             <h1 class='d-block'>{{ user.username }}</h1>
-            {% if request.user.avatar %}
-            <img id="author_avatar" class="d-inline img-thumbnail" src="{{request.user.avatar.url}}" alt="avatar" width="200"
+            {% if user.avatar %}
+            <img id="user_avatar" class="d-inline img-thumbnail" src="{{user.avatar.url}}" alt="avatar" width="200"
                 height="200" />
             {% else %}
-            <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar" width="200"
-                height="200" />
+            <img id="user_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
+                width="200" height="200" />
             {%endif%}
         </div>
-        {% comment %} <button type="submit" class="btn btn-primary d-block" disabled>Editar usuario</button> {% endcomment %}
+        {% comment %} <button type="submit" class="btn btn-primary d-block" disabled>Editar usuario</button>
+        {% endcomment %}
     </form>
 </div>
-{% endblock %} 
-
+{% endblock %}
