@@ -1,5 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>HOLA</h1>
+<div class="container text-light mt-5">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-5 mx-auto col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xl-2">
+            <h1 class='d-block mb-3'>{{ user.username }}</h1>
+            <labelclass="form-label">Cambiar nombre de usuario</label>
+            <input type="username" class="form-control mb-2" id="" aria-describedby="userHelp">
+            <div id="userlHelp" class="form-text text-ligth mb-3">No complete este campo si no desea cambiar de nombre de usuario</div>
+
+            {% if user.avatar %}
+            <img id="user_avatar" class="d-inline img-thumbnail" src="{{user.avatar.url}}" alt="avatar" width="200"
+                height="200" />
+            {% else %}
+            <img id="user_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
+                width="200" height="200"/>
+            {%endif%}
+            <labelclass="form-label mt-5">Cambiar foto de perfil</label>
+            <label class="btn btn-primary mt-2">
+                Selccionar archivo <input type="file" hidden>
+            </label>
+
+            <button type="submit" class="btn btn-danger mt-5">Guardar cambios</button>
+        </div>
+    
+    </form>
+</div>
+
 {% endblock %}
