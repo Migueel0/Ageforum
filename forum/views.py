@@ -26,8 +26,14 @@ def index(request):
     Show all discussions
     """
     discussion_list = Discussion.objects.order_by('date_publication')
+    #dict with number of responses for each discussion
+    discussion_number_response_dict = {}
+    for discussion in discussion_list:
+        response_count = Response.objects.filter(topic=discussion).count()
+        discussion_number_response_dict[discussion.id] = response_count
     context = {
         'discussion_list': discussion_list,
+        'discussion_number_response_dict': discussion_number_response_dict,
     }
     return render(request, INDEX_TEMPLATE, context)
 

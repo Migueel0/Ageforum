@@ -3,24 +3,38 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
+        <div class="col-md-8 col-sm-10 mx-auto">
             <h1 class="mt-5 yellow_color">Bienvenid@ a la primera comunidad de Age of Empires IV para
                 hispanohablantes</h1>
-            {% if request.user.id %}
-            <div class = 'mb-3'>
-                <a href="discussion_create" class="mt-5 mx-auto btn btn-primary">+ Nuevo tema</a>
-            </div>
-            {% endif %}
-            <div id="discussion_list" class="list-group">
-                {% if discussion_list %}
-                {% for discussion in discussion_list %}
-                <a href="{{discussion.id}}" class="list-group-item list-group-item-action yellow_background_color">
-                    <h1>{{ discussion.title }}</h1>
-                </a>
-                {% endfor %}
-                {% else %}
-                <h1 class="text-danger">No hay discusiones</h1>
+            <div class="mt-5 container">
+                {% if request.user.id %}
+                <div>
+                    <a href="discussion_create" class="mb-3 mx-auto btn btn-primary">+ Nuevo tema</a>
+                </div>
                 {% endif %}
+                
+                <div id="discussion_legend" class="row justify-content-end text-light">
+                    Respuestas
+                </div>
+                <div id="discussion_list" class="row list-group">
+                    {% if discussion_list %}
+                    {% for discussion in discussion_list %}
+                    <div class="row">
+                        <a href="{{discussion.id}}"
+                            class="list-group-item list-group-item-action yellow_background_color">
+                            <div class="col d-inline">
+                                {{ discussion.title }}
+                            </div>
+                            <div class="col d-inline float-end">
+                                {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <h1 class="text-danger">No hay discusiones</h1>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
