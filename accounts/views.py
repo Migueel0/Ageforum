@@ -13,7 +13,7 @@ ROOT_URL = '/'
 
 PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 SIGN_UP_TEMPLATE = 'registration/sign_up.html'
-
+CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
 
 class SignUpView(generic.CreateView):
     form_class = SignUpForm
@@ -52,5 +52,18 @@ def logged_user_detail(request):
             'user': get_object_or_404(User, id=request.user.id),
         }
         return render(request, PROFILE_INFO_TEMPLATE, context)
+    else:
+        raise PermissionDenied()
+
+
+def change_user_detail(request):
+    """
+    change user profile info
+    """
+    if request.method == 'GET':
+        context = {
+            'user': get_object_or_404(User, id=request.user.id),
+        }
+        return render(request, CHANGE_INFO_TEMPLATE, context)
     else:
         raise PermissionDenied()
