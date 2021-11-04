@@ -18,9 +18,13 @@ class Message(models.Model):
     def __eq__(self, other):
         return self.id == other.id
 
+    def __hash__(self):
+        return super().__hash__()
+
 
 class Discussion(Message):
-    title = models.CharField(max_length=1000)
+    title = models.CharField(max_length=500)
+    views = models.PositiveBigIntegerField(default=0)
 
 
 class Response(Message):

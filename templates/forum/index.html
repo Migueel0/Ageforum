@@ -12,25 +12,37 @@
                     <a href="discussion_create" class="mb-3 mx-auto btn btn-primary">+ Nuevo tema</a>
                 </div>
                 {% endif %}
-                
-                <div id="discussion_legend" class="row justify-content-end text-light">
-                    Respuestas
-                </div>
-                <div id="discussion_list" class="row list-group">
+                <div id="table_wrapper">
                     {% if discussion_list %}
-                    {% for discussion in discussion_list %}
-                    <div class="row">
-                        <a href="{{discussion.id}}"
-                            class="list-group-item list-group-item-action yellow_background_color">
-                            <div class="col d-inline">
-                                {{ discussion.title }}
-                            </div>
-                            <div class="col d-inline float-end">
-                                {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
-                            </div>
-                        </a>
-                    </div>
-                    {% endfor %}
+                    <table class="table table-hover table-borderless align-middle table-striped"
+                        aria-describedby="discussions table">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width:75%">Tema</th>
+                                <th scope="col">Respuestas</th>
+                                <th scope="col">Visitas</th>
+                                <th scope="col">Último mensaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for discussion in discussion_list %}
+                            <tr class="yellow_background_color">
+                                <th scope="row">
+                                    <a class="author_link" href="{{discussion.id}}">
+                                        {{ discussion.title }}
+                                    </a>
+                                </th>
+                                <td class="text-center">
+                                    {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
+                                </td>
+                                <td class="text-center">{{discussion.views}}</td>
+                                <td class="text-center">
+                                    {{discussion_last_message_date_dict|get_item_from_dict:discussion.id}}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                     {% else %}
                     <h1 class="text-danger">No hay discusiones</h1>
                     {% endif %}
@@ -38,5 +50,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 {% endblock %}

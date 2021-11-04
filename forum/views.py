@@ -1,4 +1,7 @@
-from os import cpu_count
+from datetime import datetime, timedelta
+import pytz
+import time
+
 from django.contrib.auth.password_validation import password_changed
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -26,16 +29,61 @@ def index(request):
     Show all discussions
     """
     discussion_list = Discussion.objects.order_by('date_publication')
-    #dict with number of responses for each discussion
+
+    discussion_number_response_dict = __retrieve_discussion_number_response_dict(
+        discussion_list)
+    discussion_last_message_date_dict = __retrieve_discussion_last_message_date_dict(
+        discussion_list)
+
+    context = {
+        'discussion_list': discussion_list,
+        'discussion_number_response_dict': discussion_number_response_dict,
+        'discussion_last_message_date_dict': discussion_last_message_date_dict
+    }
+    return render(request, INDEX_TEMPLATE, context)
+
+
+def __retrieve_discussion_last_message_date_dict(discussion_list):
+    """
+    Return dictionary with date of last response for each discussion
+    """
+    discussion_last_message_date_dict = {}
+    for discussion in discussion_list:
+        last_discussion_reponse = Response.objects.filter(
+            topic=discussion).order_by('date_publication').last()
+        if last_discussion_reponse:
+            discussion_last_message_date_dict[discussion.id] = __format_timedelta(
+                datetime.now(pytz.utc) - last_discussion_reponse.date_publication)
+        else:  # no responses in discussion yet -> show date of publication of discussion
+            discussion_last_message_date_dict[discussion.id] = __format_timedelta(
+                datetime.now(pytz.utc) - discussion.date_publication)
+    return discussion_last_message_date_dict
+
+
+def __format_timedelta(timedelta: timedelta):
+    """
+    Return timedelta in days, hours o minutes
+    """
+    days = timedelta.days
+    hours = timedelta.seconds//3600
+    minutes = timedelta.seconds//60
+    if days > 0:
+        return str(days) + 'd'
+    elif hours > 0:
+        return str(hours) + 'h'
+    else:
+        return str(minutes) + 'm'
+
+
+def __retrieve_discussion_number_response_dict(discussion_list):
+    """
+    Return dictionary with number of responses for each discussion
+    """
     discussion_number_response_dict = {}
     for discussion in discussion_list:
         response_count = Response.objects.filter(topic=discussion).count()
         discussion_number_response_dict[discussion.id] = response_count
-    context = {
-        'discussion_list': discussion_list,
-        'discussion_number_response_dict': discussion_number_response_dict,
-    }
-    return render(request, INDEX_TEMPLATE, context)
+    return discussion_number_response_dict
 
 
 def discussion_create(request):
@@ -95,9 +143,12 @@ def discussion_detail(request, discussion_id):
     """
     if request.method == 'GET':
         discussion = get_object_or_404(Discussion, id=discussion_id)
+        discussion.views += 1
+        discussion.save()
         response_list = Response.objects.filter(
             topic=discussion).order_by('date_publication')
-        vote_count_dict = retrieve_discussion_votes(discussion, response_list)
+        vote_count_dict = __retrieve_discussion_votes(
+            discussion, response_list)
         context = {
             'discussion': discussion,
             'response_list': response_list,
@@ -105,7 +156,7 @@ def discussion_detail(request, discussion_id):
         }
         # if user is logged in retrieve list of votes for that user and discussion
         if request.user.id:
-            messages_voted_by_user_list = retrieve_user_discussion_votes(
+            messages_voted_by_user_list = __retrieve_user_discussion_votes(
                 request.user, discussion)
             context['messages_voted_by_user_list'] = messages_voted_by_user_list
         return render(request, DISCUSSION_DETAIL_TEMPLATE, context)
@@ -113,7 +164,7 @@ def discussion_detail(request, discussion_id):
         raise PermissionDenied()
 
 
-def retrieve_discussion_votes(discussion, response_list):
+def __retrieve_discussion_votes(discussion, response_list):
     """
     Return a dictionary of votes for given discussion and responses
     """
@@ -126,7 +177,7 @@ def retrieve_discussion_votes(discussion, response_list):
     return vote_count_dict
 
 
-def retrieve_user_discussion_votes(user, discussion):
+def __retrieve_user_discussion_votes(user, discussion):
     """
     Return list of messages voted given user and discussion
     """
