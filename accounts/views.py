@@ -2,7 +2,7 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import get_object_or_404, render
-from accounts.forms import SignUpForm
+from accounts.forms import EditForm, SignUpForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, login
 
@@ -14,6 +14,7 @@ ROOT_URL = '/'
 PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 SIGN_UP_TEMPLATE = 'registration/sign_up.html'
 CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
+
 
 class SignUpView(generic.CreateView):
     form_class = SignUpForm
@@ -65,5 +66,20 @@ def change_user_detail(request):
             'user': get_object_or_404(User, id=request.user.id),
         }
         return render(request, CHANGE_INFO_TEMPLATE, context)
+    elif request.method == 'POST':
+        form = EditForm(request.POST, request.FILES)
+        if form.is_valid():
+            user: User = User.objects.get(id=request.user.id)
+            username = form.cleaned_data['username']
+            username.replace(" ", "")
+            if username != '' and User.objects.filter(username=username).count() == 0:
+                user.username = username
+            avatar = form.cleaned_data['avatar']
+            if avatar:
+                user.avatar = avatar
+            user.save()
+            request.user = user
+            return HttpResponseRedirect('/accounts/profile/')
+
     else:
         raise PermissionDenied()
