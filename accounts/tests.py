@@ -123,3 +123,14 @@ class AccountTests(TestCase):
         login_user(self,USERNAME,PASSWORD)
         http_response = self.client.put(reverse(CHANGE_PROFILE_URL_NAME))
         self.assertEqual(http_response.status_code, HTTP_FORBIDDEN_CODE)
+
+    def test_edit_user_empty_username(self):
+        """
+        Test user editing post page
+        """
+        create_user(USERNAME, EMAIL)
+        login_user(self, USERNAME, PASSWORD)
+        http_response = self.client.post(reverse(CHANGE_PROFILE_URL_NAME), {
+                                         'username': ''})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response,'text-danger')

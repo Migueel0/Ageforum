@@ -8,6 +8,7 @@
             <h1 class='d-block mb-3'>{{ request.user.username }}</h1>
             <labelclass="form-label">Cambiar nombre de usuario</label>
                 <input type="text" name='username' class="form-control" value="{{ request.user.username }}">
+                <span class="text-danger">{{ form.username.errors}}</span>
                 <div id="userlHelp" class="form-text text-light mb-5">Los espacios en blanco serán eliminados</div>
 
                 {% if request.user.avatar %}

@@ -78,5 +78,10 @@ def change_user_detail(request):
                 user.avatar = avatar_form
             user.save()
             return HttpResponseRedirect('/accounts/profile/')
+        else:
+            context = {
+                'form': form
+            }
+            return render(request, CHANGE_INFO_TEMPLATE, context)
     else:
         raise PermissionDenied()
