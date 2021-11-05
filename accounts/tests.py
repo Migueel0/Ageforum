@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from datetime import datetime, timezone
+from accounts.views import ROOT_URL
 
 from forum.models import Discussion, User
 
@@ -12,6 +13,9 @@ EMAIL = "q@q.com"
 HTTP_REDIRECT_CODE = 302
 HTTP_OK_CODE = 200
 HTTP_NOT_FOUND_CODE = 404
+HTTP_FORBIDDEN_CODE = 403
+
+CHANGE_PROFILE_URL_NAME = 'change_user_detail'
 
 
 def create_user(username, email):
@@ -20,6 +24,11 @@ def create_user(username, email):
     """
     return User.objects.create_user(username=username, password=PASSWORD, email=email,
                                     )
+
+
+def login_user(self, username, password):
+    return self.client.post(reverse('login'), {'username': username,
+                                               'password': password})
 
 
 class AccountTests(TestCase):
@@ -69,10 +78,48 @@ class AccountTests(TestCase):
         self.assertEqual(response.status_code, HTTP_NOT_FOUND_CODE)
 
     def test_log_out_user(self):
+        """
+        Test user logout
+        """
         create_user(USERNAME, EMAIL)
-        http_response = self.client.post(reverse('login'), {'username': USERNAME,
-                                                            'password': PASSWORD})
+        http_response = login_user(self, USERNAME, PASSWORD)
         self.assertRedirects(http_response, '/accounts/profile/', status_code=HTTP_REDIRECT_CODE,
                              target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
         http_response = self.client.get(reverse('logout'))
         self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+
+    def test_edit_user_get(self):
+        """
+        Test user editing get page
+        """
+        create_user(USERNAME, EMAIL)
+        login_user(self, USERNAME, PASSWORD)
+        http_response = self.client.get(reverse(CHANGE_PROFILE_URL_NAME))
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+
+    def test_edit_user_post(self):
+        """
+        Test user editing post page
+        """
+        create_user(USERNAME, EMAIL)
+        login_user(self, USERNAME, PASSWORD)
+        new_username = "user10"
+        http_response = self.client.post(reverse(CHANGE_PROFILE_URL_NAME), {
+                                         'username': new_username})
+        self.assertRedirects(http_response, '/accounts/profile/', status_code=HTTP_REDIRECT_CODE,
+                             target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
+        http_response = self.client.get(reverse('logout'))
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        http_response = login_user(self, new_username, PASSWORD)
+        self.assertEqual(http_response.status_code, HTTP_REDIRECT_CODE)
+
+    def test_edit_user_without_user_logged_in(self):
+        http_response = self.client.get(reverse(CHANGE_PROFILE_URL_NAME))
+        self.assertRedirects(http_response, ROOT_URL, status_code=HTTP_REDIRECT_CODE,
+                             target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
+    
+    def test_edit_user_unathorized_method(self):
+        create_user(USERNAME, EMAIL)
+        login_user(self,USERNAME,PASSWORD)
+        http_response = self.client.put(reverse(CHANGE_PROFILE_URL_NAME))
+        self.assertEqual(http_response.status_code, HTTP_FORBIDDEN_CODE)

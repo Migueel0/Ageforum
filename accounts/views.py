@@ -49,10 +49,10 @@ def logged_user_detail(request):
     Show user logged in profile info
     """
     if request.method == 'GET':
-        context = {
-            'user': get_object_or_404(User, id=request.user.id),
-        }
-        return render(request, PROFILE_INFO_TEMPLATE, context)
+        if request.user.id:
+            return render(request, PROFILE_INFO_TEMPLATE)
+        else:
+            return HttpResponseRedirect(ROOT_URL)
     else:
         raise PermissionDenied()
 
@@ -61,25 +61,22 @@ def change_user_detail(request):
     """
     change user profile info
     """
+    if not request.user.id:
+        return HttpResponseRedirect(ROOT_URL)
     if request.method == 'GET':
-        context = {
-            'user': get_object_or_404(User, id=request.user.id),
-        }
-        return render(request, CHANGE_INFO_TEMPLATE, context)
+        return render(request, CHANGE_INFO_TEMPLATE)
     elif request.method == 'POST':
         form = EditForm(request.POST, request.FILES)
         if form.is_valid():
-            user: User = User.objects.get(id=request.user.id)
-            username = form.cleaned_data['username']
-            username.replace(" ", "")
-            if username != '' and User.objects.filter(username=username).count() == 0:
-                user.username = username
-            avatar = form.cleaned_data['avatar']
-            if avatar:
-                user.avatar = avatar
+            user = request.user
+            username_form = form.cleaned_data['username']
+            username_form.replace(" ", "")
+            if username_form != '' and User.objects.filter(username=username_form).count() == 0:
+                user.username = username_form
+            avatar_form = form.cleaned_data['avatar']
+            if avatar_form:
+                user.avatar = avatar_form
             user.save()
-            request.user = user
             return HttpResponseRedirect('/accounts/profile/')
-
     else:
         raise PermissionDenied()
