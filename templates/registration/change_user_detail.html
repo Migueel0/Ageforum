@@ -7,12 +7,11 @@
         <div class="mb-5 mx-auto col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xl-2">
             <h1 class='d-block mb-3'>{{ request.user.username }}</h1>
             <labelclass="form-label">Cambiar nombre de usuario</label>
-                <input type="text" name='username' class="form-control" value="{{ request.user.username }}">
+                <input type="text" id="id_username" name='username' class="form-control" value="{{ request.user.username }}" max-length="150">
                 <span class="text-danger">{{ form.username.errors}}</span>
-                <div id="userlHelp" class="form-text text-light mb-5">Los espacios en blanco serán eliminados</div>
 
                 {% if request.user.avatar %}
-                <div class='mb-2'>
+                <div class='mt-5 mb-2'>
                     <img id="user_avatar" class="d-inline img-thumbnail" src="{{request.user.avatar.url}}" alt="avatar"
                         width="200" height="200" />
                     {% else %}
@@ -33,5 +32,15 @@
 
     </form>
 </div>
-
+<script>
+$("input#id_username").on({
+  keydown: function(e) {
+    if (e.which === 32)
+      return false;
+  },
+  change: function() {
+    this.value = this.value.replace(/\s/g, "");
+  }
+});
+</script>
 {% endblock %}

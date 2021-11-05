@@ -71,8 +71,14 @@ def change_user_detail(request):
             user = request.user
             username_form = form.cleaned_data['username']
             username_form.replace(" ", "")
-            if username_form != '' and User.objects.filter(username=username_form).count() == 0:
-                user.username = username_form
+            if username_form == '' or not User.objects.filter(username=username_form).count() == 0:
+                # username empty or already exists
+                form.add_error('username','El nombre de usuario ya existe')
+                context = {
+                    'form': form
+                }
+                return render(request, CHANGE_INFO_TEMPLATE, context)        
+            user.username = username_form
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
                 user.avatar = avatar_form

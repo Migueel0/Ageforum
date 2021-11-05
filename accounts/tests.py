@@ -114,11 +114,17 @@ class AccountTests(TestCase):
         self.assertEqual(http_response.status_code, HTTP_REDIRECT_CODE)
 
     def test_edit_user_without_user_logged_in(self):
+        """
+        Test user editing post page without user logged in
+        """
         http_response = self.client.get(reverse(CHANGE_PROFILE_URL_NAME))
         self.assertRedirects(http_response, ROOT_URL, status_code=HTTP_REDIRECT_CODE,
                              target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
-    
+
     def test_edit_user_unathorized_method(self):
+        """
+        Test user editing with unathorized HTTP method (PUT)
+        """
         create_user(USERNAME, EMAIL)
         login_user(self,USERNAME,PASSWORD)
         http_response = self.client.put(reverse(CHANGE_PROFILE_URL_NAME))
@@ -126,7 +132,7 @@ class AccountTests(TestCase):
 
     def test_edit_user_empty_username(self):
         """
-        Test user editing post page
+        Test user editing post page with empty username
         """
         create_user(USERNAME, EMAIL)
         login_user(self, USERNAME, PASSWORD)
@@ -134,3 +140,15 @@ class AccountTests(TestCase):
                                          'username': ''})
         self.assertEqual(http_response.status_code, HTTP_OK_CODE)
         self.assertContains(http_response,'text-danger')
+
+    def test_edit_user_username_already_exists(self):
+        """
+        Test user editing post page with an existing username
+        """
+        create_user(USERNAME, EMAIL)
+        create_user('admin', 'admin@qwe.com')
+        login_user(self, USERNAME, PASSWORD)
+        http_response = self.client.post(reverse(CHANGE_PROFILE_URL_NAME), {
+                                         'username': 'admin'})
+        self.assertEqual(http_response.status_code, HTTP_OK_CODE)
+        self.assertContains(http_response,'El nombre de usuario ya existe')
