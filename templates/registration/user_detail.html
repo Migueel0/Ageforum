@@ -20,11 +20,60 @@
     </form>
 </div>
 
-<div class="text-light mx-auto col-xs-4 col-sm-3 col-md-3 col-lg-3 col-xl-2">
+<div class="text-light mx-auto col-4">
     <h1>PUBLICACIONES</h1>
-    <p>(Próximamente)</p>
+        {% if discussion_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Tus publicaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for discussion in discussion_list %}
+                        <tr class="yellow_background_color">
+                            <th scope="row">
+                                <a class="author_link" href="/{{discussion.id}}">
+                                    {{ discussion.title }}
+                                </a>
+                            </th>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2 class="text-danger">Todavía no has publicado nada.</h2>
+        {% endif %}
     <h1>RESPUESTAS</h1>
-    <p>(Próximamente)</p>
 
+        {% if response_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Tus respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for response in response_list %}
+                        <tr class="yellow_background_color">
+                            <th scope="row">
+                                <a class="author_link" href="/{{discussion.id}}">
+                                {{ response.text|striptags }} respondiendo a {% for discussion in discussion_list %}
+                        <tr class="yellow_background_color">
+                            <th scope="row">
+                                <a class="author_link" href="/{{discussion.id}}">
+                                    {{ discussion.title }}
+                                </a>
+                            </th>
+                    {% endfor %}
+                                </a>
+                            </th>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2 class="text-danger">Todavía no has respondido a ningun post.</h2>
+        {% endif %}
 </div>
 {% endblock %}

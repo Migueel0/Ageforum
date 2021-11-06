@@ -6,7 +6,7 @@ from accounts.forms import EditForm, SignUpForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, login
 
-from forum.models import User
+from forum.models import Discussion, Response, User
 
 
 ROOT_URL = '/'
@@ -50,7 +50,14 @@ def logged_user_detail(request):
     """
     if request.method == 'GET':
         if request.user.id:
-            return render(request, PROFILE_INFO_TEMPLATE)
+            discussion_list = Discussion.objects.filter(user=request.user)
+            response_list = Response.objects.filter(user=request.user) 
+            context = {
+                'discussion_list':discussion_list, 
+                'response_list':response_list
+
+            }
+            return render(request, PROFILE_INFO_TEMPLATE,context)
         else:
             return HttpResponseRedirect(ROOT_URL)
     else:
