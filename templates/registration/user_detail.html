@@ -59,7 +59,7 @@
                         <tr class="yellow_background_color">
                             <th scope="row">
                                 <a class="author_link" href="/{{discussion.id}}">
-                                {{ response.text|striptags }}
+                                {{ response.text|safe }}
                                 </a>
                             </th>
                     {% endfor %}
