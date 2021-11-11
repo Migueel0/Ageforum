@@ -41,8 +41,7 @@
     <meta name="google-site-verification" content="1SCFx5l5lcw0jH-f1htL0ypC6orDVvDl6ETRg5RywTg" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description"
-        content="{% block description %}{% endblock %}"/>
+    {% block description %}{% endblock %}
 
     <link rel="icon" type="image/png" href="{% static '/favicon.ico' %}" />
     <link rel="stylesheet" href="{% static '/style.css' %}">
