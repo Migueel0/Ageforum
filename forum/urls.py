@@ -1,5 +1,5 @@
 from django.urls import path
-from django.views.generic.base import TemplateView
+
 
 from accounts import urls
 
@@ -16,6 +16,5 @@ urlpatterns = [
     path('<int:discussion_id>', views.discussion_detail, name='discussion_detail'),
     path('message_vote/<int:message_id>',
          views.message_vote, name='message_vote'),
-    path("robots.txt", TemplateView.as_view(
-        template_name="robots.txt", content_type="text/plain")),
+
 ]
