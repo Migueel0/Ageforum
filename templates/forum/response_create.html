@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
+{% block title %}Respuesta a: {{message_to_reply.text|striptags|safe|truncatechars_html:50 }} | Foro Age of Empires
+IV{% endblock %}
+
 {% block content %}
 <div class="container text-light">
     <div class="row mt-5">
         <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
             {% if message_to_reply %}
-            <p>Respuesta a: {{message_to_reply.text|safe|truncatechars_html:50 }}</p>
+            <p>Respuesta a: {{message_to_reply.text|safe|truncatechars_html:100 }}</p>
             <form action="/response_reply_create/{{ discussion_id }}/{{message_to_reply.id}}" method="post">
                 {% else %}
                 <form action="/response_create/{{ discussion_id }}" method="post">
