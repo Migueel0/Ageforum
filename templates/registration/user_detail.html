@@ -16,10 +16,11 @@
                 width="200" height="200" />
             {%endif%}
         </div>
+
         {%if user.id == request.user.id%}
-            <a href="/accounts/change_profile" class="btn btn-primary btn-lg active" role="button"
-                aria-pressed="true">Editar usuario</a>
+            <a href="/accounts/change-profile" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Editar usuario</a>
         {%endif%}
+        
     </form>
 </div>
 
