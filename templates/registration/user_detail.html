@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Detalles de usuario | Foro Age of Empires IV{% endblock %}
+{% block title %}Detalles del usuario: {{user.username}} | Foro Age of Empires IV{% endblock %}
 
 {% block content %}
 <div class="container text-light mt-5">
@@ -24,51 +24,49 @@
 
 <div class="text-light mx-auto col-4">
     <h1>PUBLICACIONES</h1>
-        {% if discussion_list %}
-            <table class="table table-hover table-borderless align-middle table-striped"
-                aria-describedby="discussions table">
-                <thead class="yellow_color">
-                    <tr>
-                        <th scope="col" style="width:100%">Tus publicaciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for discussion in discussion_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="author_link" href="/{{discussion.id}}">
-                                    {{ discussion.title }}
-                                </a>
-                            </th>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <h2 class="text-danger">Todavía no has publicado nada.</h2>
-        {% endif %}
+    {% if discussion_list %}
+    <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
+        <thead class="yellow_color">
+            <tr>
+                <th scope="col" style="width:100%">Tus publicaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for discussion in discussion_list %}
+            <tr class="yellow_background_color">
+                <th scope="row">
+                    <a class="author_link" href="/{{discussion.id}}">
+                        {{ discussion.title }}
+                    </a>
+                </th>
+                {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h2 class="text-danger">Todavía no has publicado nada.</h2>
+    {% endif %}
 
     <h1>RESPUESTAS</h1>
-        {% if response_list %}
-            <table class="table table-hover table-borderless align-middle table-striped"
-                aria-describedby="discussions table">
-                <thead class="yellow_color">
-                    <tr>
-                        <th scope="col" style="width:100%">Tus respuestas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for response in response_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="author_link" href="/{{discussion.id}}">
-                                {{ response.text|safe }}
-                                </a>
-                            </th>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <h2 class="text-danger">Todavía no has respondido a ningun post.</h2>
-        {% endif %}
+    {% if response_list %}
+    <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
+        <thead class="yellow_color">
+            <tr>
+                <th scope="col" style="width:100%">Tus respuestas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for response in response_list %}
+            <tr class="yellow_background_color">
+                <th scope="row">
+                    <a class="author_link" href="/{{discussion.id}}">
+                        {{ response.text|safe }}
+                    </a>
+                </th>
+                {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h2 class="text-danger">Todavía no has respondido a ningun post.</h2>
+    {% endif %}
 </div>
 {% endblock %}
