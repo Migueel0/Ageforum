@@ -36,8 +36,12 @@ def user_detail(request, user_id):
     Show user profile info
     """
     if request.method == 'GET':
+        discussion_list = Discussion.objects.filter(user=user_id)
+        response_list = Response.objects.filter(user=user_id) 
         context = {
             'user': get_object_or_404(User, id=user_id),
+            'discussion_list':discussion_list, 
+            'response_list':response_list
         }
         return render(request, PROFILE_INFO_TEMPLATE, context)
     else:
