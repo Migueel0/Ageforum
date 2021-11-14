@@ -8,7 +8,8 @@ from forum.models import Discussion, Message
 
 class MessageCreateForm(ModelForm):
     text = forms.CharField(label="Texto",
-                           widget=TinyMCE(attrs={'cols': 40, 'rows': 30}))
+                           widget=TinyMCE(attrs={'cols': 40, 'rows': 30}),
+                           required=True)
 
     class Meta:
         model = Message
