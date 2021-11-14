@@ -86,7 +86,7 @@
                 <tr class="yellow_background_color">
                     <th scope="row">
                         <a class="author_link" href="/{{response.topic}}">
-                            {{ response.text|safe }}
+                            Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}} ({{response.topic.user}})
                         </a>
                     </th>
                     {% endfor %}
@@ -107,8 +107,8 @@
                     {% for response in response_list %}
                     <tr class="yellow_background_color">
                         <th scope="row">
-                            <a class="author_link" href="/{{discussion.id}}">
-                                {{ response.text|safe }}
+                            <a class="author_link" href="/{{response.topic}}">
+                                Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}} ({{response.topic.user}})
                             </a>
                         </th>
                         {% endfor %}
