@@ -2,8 +2,13 @@
 
 {% block title %}Identificarse | Foro Age of Empires IV | Redirige a: {{request.GET}} {% endblock %}
 
+{% block description %}
+<meta name="description" content="Identifíquese para tener acceso al primer y único foro de Age of Empires IV en español para hispanohablantes."/>
+{% endblock %}
+
 {% block content %}
 <div class="container text-light mt-5">
+    <h1 class="mt-5 yellow_color">Identifíquese</h1>
     <form method="post" enctype="multipart/form-data">
         <div class='text-light mx-auto col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 '>
             {% csrf_token %}
