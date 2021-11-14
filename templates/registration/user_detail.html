@@ -108,7 +108,7 @@
                     <tr class="yellow_background_color">
                         <th scope="row">
                             <a class="author_link" href="/{{response.topic}}">
-                                Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}} ({{response.topic.user}})
+                                Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title|safe}} ({{response.topic.user}})
                             </a>
                         </th>
                         {% endfor %}
