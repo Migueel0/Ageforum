@@ -15,7 +15,11 @@
             </div>
             <div id="discussion_detail" class="d-block yellow_background_color mt-1 p-3">
                 <div id="discussion_user_avatar_wrapper">
-                    <a href="/accounts/profile/{{discussion.user.id}}">
+                    {%if user.id == discussion.user.id%}
+                        <a href="/accounts/profile/">
+                    {%else%}
+                        <a href="/accounts/profile/{{discussion.user.id}}">
+                    {%endif%}
                         {% if discussion.user.avatar %}
                         <img id="discussion_user_avatar" class="img-thumbnail d-inline"
                             src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
@@ -81,6 +85,8 @@
                         <span>En respuesta a:</span>
                         <div class="my-3">
                             {{ response.reply_to.text|safe }}
+
+                            
                         </div>
                     </div>
                     {% endif %}
@@ -184,6 +190,7 @@
                 }
             })
     }
+
 
     function convertDates() {
         $(".date_publication").each(function () {
