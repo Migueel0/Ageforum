@@ -2,6 +2,11 @@
 
 {% block title %}Detalles del usuario: {{user.username}} | Foro Age of Empires IV{% endblock %}
 
+{% block description %}
+<meta name="description"
+    content="Primer y único foro de Age of Empires IV en español para hispanohablantes. Detalles del usuario: {{user.username}}" />
+{% endblock %}
+
 {% block content %}
 <div class="container text-light mt-5">
     <form method="post" enctype="multipart/form-data">
