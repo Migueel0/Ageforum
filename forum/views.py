@@ -30,7 +30,7 @@ DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
 
 def index(request):
     """
-    Show all discussions
+    Show all discussions ordered by last Response date
     """
     discussion_list = Discussion.objects.alias(
         latest_reply=Coalesce(
@@ -138,7 +138,8 @@ def response_create(request, discussion_id):
             response.topic = get_object_or_404(Discussion, id=discussion_id)
             response.user = request.user
             response.text = form.cleaned_data['text']
-            response.save()
+            if response.text:
+                response.save()
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()
