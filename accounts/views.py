@@ -36,8 +36,8 @@ def user_detail(request, user_id):
     Show user profile info
     """
     if request.method == 'GET':
-        discussion_list = Discussion.objects.filter(user=user_id)
-        response_list = Response.objects.filter(user=user_id) 
+        discussion_list = Discussion.objects.filter(user=user_id).order_by('date_publication').reverse()
+        response_list = Response.objects.filter(user=user_id).order_by('date_publication').reverse() 
         context = {
             'user': get_object_or_404(User, id=user_id),
             'discussion_list':discussion_list, 
@@ -54,8 +54,8 @@ def logged_user_detail(request):
     """
     if request.method == 'GET':
         if request.user.id:
-            discussion_list = Discussion.objects.filter(user=request.user)
-            response_list = Response.objects.filter(user=request.user) 
+            discussion_list = Discussion.objects.filter(user=request.user).order_by('date_publication').reverse()
+            response_list = Response.objects.filter(user=request.user).order_by('date_publication').reverse()
             context = {
                 'discussion_list':discussion_list, 
                 'response_list':response_list
