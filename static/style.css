@@ -1,5 +1,7 @@
 body {
     background-image: url("background.jpg");
+    font-family: 'Times New Roman', serif;
+    font-size: large;
 }
 
 nav {
@@ -30,12 +32,8 @@ textarea {
     resize: none;
 }
 
-a, .author_link {
+a,
+.author_link {
     text-decoration-line: none;
     color: black;
 }
-
-h1,p,a {
-    font-family: 'Times New Roman', serif;
-    font-size: large;
-  }

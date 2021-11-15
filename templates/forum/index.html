@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
 {% block description %}
-<meta name="description" content="Primer y único foro en exclusiva de Age of Empires IV en español para hispanohablantes" />
+<meta name="description"
+    content="Primer y único foro en exclusiva de Age of Empires IV en español para hispanohablantes" />
 {% endblock %}
 
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-sm-10 mx-auto">
-            <h1 class="leterfont mt-5 yellow_color">BIENEVENID@ A LA PRIMERA COMUNIDAD DE AGE OF EMPIRES IV PARA HISPANOHABLANTES</h1>
-            <div class="mt-5 container">
+        <div class="col-md-10 col-sm-11 mx-auto">
+            <h1 class="leterfont mt-5 yellow_color">BIENEVENID@ A LA PRIMERA COMUNIDAD DE AGE OF EMPIRES IV PARA
+                HISPANOHABLANTES</h1>
+            <div class="mt-5">
                 {% if request.user.id %}
                 <div>
                     <a href="discussion_create" class="mb-3 mx-auto btn btn-primary">+ Nuevo tema</a>
@@ -21,10 +23,10 @@
                         aria-describedby="discussions table">
                         <thead class="yellow_color">
                             <tr>
-                                <th scope="col" style="width:75%">Tema</th>
-                                <th scope="col">Respuestas</th>
-                                <th scope="col">Visitas</th>
-                                <th scope="col">Último mensaje</th>
+                                <th scope="col" class="col-6 col-lg-8">Tema</th>
+                                <th scope="col" class="text-break">Respuestas</th>
+                                <th scope="col" class="text-break">Visitas</th>
+                                <th scope="col" class="text-break">Último mensaje</th>
                             </tr>
                         </thead>
                         <tbody>
