@@ -150,4 +150,8 @@
         <image:title>avatar</image:title>
       </image:image>
   </url>
+  <url>
+    <loc>https://www.foroageofempiresiv.com/26</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>
