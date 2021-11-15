@@ -9,7 +9,7 @@ class User(AbstractUser):
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField(max_length=100000)
+    text = models.TextField(max_length=100000,blank=True)
     date_publication = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

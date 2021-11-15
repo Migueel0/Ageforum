@@ -1,3 +1,5 @@
+from django.db.models.aggregates import Min
+from django.db.models.functions import Coalesce
 from datetime import datetime, timedelta
 import pytz
 import time
@@ -8,6 +10,8 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.template.defaulttags import register
 from django.core.exceptions import PermissionDenied
+from django.db.models import Max
+from django.db.models.functions import Coalesce
 
 from Ageforum.settings import ROOT_URLCONF
 
@@ -28,7 +32,10 @@ def index(request):
     """
     Show all discussions
     """
-    discussion_list = Discussion.objects.order_by('date_publication')
+    discussion_list = Discussion.objects.alias(
+        latest_reply=Coalesce(
+            Max('response__date_publication'), 'date_publication')
+    ).order_by('-latest_reply')
 
     discussion_number_response_dict = __retrieve_discussion_number_response_dict(
         discussion_list)
