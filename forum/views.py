@@ -1,28 +1,23 @@
+from datetime import datetime, timedelta
+
+import pytz
+from Ageforum.settings import ROOT_URLCONF
+from django.contrib.auth.password_validation import password_changed
+from django.core.exceptions import PermissionDenied
+from django.core.mail import send_mail
+from django.db.models import Max
 from django.db.models.aggregates import Min
 from django.db.models.functions import Coalesce
-from datetime import datetime, timedelta
 from django.http import response
-import pytz
-
-from django.core.mail import send_mail
-from django.contrib.auth.password_validation import password_changed
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaulttags import register
-from django.core.exceptions import PermissionDenied
-from django.db.models import Max
-from django.db.models.functions import Coalesce
-
-from Ageforum.settings import ROOT_URLCONF
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
 
 from forum.forms import ContactForm, DiscussionCreateForm, MessageCreateForm
 
 from .models import Discussion, Message, Response, Vote
-
-from django.views.generic.edit import DeleteView
-from django.urls import reverse_lazy
-
 
 # routes
 INDEX_ROUTE = '/'
@@ -33,31 +28,32 @@ RESPONSE_CREATE_TEMPLATE = 'forum/response_create.html'
 DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
 CONTACT_TEMPLATE = 'forum/contact.html'
 RESPONSE_DELETE_TEMPLATE = 'forum/response_delete/<int:response.id>.html'
+FORUM_EMAIL_ADDRESS = 'foro.age.of.empires.iv@outlook.com'
+
+# Delete a discussion:
 
 
-#Delete a discussion:
-def delete_discussion(request,discussion_id):
-    
-    discussion = Discussion.objects.get(pk = discussion_id)
-    if  request.user.id != discussion.user.id:
+def delete_discussion(request, discussion_id):
+
+    discussion = Discussion.objects.get(pk=discussion_id)
+    if request.user.id != discussion.user.id:
         raise PermissionDenied()
     else:
         discussion.delete()
 
     return redirect(INDEX_ROUTE)
 
-def delete_response(request,response_id):
-    
-    response = Response.objects.get(pk = response_id)
-    
-    if  request.user.id != response.user.id:
+
+def delete_response(request, response_id):
+
+    response = Response.objects.get(pk=response_id)
+
+    if request.user.id != response.user.id:
         raise PermissionDenied()
     else:
         response.delete()
 
     return redirect(INDEX_ROUTE)
-
-     
 
 
 def index(request):
@@ -264,7 +260,7 @@ def response_reply_create(request, discussion_id, message_id):
     """
     if not request.user.id:
         raise PermissionDenied()
-    message_to_reply = Message.objects.get(id=message_id)
+    message_to_reply: Message = Message.objects.get(id=message_id)
     if request.method == 'GET':
         form = MessageCreateForm()
         context = {
@@ -283,6 +279,15 @@ def response_reply_create(request, discussion_id, message_id):
             response.user = request.user
             response.text = form.cleaned_data['text']
             response.save()
+            # send email to user of message replied (reply_to)
+            email_user = message_to_reply.user.email
+            send_mail(
+                'Foro Age of Empires IV: Han respondido a tu mensaje',
+                'Han respondido a tu mensaje: https://www.foroageofempiresiv.com/'+str(response.topic.id),
+                FORUM_EMAIL_ADDRESS,
+                [email_user],
+                fail_silently=False,
+            )
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()
@@ -301,13 +306,12 @@ def contact(request):
     elif request.method == 'POST':
         form = ContactForm(data=request.POST)
         if form.is_valid():
-            # TODO send email to foro.age.of.empires.iv@outlook.com
             send_mail(
                 form.cleaned_data['subject'],
                 'Desde: '+form.cleaned_data['email'] +
                 '. Mensaje: ' + form.cleaned_data['message'],
-                'foro.age.of.empires.iv@outlook.com',
-                ['foro.age.of.empires.iv@outlook.com'],
+                FORUM_EMAIL_ADDRESS,
+                [FORUM_EMAIL_ADDRESS],
                 fail_silently=False,
             )
             return HttpResponseRedirect(INDEX_ROUTE)
