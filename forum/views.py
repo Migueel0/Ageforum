@@ -6,7 +6,7 @@ import time
 
 from django.contrib.auth.password_validation import password_changed
 from django.http.response import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.template.defaulttags import register
 from django.core.exceptions import PermissionDenied
@@ -19,6 +19,10 @@ from forum.forms import DiscussionCreateForm, MessageCreateForm
 
 from .models import Discussion, Message, Response, Vote
 
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
+
+
 # routes
 INDEX_ROUTE = '/'
 # templates urls
@@ -26,6 +30,20 @@ INDEX_TEMPLATE = 'forum/index.html'
 DISCUSSION_CREATE_TEMPLATE = 'forum/discussion_create.html'
 RESPONSE_CREATE_TEMPLATE = 'forum/response_create.html'
 DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
+
+
+#Delete a discussion:
+def delete_discussion(request,discussion_id):
+    
+    discussion = Discussion.objects.get(pk = discussion_id)
+    if  request.user.id != discussion.user.id:
+        raise PermissionDenied()
+    else:
+        discussion.delete()
+
+    return redirect('/')
+
+     
 
 
 def index(request):
