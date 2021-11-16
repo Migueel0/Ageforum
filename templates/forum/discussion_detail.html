@@ -3,7 +3,8 @@
 {% block title %}{{ discussion.title }} | Foro Age of Empires IV{% endblock %}
 
 {% block description %}
-<meta name="description" content="Primer y único foro de Age of Empires IV en español para hispanohablantes. {{discussion.title}}" />
+<meta name="description"
+    content="Primer y único foro de Age of Empires IV en español para hispanohablantes. {{discussion.title}}" />
 {% endblock %}
 
 {% block content %}
@@ -16,35 +17,36 @@
             <div id="discussion_detail" class="d-block yellow_background_color mt-1 p-3">
                 <div id="discussion_user_avatar_wrapper">
                     {%if user.id == discussion.user.id%}
-                        <div class="position-relative">
-                            <div class="position-absolute top-0 end-0">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        {% csrf_token %}
-                                            <button id="delete_discussion"_{{discussion.id}} type="button" onclick = 'confirm_discussion_delete()' <i class="fas fa-trash"></i></button>
-                                    </div>
+                    <div class="position-relative">
+                        <div class="position-absolute top-0 end-0">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    {% csrf_token %}
+                                    <button id="delete_discussion" _{{discussion.id}} type="button"
+                                        onclick='confirm_discussion_delete()' <i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     {%endif%}
                     {%if user.id == discussion.user.id%}
-                        <a href="/accounts/profile/">
-                    {%else%}
+                    <a href="/accounts/profile/">
+                        {%else%}
                         <a href="/accounts/profile/{{discussion.user.id}}">
-                    {%endif%}
-                        {% if discussion.user.avatar %}
-                        <img id="discussion_user_avatar" class="img-thumbnail d-inline"
-                            src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
-                        {% else %}
-                        <img id="discussion_user_generic_avatar" class="img-thumbnail d-inline"
-                            src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
-                        {% endif %} 
-                        <p id="user_username" class="mx-3 d-inline my-auto">
-                            <strong>{{discussion.user.username}}</strong>
+                            {%endif%}
+                            {% if discussion.user.avatar %}
+                            <img id="discussion_user_avatar" class="img-thumbnail d-inline"
+                                src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
+                            {% else %}
+                            <img id="discussion_user_generic_avatar" class="img-thumbnail d-inline"
+                                src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
+                            {% endif %}
+                            <p id="user_username" class="mx-3 d-inline my-auto">
+                                <strong>{{discussion.user.username}}</strong>
+                            </p>
+                        </a>
+                        <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
                         </p>
-                    </a>
-                    <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
-                    </p>
 
                 </div>
                 <div id="discussion_text" class="my-3">
@@ -76,20 +78,21 @@
                 </div>
             </div>
             <div id="responses_wrapper">
-            {% for response in response_list %}
+                {% for response in response_list %}
                 <div class="d-block mx-auto yellow_background_color mt-3 p-3">
                     <div id="response_user_avatar_wrapper">
                         {%if user.id == response.user.id%}
-                            <div class="position-relative">
-                                <div class="position-absolute top-0 end-0">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                                {% csrf_token %}
-                                            <button type="button" onclick="confirm_response_delete({{response.id}})" <i class="fas fa-trash"></i></button>
-                                        </div>
+                        <div class="position-relative">
+                            <div class="position-absolute top-0 end-0">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        {% csrf_token %}
+                                        <button type="button" onclick="confirm_response_delete({{response.id}})" <i
+                                            class="fas fa-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         {% endif %}
                         <a href="/accounts/profile/{{response.user.id}}" class="user_link">
                             {% if response.user.avatar %}
@@ -222,15 +225,15 @@
     }
 
     function confirm_discussion_delete() {
-    if (confirm("¿Seguro que quiere borrar el post?")) {
-        location.replace("/delete_discussion/{{discussion.id}}");
-    } 
+        if (confirm("¿Seguro que quiere borrar el post?")) {
+            location.replace("/delete_discussion/{{discussion.id}}");
+        }
     }
 
     function confirm_response_delete(response_id) {
-    if (confirm("¿Seguro que quiere borrar tu respuesta?")) {
-        location.replace('/delete_response/' + response_id);
-    } 
+        if (confirm("¿Seguro que quiere borrar tu respuesta?")) {
+            location.replace('/delete_response/' + response_id);
+        }
     }
 </script>
 
