@@ -2,8 +2,8 @@ from django.db.models.aggregates import Min
 from django.db.models.functions import Coalesce
 from datetime import datetime, timedelta
 import pytz
-import time
 
+from django.core.mail import send_mail
 from django.contrib.auth.password_validation import password_changed
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -15,7 +15,7 @@ from django.db.models.functions import Coalesce
 
 from Ageforum.settings import ROOT_URLCONF
 
-from forum.forms import DiscussionCreateForm, MessageCreateForm
+from forum.forms import ContactForm, DiscussionCreateForm, MessageCreateForm
 
 from .models import Discussion, Message, Response, Vote
 
@@ -30,6 +30,7 @@ INDEX_TEMPLATE = 'forum/index.html'
 DISCUSSION_CREATE_TEMPLATE = 'forum/discussion_create.html'
 RESPONSE_CREATE_TEMPLATE = 'forum/response_create.html'
 DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
+CONTACT_TEMPLATE = 'forum/contact.html'
 
 
 #Delete a discussion:
@@ -48,7 +49,7 @@ def delete_discussion(request,discussion_id):
 
 def index(request):
     """
-    Show all discussions
+    Show all discussions ordered by last Response date
     """
     discussion_list = Discussion.objects.alias(
         latest_reply=Coalesce(
@@ -156,7 +157,8 @@ def response_create(request, discussion_id):
             response.topic = get_object_or_404(Discussion, id=discussion_id)
             response.user = request.user
             response.text = form.cleaned_data['text']
-            response.save()
+            if response.text:
+                response.save()
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()
@@ -269,5 +271,32 @@ def response_reply_create(request, discussion_id, message_id):
             response.text = form.cleaned_data['text']
             response.save()
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
+    else:
+        raise PermissionDenied()
+
+
+def contact(request):
+    """
+    Show form to contact us when GET and send the message to us when POST
+    """
+    if request.method == 'GET':
+        form = ContactForm()
+        context = {
+            'form': form,
+        }
+        return render(request, CONTACT_TEMPLATE, context)
+    elif request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if form.is_valid():
+            # TODO send email to foro.age.of.empires.iv@outlook.com
+            send_mail(
+                form.cleaned_data['subject'],
+                'Desde: '+form.cleaned_data['email'] +
+                '. Mensaje: ' + form.cleaned_data['message'],
+                'foro.age.of.empires.iv@outlook.com',
+                ['foro.age.of.empires.iv@outlook.com'],
+                fail_silently=False,
+            )
+            return HttpResponseRedirect(INDEX_ROUTE)
     else:
         raise PermissionDenied()

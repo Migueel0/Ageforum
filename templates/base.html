@@ -68,18 +68,12 @@
     {{ form.media }}
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <div id="navbar_wrapper">
-        <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="top_navbar">
             <div class="container-md">
                 <a class="navbar-brand" href="/">
                     <img src="{% static '/title.png' %}" alt="Age of Empires">
-                </a>
-                <a class="navbar-brand" href="https://www.instagram.com/foroaoe_iv/" target="_blank">
-                    <img src="{% static '/logo_ig.png' %}" alt="Redes sociales" width="50" height="50">
-                </a>
-                <a class="navbar-brand" href="https://twitter.com/Foro_AoEIV" target="_blank">
-                    <img src="{% static '/Twitterlogo.png' %}" alt="Redes sociales" width="75" height="40">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -129,6 +123,35 @@
         {% block content %}
         {% endblock %}
     </div>
+
+    <footer class="mt-auto">
+        <nav id="footer" class="navbar navbar-light bg-light" aria-label="footer">
+            <div class="container">
+                <div class="row mx-auto">
+                    <a class="" href="#">
+                        <img class="img-fluid" src="{% static '/footer_title.png' %}" alt="footer_title" />
+                    </a>
+                </div>
+                <div class="row mx-auto mt-3">
+                    <div class="col my-auto">
+                        <a href="https://www.instagram.com/foroaoe_iv/" target="_blank">
+                            <img src="{% static '/logo_ig.png' %}" alt="Instagram" width="30" height="30">
+                        </a>
+                    </div>
+                    <div class="col my-auto">
+                        <a href="https://twitter.com/Foro_AoEIV" target="_blank">
+                            <img src="{% static '/Twitterlogo.png' %}" alt="Twitter" width="45">
+                        </a>
+                    </div>
+                    <div class="col my-auto">
+                        <a href="/contact" target="_blank">
+                            <img src="{% static '/envelope.png' %}" alt="Contacto" width="35">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </footer>
 </body>
 
 </html>
