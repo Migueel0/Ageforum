@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Contacte con nosotros | Foro Age of Empires IV{% endblock %}
+
+{% block content %}
+<div class="container text-light">
+    <div class="row mt-5">
+        <div class="col-xl-6 col-md-8 col-sm-10 col-11 mx-auto">
+            <form action="/contact" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
