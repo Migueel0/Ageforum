@@ -18,5 +18,7 @@ urlpatterns = [
          views.message_vote, name='message_vote'),
     path('delete_discussion/<int:discussion_id>',
          views.delete_discussion, name='delete-discussion'),
+    path('delete_response/<int:response_id>',
+         views.delete_response, name='delete-response'),
     path('contact', views.contact, name='contact'),
 ]

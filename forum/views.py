@@ -1,6 +1,7 @@
 from django.db.models.aggregates import Min
 from django.db.models.functions import Coalesce
 from datetime import datetime, timedelta
+from django.http import response
 import pytz
 
 from django.core.mail import send_mail
@@ -31,6 +32,7 @@ DISCUSSION_CREATE_TEMPLATE = 'forum/discussion_create.html'
 RESPONSE_CREATE_TEMPLATE = 'forum/response_create.html'
 DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
 CONTACT_TEMPLATE = 'forum/contact.html'
+RESPONSE_DELETE_TEMPLATE = 'forum/response_delete/<int:response.id>.html'
 
 
 #Delete a discussion:
@@ -42,7 +44,18 @@ def delete_discussion(request,discussion_id):
     else:
         discussion.delete()
 
-    return redirect('/')
+    return redirect(INDEX_ROUTE)
+
+def delete_response(request,response_id):
+    
+    response = Response.objects.get(pk = response_id)
+    
+    if  request.user.id != response.user.id:
+        raise PermissionDenied()
+    else:
+        response.delete()
+
+    return redirect(INDEX_ROUTE)
 
      
 

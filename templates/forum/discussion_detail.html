@@ -21,7 +21,7 @@
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         {% csrf_token %}
-                                            <button id="delete_discussion"_{{discussion.id}} type="button" onclick = 'confirm_delete()' <i class="fas fa-trash"></i></button>
+                                            <button id="delete_discussion"_{{discussion.id}} type="button" onclick = 'confirm_discussion_delete()' <i class="fas fa-trash"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -76,9 +76,21 @@
                 </div>
             </div>
             <div id="responses_wrapper">
-                {% for response in response_list %}
+            {% for response in response_list %}
                 <div class="d-block mx-auto yellow_background_color mt-3 p-3">
                     <div id="response_user_avatar_wrapper">
+                        {%if user.id == response.user.id%}
+                            <div class="position-relative">
+                                <div class="position-absolute top-0 end-0">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                                {% csrf_token %}
+                                            <button type="button" onclick="confirm_response_delete({{response.id}})" <i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <a href="/accounts/profile/{{response.user.id}}" class="user_link">
                             {% if response.user.avatar %}
                             <img id="response_user_avatar" class="d-inline img-thumbnail"
@@ -98,8 +110,6 @@
                         <span>En respuesta a:</span>
                         <div class="my-3">
                             {{ response.reply_to.text|safe }}
-
-                            
                         </div>
                     </div>
                     {% endif %}
@@ -146,7 +156,7 @@
             {% endif %}
             <form action="/">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Volver al inicio</button>
+                <button type="submit" class="btn btn-primary mb-3">Volver al inicio</button>
             </form>
         </div>
     </div>
@@ -210,13 +220,18 @@
             $(this).text(new Date(parseInt($(this).text()) * 1000).toLocaleString('es'));
         });
     }
+
+    function confirm_discussion_delete() {
+    if (confirm("¿Seguro que quiere borrar el post?")) {
+        location.replace("/delete_discussion/{{discussion.id}}");
+    } 
+    }
+
+    function confirm_response_delete(response_id) {
+    if (confirm("¿Seguro que quiere borrar tu respuesta?")) {
+        location.replace('/delete_response/' + response_id);
+    } 
+    }
 </script>
-<script>
-function confirm_delete() {
-  if (confirm("¿Seguro que quiere borrar el post?")) {
-    location.replace("/delete_discussion/{{discussion.id}}");
-  } 
-  
-}
-</script>
+
 {% endblock %}
