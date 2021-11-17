@@ -83,15 +83,7 @@
                             alt="empty_heart"></em>
                         {% endif %}
                     </button>
-                
-                    <form action="response_reply_create/{{ discussion.id }}/{{ discussion.id }}" class="d-inline">
-                        {% csrf_token %}
-                        <button id="message_reply_button_{{discussion.id}}" type="submit"
-                            class="btn btn-primary message_vote_button" title="Responder a este mensaje">
-                            <em class="fas fa-reply"></em>
-                            <p class="d-inline">Responder</p>
-                        </button>
-                    </form>
+
                     {%endif%}
                     
                 </div>
