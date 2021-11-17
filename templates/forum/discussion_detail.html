@@ -85,7 +85,7 @@
                     </button>
 
                     {%endif%}
-                    
+
                 </div>
             </div>
             <div id="responses_wrapper">
@@ -136,8 +136,12 @@
                             <div class="position-absolute top-0 end-0">
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        {% csrf_token %}
-                                        <button type="button" onclick="edit_text()" <i class="fas fa-edit"></i></button>
+                                        {%if user.id == response.user.id%}
+                                        <form action="edit_response_text/{{ response.id }}">
+                                            {% csrf_token %}
+                                            <button type="submit" <i class="fas fa-edit"></i></button>
+                                        </form>
+                                        {%endif%}
                                     </div>
                                 </div>
                             </div>

@@ -30,6 +30,7 @@ DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
 CONTACT_TEMPLATE = 'forum/contact.html'
 
 EDIT_DISCUSSION_TEMPLATE = 'forum/edit_text.html'
+EDIT_RESPONSE_TEMPLATE = 'forum/edit_response_text.html'
 
 RESPONSE_DELETE_TEMPLATE = 'forum/response_delete/<int:response.id>.html'
 FORUM_EMAIL_ADDRESS = 'foro.age.of.empires.iv@outlook.com'
@@ -74,6 +75,21 @@ def edit_text(request, discussion_id,):
             form.save()
             return redirect('/' + str(discussion_id)) 
     return render(request,EDIT_DISCUSSION_TEMPLATE,context)
+
+def edit_response_text(request, message_id):
+    if not request.user.id:
+        raise PermissionDenied()
+    edit_response_text = Message.objects.get(pk = message_id)
+    form = MessageCreateForm(data=request.POST or None, instance=edit_response_text)
+    context = {
+        'edit_response_text':edit_response_text,
+        'form': form
+        }
+    if form.is_valid():
+        form.save()
+        return redirect('/') 
+    return render(request,EDIT_RESPONSE_TEMPLATE,context)
+    
 
 def index(request):
     """
