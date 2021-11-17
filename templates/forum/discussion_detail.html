@@ -134,7 +134,8 @@
                         <p id="response_text">{{ response.text| safe }}</p>
                     </div>
                     <div id="reponse_actions_wrapper_{{response.id}}">
-                        {%if request.user.id == discussion.user.id%}
+                        {%if request.user.id == response.user.id%}
+                        
                         <div class="position-relative">
                             <div class="position-absolute top-0 end-0">
                                 <div class="input-group mb-3">
@@ -145,6 +146,7 @@
                                 </div>
                             </div>
                         </div>
+                    
                         {%endif%}
                         <form method="post" id="message_vote_form_{{response.id}}" class="d-inline">
                             {% csrf_token %}
