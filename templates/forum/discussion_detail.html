@@ -47,12 +47,28 @@
                         </a>
                         <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
                         </p>
-
+                    </a>
                 </div>
                 <div id="discussion_text" class="my-3">
                     {{ discussion.text|safe }}
                 </div>
+
                 <div id="discussion_actions_wrapper">
+                    {%if user.id == discussion.user.id%}
+                    <div class="position-relative">
+                        <div class="position-absolute top-0 end-0">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    {%if user.id == discussion.user.id%}
+                                    <form action="edit_text/{{ discussion.id }}">
+                                        {% csrf_token %}
+                                        <button type="submit" <i class="fas fa-edit"></i></button>
+                                    </form>
+                                    {%endif%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button id="message_vote_button_{{discussion.id}}" type="button"
                         class="btn btn-primary message_vote_button" onclick="message_vote('{{discussion.id}}')">
                         <p id="message_votes_{{discussion.id}}" class="d-inline">
@@ -67,14 +83,9 @@
                             alt="empty_heart"></em>
                         {% endif %}
                     </button>
-                    <form action="response_reply_create/{{ discussion.id }}/{{ discussion.id }}" class="d-inline">
-                        {% csrf_token %}
-                        <button id="message_reply_button_{{discussion.id}}" type="submit"
-                            class="btn btn-primary message_vote_button" title="Responder a este mensaje">
-                            <em class="fas fa-reply"></em>
-                            <p class="d-inline">Responder</p>
-                        </button>
-                    </form>
+
+                    {%endif%}
+
                 </div>
             </div>
             <div id="responses_wrapper">
@@ -117,9 +128,25 @@
                     </div>
                     {% endif %}
                     <div id="response_text_{{response.id}}" class="my-3">
-                        {{ response.text| safe }}
+                        <p id="response_text">{{ response.text| safe }}</p>
                     </div>
                     <div id="reponse_actions_wrapper_{{response.id}}">
+                        {%if request.user.id == response.user.id%}
+                        <div class="position-relative">
+                            <div class="position-absolute top-0 end-0">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        {%if user.id == response.user.id%}
+                                        <form action="edit_response_text/{{ response.id }}">
+                                            {% csrf_token %}
+                                            <button type="submit" <i class="fas fa-edit"></i></button>
+                                        </form>
+                                        {%endif%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {%endif%}
                         <form method="post" id="message_vote_form_{{response.id}}" class="d-inline">
                             {% csrf_token %}
                             <button id="message_vote_button_{{ response.id }}" type="button"
