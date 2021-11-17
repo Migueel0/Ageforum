@@ -10,120 +10,147 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
-        <div class="container text-light  col-md-4">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <h1 class='d-block'>{{ user.username }}</h1>
-                    {% if user.avatar %}
-                    <img id="user_avatar" class="d-inline img-thumbnail" src="{{user.avatar.url}}" alt="avatar" width="200"
-                        height="200" />
-                    {% else %}
-                    <img id="user_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
-                        width="200" height="200" />
-                    {%endif%}
-                </div>
+        <div class="container text-light col-md-4">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <h1 class='d-block'>{{ user.username }}</h1>
+                        {% if user.avatar %}
+                        <img id="user_avatar" class="d-inline img-thumbnail" src="{{user.avatar.url}}" alt="avatar"
+                            width="200" height="200" />
+                        {% else %}
+                        <img id="user_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
+                            alt="avatar" width="200" height="200" />
+                        {%endif%}
+                    </div>
 
-                {%if user.id == request.user.id%}
-                    <a href="/accounts/change-profile" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Editar usuario</a>
-                {%endif%}
-                
-            </form>
+                    {%if user.id == request.user.id%}
+                    <a href="/accounts/change-profile" class="btn btn-primary btn-lg active" role="button"
+                        aria-pressed="true">Editar usuario</a>
+                    {%endif%}
+
+                </form>
+            </div>
+            <div class="row mt-3">
+                <h2 class="text-center">Likes</h2>
+                <table class="table table-hover table-borderless align-middle table-striped"
+                    aria-describedby="discussions table">
+                    <tbody>
+                        {% for i in range_vote_list %}
+                        <tr class="yellow_background_color">
+                            <th scope="row">
+                                <a class="author_link"
+                                    href="/{{discussion_in_vote_list|get_id_from_discussion_list:i}}">
+                                    {{ vote_list|get_message_from_vote_list:i|safe }}
+                                </a>
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="text-light mx-auto col-md-8">
             <h1>PUBLICACIONES</h1>
             {%if user.id == request.user.id%}
-                {% if discussion_list %}
-                <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
-                    <thead class="yellow_color">
-                        <tr>
-                            <th scope="col" style="width:100%">Tus publicaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for discussion in discussion_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="author_link" href="/{{discussion.id}}">
-                                    {{ discussion.title }}
-                                </a>
-                            </th>
-                            {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <h2 class="text-danger">Todavía no has publicado nada.</h2>
-                {% endif %}
+            {% if discussion_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Tus publicaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for discussion in discussion_list %}
+                    <tr class="yellow_background_color">
+                        <th scope="row">
+                            <a class="author_link" href="/{{discussion.id}}">
+                                {{ discussion.title }}
+                            </a>
+                        </th>
+                        {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-danger">Todavía no has publicado nada.</h2>
+            {% endif %}
             {%else%}
-                {% if discussion_list %}
-                <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
-                    <thead class="yellow_color">
-                        <tr>
-                            <th scope="col" style="width:100%">Publicaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for discussion in discussion_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="author_link" href="/{{discussion.id}}">
-                                    {{ discussion.title }}
-                                </a>
-                            </th>
-                            {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <h2 class="text-danger">El usuario todavía no ha publicado nada.</h2>
-                {% endif %}
+            {% if discussion_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Publicaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for discussion in discussion_list %}
+                    <tr class="yellow_background_color">
+                        <th scope="row">
+                            <a class="author_link" href="/{{discussion.id}}">
+                                {{ discussion.title }}
+                            </a>
+                        </th>
+                        {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-danger">El usuario todavía no ha publicado nada.</h2>
+            {% endif %}
 
             {% endif %}
-                <h1>RESPUESTAS</h1>
+            <h1>RESPUESTAS</h1>
             {%if user.id == request.user.id%}
-                {% if response_list %}
-                <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
-                    <thead class="yellow_color">
-                        <tr>
-                            <th scope="col" style="width:100%">Tus respuestas</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for response in response_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="author_link" href="/{{response.topic}}">
-                                    Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}} ({{response.topic.user}})
-                                </a>
-                            </th>
-                            {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <h2 class="text-danger">Todavía no has respondido a ningun post.</h2>
-                {% endif %}
+            {% if response_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Tus respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for response in response_list %}
+                    <tr class="yellow_background_color">
+                        <th scope="row">
+                            <a class="author_link" href="/{{response.topic}}">
+                                Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}}
+                                ({{response.topic.user}})
+                            </a>
+                        </th>
+                        {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-danger">Todavía no has respondido a ningun post.</h2>
+            {% endif %}
             {%else%}
-                {% if response_list %}
-                    <table class="table table-hover table-borderless align-middle table-striped" aria-describedby="discussions table">
-                        <thead class="yellow_color">
-                            <tr>
-                                <th scope="col" style="width:100%">Respuestas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for response in response_list %}
-                            <tr class="yellow_background_color">
-                                <th scope="row">
-                                    <a class="author_link" href="/{{response.topic}}">
-                                        Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title|safe}} ({{response.topic.user}})
-                                    </a>
-                                </th>
-                                {% endfor %}
-                        </tbody>
-                    </table>
-                    {% else %}
-                    <h2 class="text-danger">El usuario todavía no ha respondido a ningun post.</h2>
-                    {% endif %}
+            {% if response_list %}
+            <table class="table table-hover table-borderless align-middle table-striped"
+                aria-describedby="discussions table">
+                <thead class="yellow_color">
+                    <tr>
+                        <th scope="col" style="width:100%">Respuestas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for response in response_list %}
+                    <tr class="yellow_background_color">
+                        <th scope="row">
+                            <a class="author_link" href="/{{response.topic}}">
+                                Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title|safe}}
+                                ({{response.topic.user}})
+                            </a>
+                        </th>
+                        {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <h2 class="text-danger">El usuario todavía no ha respondido a ningun post.</h2>
+            {% endif %}
             {% endif %}
         </div>
     </div>

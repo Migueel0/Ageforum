@@ -1,3 +1,4 @@
+from django import template
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -5,8 +6,9 @@ from django.shortcuts import get_object_or_404, render
 from accounts.forms import EditForm, SignUpForm
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth import authenticate, login
+from django.template.defaulttags import register
 
-from forum.models import Discussion, Response, User
+from forum.models import Discussion, Response, User, Vote
 
 
 ROOT_URL = '/'
@@ -36,12 +38,24 @@ def user_detail(request, user_id):
     Show user profile info
     """
     if request.method == 'GET':
-        discussion_list = Discussion.objects.filter(user=user_id).order_by('date_publication').reverse()
-        response_list = Response.objects.filter(user=user_id).order_by('date_publication').reverse() 
+        discussion_list = Discussion.objects.filter(
+            user=user_id).order_by('-date_publication')
+        response_list = Response.objects.filter(
+            user=user_id).order_by('-date_publication')
+
+        # elements needed for showing user likes
+        vote_list = Vote.objects.filter(user=get_object_or_404(User, id=user_id))
+        vote_list = list(vote_list)
+        discussion_in_vote_list = retrieve_discussion_in_vote_list(vote_list)
+        range_vote_list = range(len(vote_list))
+
         context = {
             'user': get_object_or_404(User, id=user_id),
-            'discussion_list':discussion_list, 
-            'response_list':response_list
+            'discussion_list': discussion_list,
+            'response_list': response_list,
+            'discussion_in_vote_list': discussion_in_vote_list,
+            'vote_list': vote_list,
+            'range_vote_list': range_vote_list,
         }
         return render(request, PROFILE_INFO_TEMPLATE, context)
     else:
@@ -54,14 +68,26 @@ def logged_user_detail(request):
     """
     if request.method == 'GET':
         if request.user.id:
-            discussion_list = Discussion.objects.filter(user=request.user).order_by('date_publication').reverse()
-            response_list = Response.objects.filter(user=request.user).order_by('date_publication').reverse()
-            context = {
-                'discussion_list':discussion_list, 
-                'response_list':response_list
+            discussion_list = Discussion.objects.filter(
+                user=request.user).order_by('-date_publication')
+            response_list = Response.objects.filter(
+                user=request.user).order_by('-date_publication')
 
+            # elements needed for showing user likes
+            vote_list = Vote.objects.filter(user=request.user)
+            vote_list = list(vote_list)
+            discussion_in_vote_list = retrieve_discussion_in_vote_list(
+                vote_list)
+            range_vote_list = range(len(vote_list))
+
+            context = {
+                'discussion_list': discussion_list,
+                'response_list': response_list,
+                'discussion_in_vote_list': discussion_in_vote_list,
+                'vote_list': vote_list,
+                'range_vote_list': range_vote_list,
             }
-            return render(request, PROFILE_INFO_TEMPLATE,context)
+            return render(request, PROFILE_INFO_TEMPLATE, context)
         else:
             return HttpResponseRedirect(ROOT_URL)
     else:
@@ -84,11 +110,11 @@ def change_user_detail(request):
             username_form.replace(" ", "")
             if username_form == '' or not User.objects.filter(username=username_form).count() == 0:
                 # username empty or already exists
-                form.add_error('username','El nombre de usuario ya existe')
+                form.add_error('username', 'El nombre de usuario ya existe')
                 context = {
                     'form': form
                 }
-                return render(request, CHANGE_INFO_TEMPLATE, context)        
+                return render(request, CHANGE_INFO_TEMPLATE, context)
             user.username = username_form
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
@@ -102,3 +128,27 @@ def change_user_detail(request):
             return render(request, CHANGE_INFO_TEMPLATE, context)
     else:
         raise PermissionDenied()
+
+
+@register.filter
+def get_message_from_vote_list(vote_list, index):
+    return vote_list[index].message.text
+
+
+@register.filter
+def get_id_from_discussion_list(discussion_list, index):
+    return discussion_list[index].id
+
+
+def retrieve_discussion_in_vote_list(vote_list):
+    """
+    Returns a list of discussions given the list of votes
+    """
+    discussion_in_vote_list = []
+    for vote in vote_list:
+        discussion = Discussion.objects.filter(id=vote.message.id).first()
+        if not discussion:
+            response = Response.objects.get(id=vote.message.id)
+            discussion = response.topic
+        discussion_in_vote_list.append(discussion)
+    return discussion_in_vote_list
