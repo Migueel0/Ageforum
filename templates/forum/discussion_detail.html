@@ -124,7 +124,7 @@
                     {% if response.reply_to.id %}
                     <div id="response_text_{{response.id}}_reply_to_{{response.reply_to.id}}"
                         class="white_background_color mt-3 p-3">
-                        <span>En respuesta a:</span>
+                        <span>En respuesta a {{ response.reply_to.user.username }}:</span>
                         <div class="my-3">
                             {{ response.reply_to.text|safe }}
                         </div>

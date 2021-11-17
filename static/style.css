@@ -1,7 +1,7 @@
 body {
     background-image: url("background.jpg");
-    font-family: 'Times New Roman', serif;
-    font-size: large;
+    font-family: 'Times New Roman', serif !important;
+    font-size: large !important;
 }
 
 nav {
