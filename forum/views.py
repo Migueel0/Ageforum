@@ -18,6 +18,7 @@ from Ageforum.settings import ROOT_URLCONF
 
 from forum.forms import ContactForm, DiscussionCreateForm, MessageCreateForm
 
+
 from .models import Discussion, Message, Response, Vote
 
 from django.views.generic.edit import DeleteView
@@ -32,7 +33,7 @@ DISCUSSION_CREATE_TEMPLATE = 'forum/discussion_create.html'
 RESPONSE_CREATE_TEMPLATE = 'forum/response_create.html'
 DISCUSSION_DETAIL_TEMPLATE = 'forum/discussion_detail.html'
 CONTACT_TEMPLATE = 'forum/contact.html'
-RESPONSE_DELETE_TEMPLATE = 'forum/response_delete/<int:response.id>.html'
+EDIT_DISCUSSION_TEMPLATE = 'forum/edit_text.html'
 
 
 #Delete a discussion:
@@ -58,6 +59,21 @@ def delete_response(request,response_id):
     return redirect(INDEX_ROUTE)
 
      
+def edit_text(request, discussion_id,):
+    
+    edit_text = Discussion.objects.get(pk = discussion_id)
+    form = DiscussionCreateForm(data=request.POST or None, instance=edit_text)
+    context = {
+            'edit_text':edit_text,
+            'form': form
+        }
+    if  request.user.id != edit_text.user.id:
+        raise PermissionDenied()
+    else:
+        if form.is_valid():
+            form.save()
+            return redirect('/' + str(discussion_id)) 
+    return render(request,EDIT_DISCUSSION_TEMPLATE,context)
 
 
 def index(request):

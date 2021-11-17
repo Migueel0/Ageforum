@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles del usuario: {{user.username}} | Foro Age of Empires IV{% endblock %}
+
+{% block description %}
+<meta name="description"
+    content="Primer y único foro de Age of Empires IV en español para hispanohablantes. Detalles del usuario: {{user.username}}" />
+{% endblock %}
+
+{% block content %}
+<div class="container text-light">
+    <h1>Editar post</h1>
+    <div class="row mt-5">
+        <div class="col-md-8 col-sm-10 col-12 mx-auto">
+            <form action="" method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-primary">Editar</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
