@@ -65,6 +65,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css" />
+
     {{ form.media }}
 </head>
 
@@ -91,11 +93,11 @@
                                         {{ request.user.username }}
                                     </strong></p>
                                 {% if request.user.avatar %}
-                                <img id="author_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}"
-                                    alt="avatar" width="50" height="50" />
+                                <img id="author_avatar" class="d-inline rounded-circle"
+                                    src="{{request.user.avatar.url}}" alt="avatar" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline rounded-circle" src="/avatars/generic_avatar.png"
-                                    width="50" height="50" alt="Avatar" />
+                                <img id="author_avatar" class="d-inline rounded-circle"
+                                    src="/avatars/generic_avatar.png" width="50" height="50" alt="Avatar" />
                                 {% endif %}
                             </a>
                         </div>

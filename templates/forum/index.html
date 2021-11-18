@@ -19,11 +19,11 @@
                 {% endif %}
                 <div id="table_wrapper">
                     {% if discussion_list %}
-                    <table class="table table-hover table-borderless align-middle table-striped"
+                    <table id="discussion_table" class="table table-hover table-borderless align-middle table-striped"
                         aria-describedby="discussions table">
                         <thead class="yellow_color">
                             <tr>
-                                <th scope="col" class="col-6 col-lg-8">Tema</th>
+                                <th scope="col" class="col-6 col-lg-7">Tema</th>
                                 <th scope="col" class="text-break">Respuestas</th>
                                 <th scope="col" class="text-break">Visitas</th>
                                 <th scope="col" class="text-break">Último mensaje</th>
@@ -57,4 +57,15 @@
     </div>
 </div>
 </div>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#discussion_table').DataTable({
+            "paging": false,
+            "info": false
+        });
+    });
+</script>
 {% endblock %}
