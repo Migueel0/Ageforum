@@ -64,7 +64,15 @@
     $(document).ready(function () {
         $('#discussion_table').DataTable({
             "paging": false,
-            "info": false
+            "info": false,
+            "order": [],
+            columnDefs: [{
+                orderable: false,
+                targets: 3
+            }],
+            "language": {
+                "search": "Buscar: "
+            }
         });
         $("#discussion_table_filter").addClass("text-light")
     });
