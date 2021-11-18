@@ -1,4 +1,7 @@
+
 from django import template
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -16,6 +19,12 @@ ROOT_URL = '/'
 PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 SIGN_UP_TEMPLATE = 'registration/sign_up.html'
 CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
+CHANGE_PASSWORD_TEMPLATE = 'registration/change_password'
+
+
+class PasswordsChangeView(PasswordChangeView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
 
 
 class SignUpView(generic.CreateView):
@@ -103,7 +112,6 @@ def change_user_detail(request):
         return HttpResponseRedirect(ROOT_URL)
     if request.method == 'GET':
         return render(request, CHANGE_INFO_TEMPLATE)
-
     elif request.method == 'POST':
         form = EditForm(request.POST, request.FILES)
         if form.is_valid():
@@ -111,13 +119,13 @@ def change_user_detail(request):
             username_form = form.cleaned_data['username']
             username_form = username_form.replace(" ", "")
             if (username_form == '' or not User.objects.filter(username=username_form).count() == 0) and user.username != username_form:
-                    # username empty or already exists
-                    form.add_error(
-                        'username', 'El nombre de usuario ya existe')
-                    context = {
-                        'form': form
-                    }
-                    return render(request, CHANGE_INFO_TEMPLATE, context)
+                # username empty or already exists
+                form.add_error(
+                    'username', 'El nombre de usuario ya existe')
+                context = {
+                    'form': form
+                }
+                return render(request, CHANGE_INFO_TEMPLATE, context)
             user.username = username_form
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
