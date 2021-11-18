@@ -11,28 +11,25 @@
 <div class="container mt-3 yellow_color">
     <div class="row">
         <h1 class="text-center mb-5">Información del usuario</h1>
-        <div class="col-md-6">
+        <div class="col-md-6 text-center">
             <div>
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <h2 id="user_detail_username" class='d-block'>{{ user.username }}</h2>
-                    {% if user.avatar %}
-                    <img id="user_avatar" class="img-thumbnail" src="{{user.avatar.url}}" alt="avatar" width="200"
-                        height="200" />
-                    {% else %}
-                    <img id="user_avatar" class="img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
-                        width="200" height="200" />
-                    {%endif%}
-                </form>
+                <h2 id="user_detail_username" class='d-block'>{{ user.username }}</h2>
+                {% if user.avatar %}
+                <img id="user_avatar" class="img-thumbnail" src="{{user.avatar.url}}" alt="avatar" width="200"
+                    height="200" />
+                {% else %}
+                <img id="user_avatar" class="img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar" width="200"
+                    height="200" />
+                {%endif%}
                 {%if user.id == request.user.id%}
                 <form method="post" action="/accounts/change-profile">
                     {% csrf_token %}
-                    <input type="submit" class="btn btn-primary mt-3" value="Editar usuario" />
+                    <input type="submit" class="btn btn-primary my-3" value="Editar usuario" />
                 </form>
                 {%endif%}
             </div>
             <div class="mt-3">
-                <h2 class="text-center">Likes</h2>
+                <h2>Likes</h2>
                 {% if vote_list%}
                 <table class="table table-hover table-borderless align-middle table-striped"
                     aria-describedby="discussions table">
@@ -55,8 +52,8 @@
             </div>
         </div>
 
-        <div class="col-md-6 mx-auto">
-            <h2>Publicaciones</h2>
+        <div class="col-md-6">
+            <h2 class="text-center">Publicaciones</h2>
             {%if user.id == request.user.id%}
             {% if discussion_list %}
             <table class="table table-hover table-borderless align-middle table-striped"
@@ -100,7 +97,7 @@
             {% endif %}
 
             {% endif %}
-            <h2>Respuestas</h2>
+            <h2 class="text-center">Respuestas</h2>
             {%if user.id == request.user.id%}
             {% if response_list %}
             <table class="table table-hover table-borderless align-middle table-striped"
@@ -137,7 +134,7 @@
                 </tbody>
             </table>
             {% else %}
-            <h2 class="text-danger">El usuario todavía no ha respondido a ningun post.</h2>
+            <p class="text-danger">El usuario todavía no ha respondido a ningun post.</p>
             {% endif %}
             {% endif %}
         </div>
