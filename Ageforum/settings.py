@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o4sbfuyxpv=#_voe3kz&4_p&e#vf2c0e@4-q07uuka5la7a40n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # gitignore
 
 ALLOWED_HOSTS = ["*"]
 
@@ -164,3 +164,4 @@ EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'foro.age.of.empires.iv@outlook.com'
+EMAIL_HOST_PASSWORD = '#cafreForum21'  # gitignore
