@@ -22,10 +22,10 @@ CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
 CHANGE_PASSWORD_TEMPLATE = 'registration/change_password.html'
 PASSWORD_SUCCESS_TEMPLATE = 'registration/password_success.html'
 
-class PasswordsChangeView(PasswordChangeView): 
+
+class PasswordsChangeView(PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy("password_success")
-
 
 
 class SignUpView(generic.CreateView):
@@ -106,8 +106,6 @@ def logged_user_detail(request):
     else:
         raise PermissionDenied()
 
-    
-
 
 def change_user_detail(request):
     """
@@ -122,10 +120,11 @@ def change_user_detail(request):
         if form.is_valid():
             user = request.user
             username_form = form.cleaned_data['username']
-            username_form.replace(" ", "")
-            if username_form == '' or not User.objects.filter(username=username_form).count() and User.objects.filter(username=user.username).count() == 0:
+            username_form = username_form.replace(" ", "")
+            if (username_form == '' or not User.objects.filter(username=username_form).count() == 0) and user.username != username_form:
                 # username empty or already exists
-                form.add_error('username', 'El nombre de usuario ya existe')
+                form.add_error(
+                    'username', 'El nombre de usuario ya existe')
                 context = {
                     'form': form
                 }
@@ -135,9 +134,7 @@ def change_user_detail(request):
             if avatar_form:
                 user.avatar = avatar_form
             biography_form = form.cleaned_data['biography']
-            biography_form.replace(" ", "")
-            if biography_form:
-                user.biography = biography_form
+            user.biography = biography_form
             user.save()
             return HttpResponseRedirect('/accounts/profile/')
         else:
