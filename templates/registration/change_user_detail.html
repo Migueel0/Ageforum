@@ -12,37 +12,40 @@
             <div class="row">
                 <div class="col-md-3 text-center">
                     <div class="mb-5 col">
-                        <labelclass="form-label">Cambiar nombre de usuario</label>
-                            <input type="text" id="id_username" name='username' class="form-control"
-                                value="{{ request.user.username }}" max-length="100">
-                            <span class="text-danger">{{ form.username.errors}}</span>
+                        <label class="form-label">Cambiar nombre de usuario</label>
+                        <input type="text" id="id_username" name='username' class="form-control"
+                            value="{{ request.user.username }}" max-length="100">
+                        <span class="text-danger">{{ form.username.errors}}</span>
 
-                            {% if request.user.avatar %}
-                            <div class='mt-5 mb-2'>
-                                <img id="user_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}"
-                                    alt="avatar" width="200" height="200" />
-                                {% else %}
-                                <img id="user_avatar" class="d-inline rounded-circle" src="/avatars/generic_avatar.png"
-                                    alt="avatar" width="200" height="200" />
-                                {%endif%}
-                            </div>
-                            <div class='mb-2'>
-                                <labelclass="form-label">Cambiar foto de perfil</label>
-                            </div>
-                            <div class='mb-5'>
-                                <label class="btn btn-primary mt-2">
-                                    Selccionar archivo <input name='avatar' type="file" hidden>
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
+                        {% if request.user.avatar %}
+                        <div class='mt-5 mb-2'>
+                            <img id="user_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}"
+                                alt="avatar" width="200" height="200" />
+                            {% else %}
+                            <img id="user_avatar" class="d-inline rounded-circle" src="/avatars/generic_avatar.png"
+                                alt="avatar" width="200" height="200" />
+                            {%endif%}
+                        </div>
+                        <div class='mb-2'>
+                            <labelclass="form-label">Cambiar foto de perfil</label>
+                        </div>
+                        <div class='mb-5'>
+                            <label class="btn btn-primary mt-2">
+                                Selccionar archivo <input name='avatar' type="file" hidden>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-2">Guardar cambios</button>
                     </div>
                 </div>
-                <div class="col-md-6 ">
-                    <div class="mb-5  col">
-                        <labelclass="form-label">biografría</label>
-                            <textarea id="id_biography" name='biography'  class="form-control" rows="10" cols="50"
-                                max-length="150" style="resize: none;">{{ request.user.biography }}</textarea>
+                <div class="col-md-6 mx-auto">
+                    <div class="mb-5">
+                        <label class="form-label">Biografría</label>
+                        <textarea id="id_biography" name='biography' class="form-control" rows="10" cols="50"
+                            max-length="150" style="resize: none;">{{ request.user.biography }}</textarea>
                     </div>
+                    <form method="get" action="accounts/password">
+                        <input type="submit" class="btn btn-primary my-3" value="cambiar contraseña" />
+                    </form>
                 </div>
             </div>
         </div>

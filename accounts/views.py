@@ -1,4 +1,7 @@
+
 from django import template
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeDoneView, PasswordChangeView
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
@@ -16,6 +19,12 @@ ROOT_URL = '/'
 PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 SIGN_UP_TEMPLATE = 'registration/sign_up.html'
 CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
+CHANGE_PASSWORD_TEMPLATE = 'registration/change_password'
+
+class PasswordsChangeView(PasswordChangeView): 
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
+
 
 
 class SignUpView(generic.CreateView):
@@ -44,7 +53,8 @@ def user_detail(request, user_id):
             user=user_id).order_by('-date_publication')
 
         # elements needed for showing user likes
-        vote_list = Vote.objects.filter(user=get_object_or_404(User, id=user_id))
+        vote_list = Vote.objects.filter(
+            user=get_object_or_404(User, id=user_id))
         vote_list = list(vote_list)
         discussion_in_vote_list = retrieve_discussion_in_vote_list(vote_list)
         range_vote_list = range(len(vote_list))
@@ -93,6 +103,8 @@ def logged_user_detail(request):
     else:
         raise PermissionDenied()
 
+    
+
 
 def change_user_detail(request):
     """
@@ -102,7 +114,6 @@ def change_user_detail(request):
         return HttpResponseRedirect(ROOT_URL)
     if request.method == 'GET':
         return render(request, CHANGE_INFO_TEMPLATE)
-
     elif request.method == 'POST':
         form = EditForm(request.POST, request.FILES)
         if form.is_valid():
@@ -121,8 +132,9 @@ def change_user_detail(request):
             if avatar_form:
                 user.avatar = avatar_form
             biography_form = form.cleaned_data['biography']
-            biography_form.replace(" ","")
-            user.biography = biography_form
+            biography_form.replace(" ", "")
+            if biography_form:
+                user.biography = biography_form
             user.save()
             return HttpResponseRedirect('/accounts/profile/')
         else:
