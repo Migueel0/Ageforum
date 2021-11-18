@@ -37,3 +37,8 @@ a,
     text-decoration-line: none;
     color: black;
 }
+
+#user_detail_username{
+    font-size: 300%;
+    font-weight: bold;
+}
