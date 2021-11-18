@@ -206,6 +206,14 @@ def response_create(request, discussion_id):
             response.text = form.cleaned_data['text']
             if response.text:
                 response.save()
+                send_mail(
+                    'Foro Age of Empires IV: Han respondido en tu discusión',
+                    'Han respondido en tu discusión: https://www.foroageofempiresiv.com/' +
+                    str(response.topic.id),
+                    FORUM_EMAIL_ADDRESS,
+                    [response.topic.user.email],
+                    fail_silently=False,
+                )
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()
@@ -327,16 +335,17 @@ def response_reply_create(request, discussion_id, message_id):
                 [email_user],
                 fail_silently=False,
             )
-            # send mail to author of discussion
+            # send mail to author of discussion if it is different. Otherwise he/she will receive 2 emails
             email_discussion_author = response.topic.user.email
-            send_mail(
-                'Foro Age of Empires IV: Han respondido en tu discusión',
-                'Han respondido en tu discusión: https://www.foroageofempiresiv.com/' +
-                str(response.topic.id),
-                FORUM_EMAIL_ADDRESS,
-                [email_discussion_author],
-                fail_silently=False,
-            )
+            if email_discussion_author != email_user:
+                send_mail(
+                    'Foro Age of Empires IV: Han respondido en tu discusión',
+                    'Han respondido en tu discusión: https://www.foroageofempiresiv.com/' +
+                    str(response.topic.id),
+                    FORUM_EMAIL_ADDRESS,
+                    [email_discussion_author],
+                    fail_silently=False,
+                )
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
     else:
         raise PermissionDenied()
