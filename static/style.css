@@ -32,13 +32,12 @@ textarea {
     resize: none;
 }
 
-a,
-.author_link {
-    text-decoration-line: none;
+.user_link {
+    text-decoration: none;
     color: black;
 }
 
-#user_detail_username{
+#user_detail_username {
     font-size: 300%;
     font-weight: bold;
 }

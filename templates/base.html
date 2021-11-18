@@ -91,10 +91,10 @@
                                         {{ request.user.username }}
                                     </strong></p>
                                 {% if request.user.avatar %}
-                                <img id="author_avatar" class="d-inline img-thumbnail" src="{{request.user.avatar.url}}"
+                                <img id="author_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}"
                                     alt="avatar" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png"
+                                <img id="author_avatar" class="d-inline rounded-circle" src="/avatars/generic_avatar.png"
                                     width="50" height="50" alt="Avatar" />
                                 {% endif %}
                             </a>

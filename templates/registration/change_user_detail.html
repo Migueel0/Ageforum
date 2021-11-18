@@ -15,10 +15,10 @@
 
                 {% if request.user.avatar %}
                 <div class='mt-5 mb-2'>
-                    <img id="user_avatar" class="d-inline img-thumbnail" src="{{request.user.avatar.url}}" alt="avatar"
+                    <img id="user_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}" alt="avatar"
                         width="200" height="200" />
                     {% else %}
-                    <img id="user_avatar" class="d-inline img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
+                    <img id="user_avatar" class="d-inline rounded-circle" src="/avatars/generic_avatar.png" alt="avatar"
                         width="200" height="200" />
                     {%endif%}
                 </div>

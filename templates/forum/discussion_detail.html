@@ -29,24 +29,20 @@
                         </div>
                     </div>
                     {%endif%}
-                    {%if user.id == discussion.user.id%}
-                    <a href="/accounts/profile/">
-                        {%else%}
-                        <a href="/accounts/profile/{{discussion.user.id}}">
-                            {%endif%}
-                            {% if discussion.user.avatar %}
-                            <img id="discussion_user_avatar" class="img-thumbnail d-inline"
-                                src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
-                            {% else %}
-                            <img id="discussion_user_generic_avatar" class="img-thumbnail d-inline"
-                                src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
-                            {% endif %}
-                            <p id="user_username" class="mx-3 d-inline my-auto">
-                                <strong>{{discussion.user.username}}</strong>
-                            </p>
-                        </a>
-                        <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
+                    <a class="user_link" href="/accounts/profile/{{discussion.user.id}}">
+                        {% if discussion.user.avatar %}
+                        <img id="discussion_user_avatar" class="rounded-circle d-inline"
+                            src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
+                        {% else %}
+                        <img id="discussion_user_generic_avatar" class="rounded-circle d-inline"
+                            src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
+                        {% endif %}
+                        <p id="user_username" class="mx-3 d-inline my-auto">
+                            <strong>{{discussion.user.username}}</strong>
                         </p>
+                    </a>
+                    <p class="d-inline date_publication">{{discussion.date_publication|date:"U"}}
+                    </p>
                     </a>
                 </div>
                 <div id="discussion_text" class="my-3">
@@ -107,10 +103,10 @@
                         {% endif %}
                         <a href="/accounts/profile/{{response.user.id}}" class="user_link">
                             {% if response.user.avatar %}
-                            <img id="response_user_avatar" class="d-inline img-thumbnail"
+                            <img id="response_user_avatar" class="d-inline rounded-circle"
                                 src="{{response.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
                             {% else %}
-                            <img id="response_user_generic_avatar" class="d-inline img-thumbnail"
+                            <img id="response_user_generic_avatar" class="d-inline rounded-circle"
                                 src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
                             {% endif %}
                             <p id="user_username" class="mx-3 d-inline my-auto"><strong>{{ response.user.username }}
