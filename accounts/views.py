@@ -44,7 +44,8 @@ def user_detail(request, user_id):
             user=user_id).order_by('-date_publication')
 
         # elements needed for showing user likes
-        vote_list = Vote.objects.filter(user=get_object_or_404(User, id=user_id))
+        vote_list = Vote.objects.filter(
+            user=get_object_or_404(User, id=user_id))
         vote_list = list(vote_list)
         discussion_in_vote_list = retrieve_discussion_in_vote_list(vote_list)
         range_vote_list = range(len(vote_list))
@@ -108,20 +109,20 @@ def change_user_detail(request):
         if form.is_valid():
             user = request.user
             username_form = form.cleaned_data['username']
-            username_form.replace(" ", "")
-            if username_form == '' or not User.objects.filter(username=username_form).count() and User.objects.filter(username=user.username).count() == 0:
-                # username empty or already exists
-                form.add_error('username', 'El nombre de usuario ya existe')
-                context = {
-                    'form': form
-                }
-                return render(request, CHANGE_INFO_TEMPLATE, context)
+            username_form = username_form.replace(" ", "")
+            if (username_form == '' or not User.objects.filter(username=username_form).count() == 0) and user.username != username_form:
+                    # username empty or already exists
+                    form.add_error(
+                        'username', 'El nombre de usuario ya existe')
+                    context = {
+                        'form': form
+                    }
+                    return render(request, CHANGE_INFO_TEMPLATE, context)
             user.username = username_form
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
                 user.avatar = avatar_form
             biography_form = form.cleaned_data['biography']
-            biography_form.replace(" ","")
             user.biography = biography_form
             user.save()
             return HttpResponseRedirect('/accounts/profile/')
