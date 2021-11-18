@@ -22,8 +22,12 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     {% csrf_token %}
-                                    <button id="delete_discussion" _{{discussion.id}} type="button"
-                                        onclick='confirm_discussion_delete()' <i class="fas fa-trash"></i></button>
+                                    <button id="delete_response_button_{{response.id}}" type="submit"
+                                        class="btn btn-primary d-inline"
+                                        onclick="confirm_response_delete({{response.id}})"> <em
+                                        class="d-inline fas fa-trash btn-primary"></em>
+                                        <p class="d-inline">Eliminar</p>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +66,11 @@
                                     {%if user.id == discussion.user.id%}
                                     <form action="edit_text/{{ discussion.id }}">
                                         {% csrf_token %}
-                                        <button type="submit" <i class="fas fa-edit"></i></button>
+                                        <button id="edit_discussion_button_{{discussion.id}}" type="submit"
+                                            class="btn btn-primary message_vote_button d-inline"> <em
+                                                class="fas fa-edit btn-primary"></em>
+                                            <p class="d-inline">Editar</p>
+                                        </button>
                                     </form>
                                     {%endif%}
                                 </div>
@@ -98,8 +106,13 @@
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         {% csrf_token %}
-                                        <button type="button" onclick="confirm_response_delete({{response.id}})" <i
-                                            class="fas fa-trash"></i></button>
+                                        <button id="delete_response_button_{{response.id}}" type="submit"
+                                            class="btn btn-primary message_vote_button d-inline"
+                                            onclick="confirm_response_delete({{response.id}})"> <em
+                                            class="d-inline fas fa-trash btn-primary"></em>
+                                            <p class="d-inline">Eliminar</p>
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +152,11 @@
                                         {%if user.id == response.user.id%}
                                         <form action="edit_response_text/{{ response.id }}">
                                             {% csrf_token %}
-                                            <button type="submit" <i class="fas fa-edit"></i></button>
+                                            <button id="edit_response_button_{{response.id}}" type="submit"
+                                                class="btn btn-primary message_vote_button d-inline"> <em
+                                                    class="fas fa-edit btn-primary"></em>
+                                                <p class="d-inline">Editar</p>
+                                            </button>
                                         </form>
                                         {%endif%}
                                     </div>
