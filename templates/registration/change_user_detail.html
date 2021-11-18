@@ -43,9 +43,7 @@
                         <textarea id="id_biography" name='biography' class="form-control" rows="10" cols="50"
                             max-length="150" style="resize: none;">{{ request.user.biography }}</textarea>
                     </div>
-                    <form method="get" action="accounts/password">
-                        <input type="submit" class="btn btn-primary my-3" value="cambiar contraseña" />
-                    </form>
+                    <a href="/accounts/password" class="btn btn-primary" role="button">Cambiar contraseña</a>
                 </div>
             </div>
         </div>
