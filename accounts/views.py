@@ -19,11 +19,12 @@ ROOT_URL = '/'
 PROFILE_INFO_TEMPLATE = "registration/user_detail.html"
 SIGN_UP_TEMPLATE = 'registration/sign_up.html'
 CHANGE_INFO_TEMPLATE = 'registration/change_user_detail.html'
-CHANGE_PASSWORD_TEMPLATE = 'registration/change_password'
+CHANGE_PASSWORD_TEMPLATE = 'registration/change_password.html'
+PASSWORD_SUCCESS_TEMPLATE = 'registration/password_success.html'
 
 class PasswordsChangeView(PasswordChangeView): 
     form_class = PasswordChangeForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy("password_success")
 
 
 
@@ -41,6 +42,8 @@ class SignUpView(generic.CreateView):
         login(self.request, user)
         return HttpResponseRedirect(ROOT_URL)
 
+def password_success(request):
+    return render(request, PASSWORD_SUCCESS_TEMPLATE)
 
 def user_detail(request, user_id):
     """
