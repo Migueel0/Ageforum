@@ -37,6 +37,7 @@ FORUM_EMAIL_ADDRESS = 'foro.age.of.empires.iv@outlook.com'
 
 # Delete a discussion:
 
+
 def delete_discussion(request, discussion_id):
 
     discussion = Discussion.objects.get(pk=discussion_id)
@@ -59,37 +60,39 @@ def delete_response(request, response_id):
 
     return redirect(INDEX_ROUTE)
 
-     
+
 def edit_text(request, discussion_id,):
-    
-    edit_text = Discussion.objects.get(pk = discussion_id)
+
+    edit_text = Discussion.objects.get(pk=discussion_id)
     form = DiscussionCreateForm(data=request.POST or None, instance=edit_text)
     context = {
-            'edit_text':edit_text,
-            'form': form
-        }
-    if  request.user.id != edit_text.user.id:
+        'edit_text': edit_text,
+        'form': form
+    }
+    if request.user.id != edit_text.user.id:
         raise PermissionDenied()
     else:
         if form.is_valid():
             form.save()
-            return redirect('/' + str(discussion_id)) 
-    return render(request,EDIT_DISCUSSION_TEMPLATE,context)
+            return redirect('/' + str(discussion_id))
+    return render(request, EDIT_DISCUSSION_TEMPLATE, context)
+
 
 def edit_response_text(request, message_id):
     if not request.user.id:
         raise PermissionDenied()
-    edit_response_text = Message.objects.get(pk = message_id)
-    form = MessageCreateForm(data=request.POST or None, instance=edit_response_text)
+    edit_response_text = Message.objects.get(pk=message_id)
+    form = MessageCreateForm(data=request.POST or None,
+                             instance=edit_response_text)
     context = {
-        'edit_response_text':edit_response_text,
+        'edit_response_text': edit_response_text,
         'form': form
-        }
+    }
     if form.is_valid():
         form.save()
-        return redirect('/') 
-    return render(request,EDIT_RESPONSE_TEMPLATE,context)
-    
+        return redirect('/')
+    return render(request, EDIT_RESPONSE_TEMPLATE, context)
+
 
 def index(request):
     """
@@ -318,9 +321,20 @@ def response_reply_create(request, discussion_id, message_id):
             email_user = message_to_reply.user.email
             send_mail(
                 'Foro Age of Empires IV: Han respondido a tu mensaje',
-                'Han respondido a tu mensaje: https://www.foroageofempiresiv.com/'+str(response.topic.id),
+                'Han respondido a tu mensaje: https://www.foroageofempiresiv.com/' +
+                str(response.topic.id),
                 FORUM_EMAIL_ADDRESS,
                 [email_user],
+                fail_silently=False,
+            )
+            # send mail to author of discussion
+            email_discussion_author = response.topic.user.email
+            send_mail(
+                'Foro Age of Empires IV: Han respondido en tu discusión',
+                'Han respondido en tu discusión: https://www.foroageofempiresiv.com/' +
+                str(response.topic.id),
+                FORUM_EMAIL_ADDRESS,
+                [email_discussion_author],
                 fail_silently=False,
             )
             return HttpResponseRedirect(INDEX_ROUTE + str(discussion_id))
