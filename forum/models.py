@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     AbstractUser._meta.get_field('email')._unique = True
     avatar = models.ImageField(upload_to='avatars', blank=True)
+    biography = models.TextField(max_length=100, blank =True)
+  
 
 
 class Message(models.Model):

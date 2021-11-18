@@ -37,7 +37,15 @@ textarea {
     color: black;
 }
 
+.link_underline_none{
+    text-decoration: none !important;
+}
+
 #user_detail_username {
     font-size: 300%;
     font-weight: bold;
+}
+
+.break-line{
+    white-space: pre;
 }
