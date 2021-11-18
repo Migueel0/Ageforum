@@ -6,18 +6,22 @@ IV{% endblock %}
 {% block content %}
 <div class="container text-light">
     <div class="row mt-5">
-        <div class="col-xl-6 col-md-8 col-sm-10 col-11">
+        <div >
+            <h1 class="yellow_color">Responder</h1>
             {% if message_to_reply %}
             <h3>Respuesta a: {{message_to_reply.text|safe|truncatechars_html:100 }}</h3>
             <form action="/response_reply_create/{{ discussion_id }}/{{message_to_reply.id}}" method="post">
-                {% else %}
-                <form action="/response_create/{{ discussion_id }}" method="post">
-                    {%endif%}
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit" class="btn btn-primary">Publicar</button>
-                </form>
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary mb-5">Publicar</button>
             </form>
+            {% else %}
+            <form action="/response_create/{{ discussion_id }}" method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary mb-5">Publicar</button>
+            </form>
+            {%endif%}
         </div>
     </div>
 </div>
