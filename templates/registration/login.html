@@ -3,19 +3,22 @@
 {% block title %}Identificarse | Foro Age of Empires IV{% endblock %}
 
 {% block description %}
-<meta name="description" content="Identifíquese para tener acceso al primer y único foro de Age of Empires IV en español para hispanohablantes."/>
+<meta name="description"
+    content="Identifíquese para tener acceso al primer y único foro de Age of Empires IV en español para hispanohablantes." />
 {% endblock %}
 
 {% block content %}
 <div class="container text-light mt-5">
-    <h1 class="mt-5 yellow_color">Identifíquese</h1>
-    <form method="post" enctype="multipart/form-data">
-        <div class='text-light mx-auto col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 '>
+    <h1 class="mt-5 yellow_color text-center">Identifíquese</h1>
+    <div class='text-light mx-auto col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 '>
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Identificarse</button>
-        </div>
-    </form>
+        </form>
+        <p class="mt-3"><a class="yellow_color" href="{% url 'password_reset' %}">¿Olvidaste la contraseña?</a></p>
+    </div>
+
 </div>
 <script>
     $("#id_username").addClass("form-control")
