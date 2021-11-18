@@ -15,41 +15,34 @@
             <div>
                 <h2 id="user_detail_username" class='d-block'>{{ user.username }}</h2>
                 {% if user.avatar %}
-                    <img id="user_avatar" class="rounded-circle" src="{{user.avatar.url}}" alt="avatar" width="200"
-                        height="200" />
+                <img id="user_avatar" class="rounded-circle" src="{{user.avatar.url}}" alt="avatar" width="200"
+                    height="200" />
                 {% else %}
-                    <img id="user_avatar" class="rounded-circle" src="/avatars/generic_avatar.png" alt="avatar"
-                        width="200" height="200" />
+                <img id="user_avatar" class="rounded-circle" src="/avatars/generic_avatar.png" alt="avatar" width="200"
+                    height="200" />
                 {%endif%}
                 {%if user.id == request.user.id%}
-                <form method="post" action="/accounts/change-profile">
+                <form method="get" action="/accounts/change-profile">
                     {% csrf_token %}
                     <input type="submit" class="btn btn-primary my-3" value="Editar usuario" />
                 </form>
                 {%endif%}
             </div>
-            <div class="mt-3">
-                <h2>Likes</h2>
-                {% if vote_list%}
-                <table class="table table-hover table-borderless align-middle table-striped"
-                    aria-describedby="discussions table">
-                    <tbody>
-                        {% for i in range_vote_list %}
-                        <tr class="yellow_background_color">
-                            <th scope="row">
-                                <a class="black_link"
-                                    href="/{{discussion_in_vote_list|get_id_from_discussion_list:i}}">
-                                    {{ vote_list|get_message_from_vote_list:i|safe }}
-                                </a>
-                            </th>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
 
-                {% endif %}
+            {% if user.biography %}
+            <div class="mt-3">
+                <h3 class="text-center my-3">Biografía</h3>
+                <p class="p-3 d-inline-block text-dark yellow_background_color mt-3 break-line">{{user.biography|safe}}</p>
             </div>
+            {% else %}
+            <form method="post" action="/accounts/change-profile">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link link_underline_none">
+                <span class="text-danger">Añada biografía</span>
+                </button>
+
+                </a>
+                {% endif %}
         </div>
 
         <div class="col-md-6">
@@ -137,6 +130,27 @@
             <p class="text-danger">El usuario todavía no ha respondido a ningun post.</p>
             {% endif %}
             {% endif %}
+            <div class="mt-3">
+                <h2>Likes</h2>
+                {% if vote_list%}
+                <table class="table table-hover table-borderless align-middle table-striped"
+                    aria-describedby="discussions table">
+                    <tbody>
+                        {% for i in range_vote_list %}
+                        <tr class="yellow_background_color">
+                            <th scope="row">
+                                <a class="black_link" href="/{{discussion_in_vote_list|get_id_from_discussion_list:i}}">
+                                    {{ vote_list|get_message_from_vote_list:i|safe }}
+                                </a>
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

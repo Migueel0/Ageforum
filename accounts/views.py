@@ -102,6 +102,7 @@ def change_user_detail(request):
         return HttpResponseRedirect(ROOT_URL)
     if request.method == 'GET':
         return render(request, CHANGE_INFO_TEMPLATE)
+
     elif request.method == 'POST':
         form = EditForm(request.POST, request.FILES)
         if form.is_valid():
@@ -119,6 +120,9 @@ def change_user_detail(request):
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
                 user.avatar = avatar_form
+            biography_form = form.cleaned_data['biography']
+            biography_form.replace(" ","")
+            user.biography = biography_form
             user.save()
             return HttpResponseRedirect('/accounts/profile/')
         else:

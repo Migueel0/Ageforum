@@ -1,8 +1,8 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-
-from forum.models import User
+from tinymce.widgets import TinyMCE
+from forum.models import Message, User
 
 
 class SignUpForm(UserCreationForm):
@@ -14,3 +14,7 @@ class SignUpForm(UserCreationForm):
 class EditForm(forms.Form):
     username = forms.CharField()
     avatar = forms.ImageField(required=False)
+    biography = forms.CharField(label = "Biografía",
+                                widget=forms.Textarea,
+                                required=False)
+
