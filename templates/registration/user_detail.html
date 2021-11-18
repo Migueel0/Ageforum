@@ -37,7 +37,7 @@
                         {% for i in range_vote_list %}
                         <tr class="yellow_background_color">
                             <th scope="row">
-                                <a class="author_link"
+                                <a class="black_link"
                                     href="/{{discussion_in_vote_list|get_id_from_discussion_list:i}}">
                                     {{ vote_list|get_message_from_vote_list:i|safe }}
                                 </a>
@@ -62,7 +62,7 @@
                     {% for discussion in discussion_list %}
                     <tr class="yellow_background_color">
                         <th scope="row">
-                            <a class="author_link" href="/{{discussion.id}}">
+                            <a class="black_link" href="/{{discussion.id}}">
                                 {{ discussion.title }}
                             </a>
                         </th>
@@ -85,7 +85,7 @@
                     {% for discussion in discussion_list %}
                     <tr class="yellow_background_color">
                         <th scope="row">
-                            <a class="author_link" href="/{{discussion.id}}">
+                            <a class="black_link" href="/{{discussion.id}}">
                                 {{ discussion.title }}
                             </a>
                         </th>
@@ -106,7 +106,7 @@
                     {% for response in response_list %}
                     <tr class="yellow_background_color">
                         <th scope="row">
-                            <a class="author_link" href="/{{response.topic}}">
+                            <a class="black_link" href="/{{response.topic}}">
                                 Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title}}
                                 ({{response.topic.user}})
                             </a>
@@ -125,7 +125,7 @@
                     {% for response in response_list %}
                     <tr class="yellow_background_color">
                         <th scope="row">
-                            <a class="author_link" href="/{{response.topic}}">
+                            <a class="black_link" href="/{{response.topic}}">
                                 Respuesta:{{ response.text|safe }} Respondiendo a: {{response.topic.title|safe}}
                                 ({{response.topic.user}})
                             </a>

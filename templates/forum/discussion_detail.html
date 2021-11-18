@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     {%endif%}
-                    <a class="user_link" href="/accounts/profile/{{discussion.user.id}}">
+                    <a class="black_link" href="/accounts/profile/{{discussion.user.id}}">
                         {% if discussion.user.avatar %}
                         <img id="discussion_user_avatar" class="rounded-circle d-inline"
                             src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         {% endif %}
-                        <a href="/accounts/profile/{{response.user.id}}" class="user_link">
+                        <a href="/accounts/profile/{{response.user.id}}" class="black_link">
                             {% if response.user.avatar %}
                             <img id="response_user_avatar" class="d-inline rounded-circle"
                                 src="{{response.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
