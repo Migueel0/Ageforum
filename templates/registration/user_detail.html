@@ -23,15 +23,13 @@
                     <img id="user_avatar" class="img-thumbnail" src="/avatars/generic_avatar.png" alt="avatar"
                         width="200" height="200" />
                     {%endif%}
-
-                    {%if user.id == request.user.id%}
-
-                    <form method="post" action="/accounts/change-profile">
-                        <input type="submit" class="btn btn-primary" value="Editar usuario"></input>
-                    </form>
-                    {%endif%}
-
                 </form>
+                {%if user.id == request.user.id%}
+                <form method="post" action="/accounts/change-profile">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-primary mt-3" value="Editar usuario" />
+                </form>
+                {%endif%}
             </div>
             <div class="mt-3">
                 <h2 class="text-center">Likes</h2>
