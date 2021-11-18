@@ -5,13 +5,18 @@
 {% block content %}
 <div class="container text-light">
     <div class="row mt-5">
-        <div class="col-md-8 col-sm-10 col-12 mx-auto">
+        <div class="col-12 ">
+            <h1 class="yellow_color">Nuevo tema de discusión</h1>
             <form action="discussion_create" method="post">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit" class="btn btn-primary">Publicar</button>
+                {% csrf_token %}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-primary">Publicar</button>
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    $("#id_title").addClass("form-control")
+</script>
 {% endblock %}
