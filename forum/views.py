@@ -376,8 +376,7 @@ def contact(request):
         raise PermissionDenied()
 
 def error_404(request,exception):
-        data = {}
-        return render(request,'forum/404_error.html', data)
+        return render(request,'forum/404_error.html', status=404)
 
 #def error_500(request):
 #        data = {}
