@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MXMNSSGMK6"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-MXMNSSGMK6');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-M4WKT8W');
+    </script>
+    <!-- End Google Tag Manager -->
+
+    {% load static %}
+
+    <title>{% block title %}Foro Age of Empires IV{% endblock %}</title>
+
+    <meta name="google-site-verification" content="1SCFx5l5lcw0jH-f1htL0ypC6orDVvDl6ETRg5RywTg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block description %}{% endblock %}
+
+    <link rel="stylesheet" href="{% static '/404_style.css' %}">
+</head>
+<body>
+<div>
+    <h1>ERROR 404</h1>
+    <p>Volver al inicio: <a href="/">Inicio</a></p>
+</div>
+
+</body>
+</html>

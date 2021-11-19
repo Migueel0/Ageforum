@@ -8,6 +8,10 @@ nav {
     background-image: url("navbar_background.jpg");
 }
 
+.body{
+    background-image: url('404_image_professional.jpg');
+}
+
 #post_list {
     margin-top: 15px;
 }

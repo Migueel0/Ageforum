@@ -14,7 +14,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaulttags import register
 from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
-
 from forum.forms import ContactForm, DiscussionCreateForm, MessageCreateForm
 
 
@@ -375,3 +374,11 @@ def contact(request):
             return HttpResponseRedirect(INDEX_ROUTE)
     else:
         raise PermissionDenied()
+
+def error_404(request,exception):
+        data = {}
+        return render(request,'forum/404_error.html', data)
+
+#def error_500(request):
+#        data = {}
+#       return render(request,'myapp/error_500.html', data)

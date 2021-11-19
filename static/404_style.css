@@ -1,0 +1,29 @@
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background-image: url('404_image_professional.jpg');
+    background-position: 35% 75%;
+    background-attachment: fixed;
+    background-size: cover;
+    text-align:center
+    
+    
+}
+
+div {
+    position: absolute;
+    top: 30%;
+    left: 35%;
+    margin-top: -50px;
+    margin-left: -50px;
+    
+}
+
+h1 {
+    font-weight: bold;
+
+    font-size: 100px
+}
+
+p {
+    font-size: 30px
+}
