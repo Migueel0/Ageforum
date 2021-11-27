@@ -43,7 +43,10 @@
                         <textarea id="id_biography" name='biography' class="form-control" rows="10" cols="50"
                             max-length="150" style="resize: none;">{{ request.user.biography }}</textarea>
                     </div>
-                    <a href="/accounts/password" class="btn btn-primary" role="button">Cambiar contraseña</a>
+                    <div class='mb-5'>
+                        <p>Cambiar contraseña</p>
+                        <a href="/accounts/password" class="btn btn-primary" role="button">Cambiar</a>
+                    </div>
                 </div>
             </div>
         </div>
