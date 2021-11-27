@@ -35,6 +35,7 @@
                 <p class="p-3 d-inline-block text-dark yellow_background_color mt-3 break-line">{{user.biography|safe}}</p>
             </div>
             {% else %}
+            {%if user.id == request.user.id%}
             <form method="post" action="/accounts/change-profile">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link link_underline_none">
@@ -42,7 +43,8 @@
                 </button>
 
                 </a>
-                {% endif %}
+                {%endif%}
+            {% endif %}
         </div>
 
         <div class="col-md-6">
