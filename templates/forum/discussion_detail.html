@@ -25,7 +25,7 @@
                                     <button id="delete_discusison_button_{{discussion.id}}" type="submit"
                                         class="btn btn-primary d-inline"
                                         onclick="confirm_discussion_delete({{discussion.id}})"> <em
-                                        class="d-inline fas fa-trash btn-primary"></em>
+                                            class="d-inline fas fa-trash btn-primary"></em>
                                         <p class="d-inline">Eliminar</p>
                                     </button>
                                 </div>
@@ -73,6 +73,7 @@
                             </div>
                         </div>
                     </div>
+                    {%endif%}
                     <button id="message_vote_button_{{discussion.id}}" type="button"
                         class="btn btn-primary message_vote_button" onclick="message_vote('{{discussion.id}}')">
                         <p id="message_votes_{{discussion.id}}" class="d-inline">
@@ -87,8 +88,6 @@
                             alt="empty_heart"></em>
                         {% endif %}
                     </button>
-
-                    {%endif%}
 
                 </div>
             </div>
@@ -105,7 +104,7 @@
                                         <button id="delete_response_button_{{response.id}}" type="submit"
                                             class="btn btn-primary message_vote_button d-inline"
                                             onclick="confirm_response_delete({{response.id}})"> <em
-                                            class="d-inline fas fa-trash btn-primary"></em>
+                                                class="d-inline fas fa-trash btn-primary"></em>
                                             <p class="d-inline">Eliminar</p>
                                         </button>
 
@@ -275,9 +274,9 @@
             location.replace('/delete_response/' + response_id);
         }
     }
-$( "div[id^='response_text_'] img" ).addClass("img-fluid")
-$( "div[id^='discussion_text'] img" ).addClass("img-fluid")
-$( "#discussion_text iframe").addClass("img-fluid")
+    $("div[id^='response_text_'] img").addClass("img-fluid")
+    $("div[id^='discussion_text'] img").addClass("img-fluid")
+    $("#discussion_text iframe").addClass("img-fluid")
 </script>
 
 {% endblock %}
