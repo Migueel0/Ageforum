@@ -22,9 +22,9 @@
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     {% csrf_token %}
-                                    <button id="delete_response_button_{{response.id}}" type="submit"
+                                    <button id="delete_discusison_button_{{discussion.id}}" type="submit"
                                         class="btn btn-primary d-inline"
-                                        onclick="confirm_response_delete({{response.id}})"> <em
+                                        onclick="confirm_discussion_delete({{discussion.id}})"> <em
                                         class="d-inline fas fa-trash btn-primary"></em>
                                         <p class="d-inline">Eliminar</p>
                                     </button>
@@ -276,6 +276,7 @@
         }
     }
 $( "div[id^='response_text_'] img" ).addClass("img-fluid")
+$( "div[id^='discussion_text'] img" ).addClass("img-fluid")
 $( "#discussion_text iframe").addClass("img-fluid")
 </script>
 
