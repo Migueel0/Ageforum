@@ -36,7 +36,7 @@
             </div>
             {% else %}
             {%if user.id == request.user.id%}
-            <form method="post" action="/accounts/change-profile">
+            <form method="get" action="/accounts/change-profile">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-link link_underline_none">
                 <span class="text-danger">Añada biografía</span>
@@ -159,6 +159,6 @@
 </div>
 <script>
 $( "div[id^='forum_content'] img" ).addClass("img-fluid")
-$( "div[id^='forum_content'] iframe" ).addClass("img-fluid")
+$( "div[id^='forum_content'] iframe" ).addClass("w-100")
 </script>
 {% endblock %}
