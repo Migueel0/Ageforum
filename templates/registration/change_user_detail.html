@@ -16,9 +16,8 @@
                         <input type="text" id="id_username" name='username' class="form-control"
                             value="{{ request.user.username }}" max-length="100">
                         <span class="text-danger">{{ form.username.errors}}</span>
-
-                        {% if request.user.avatar %}
                         <div class='mt-5 mb-2'>
+                            {% if request.user.avatar %}
                             <img id="user_avatar" class="d-inline rounded-circle" src="{{request.user.avatar.url}}"
                                 alt="avatar" width="200" height="200" />
                             {% else %}
@@ -63,6 +62,5 @@
             this.value = this.value.replace(/\s/g, "");
         }
     });
-    
 </script>
 {% endblock %}
