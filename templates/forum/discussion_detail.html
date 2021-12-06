@@ -276,8 +276,7 @@
     }
     $("div[id^='response_text_'] img").addClass("img-fluid")
     $("div[id^='discussion_text'] img").addClass("img-fluid")
-    document.getElementById("discussion_text iframe").style.width = "853px";
-    document.getElementById("discussion_text iframe").style.height = "480px";
+    $("div[id^='discussion_text'] iframe").addClass("w-100")
 </script>
 
 {% endblock %}
