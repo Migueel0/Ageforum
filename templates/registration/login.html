@@ -14,7 +14,7 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Identificarse</button>
+            <button type="submit" class="btn btn btn-dark">Identificarse</button>
         </form>
         <p class="mt-3"><a class="yellow_color" href="{% url 'password_reset' %}">¿Olvidaste la contraseña?</a></p>
     </div>

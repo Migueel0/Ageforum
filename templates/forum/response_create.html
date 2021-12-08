@@ -13,13 +13,13 @@ IV{% endblock %}
             <form action="/response_reply_create/{{ discussion_id }}/{{message_to_reply.id}}" method="post">
                 {% csrf_token %}
                 {{form.as_p}}
-                <button type="submit" class="btn btn-primary mb-5">Publicar</button>
+                <button type="submit" class="btn btn-dark  mb-5">Publicar</button>
             </form>
             {% else %}
             <form action="/response_create/{{ discussion_id }}" method="post">
                 {% csrf_token %}
                 {{form.as_p}}
-                <button type="submit" class="btn btn-primary mb-5">Publicar</button>
+                <button type="submit" class="btn btn-dark mb-5">Publicar</button>
             </form>
             {%endif%}
         </div>
