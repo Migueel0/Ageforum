@@ -75,7 +75,7 @@
         <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="top_navbar">
             <div class="container-md">
                 <a class="navbar-brand" href="/">
-                    <img src="{% static '/title.png' %}" alt="Age of Empires">
+                    <img style="border: 3px solid; color: black;" src="{% static '/title.png' %}" alt="Age of Empires">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -93,10 +93,10 @@
                                         {{ request.user.username }}
                                     </strong></p>
                                 {% if request.user.avatar %}
-                                <img id="author_avatar" class="d-inline rounded-circle"
+                                <img style="border: 3px solid; color: black;" id="author_avatar" class="d-inline rounded-circle border border-2"
                                     src="{{request.user.avatar.url}}" alt="avatar" width="50" height="50" />
                                 {% else %}
-                                <img id="author_avatar" class="d-inline rounded-circle"
+                                <img style="border: 3px solid; color: black;" id="author_avatar" class="d-inline rounded-circle border border-2"
                                     src="/avatars/generic_avatar.png" width="50" height="50" alt="Avatar" />
                                 {% endif %}
                             </a>

@@ -15,10 +15,10 @@
             <div>
                 <h2 id="user_detail_username" class='d-block'>{{ user.username }}</h2>
                 {% if user.avatar %}
-                <img id="user_avatar" class="rounded-circle" src="{{user.avatar.url}}" alt="avatar" width="200"
+                <img id="user_avatar" class="rounded-circle border border-3" src="{{user.avatar.url}}" alt="avatar" width="200"
                     height="200" />
                 {% else %}
-                <img id="user_avatar" class="rounded-circle" src="/avatars/generic_avatar.png" alt="avatar" width="200"
+                <img id="user_avatar" class="rounded-circle border border-3" src="/avatars/generic_avatar.png" alt="avatar" width="200"
                     height="200" />
                 {%endif%}
                 {%if user.id == request.user.id%}

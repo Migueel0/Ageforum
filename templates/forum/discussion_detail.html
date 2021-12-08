@@ -35,10 +35,10 @@
                     {%endif%}
                     <a class="black_link" href="/accounts/profile/{{discussion.user.id}}">
                         {% if discussion.user.avatar %}
-                        <img id="discussion_user_avatar" class="rounded-circle d-inline"
+                        <img style="border: 3px solid; color: black;" id="discussion_user_avatar" class="rounded-circle border border-2 d-inline"
                             src="{{discussion.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
                         {% else %}
-                        <img id="discussion_user_generic_avatar" class="rounded-circle d-inline"
+                        <img style="border: 3px solid; color: black;" id="discussion_user_generic_avatar" class="rounded-circle border border-2 d-inline"
                             src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
                         {% endif %}
                         <p id="user_username" class="mx-3 d-inline my-auto">
@@ -80,7 +80,7 @@
                             {{ vote_count_dict|get_item_from_dict:discussion.id }}</p>
                         {% if request.user.id and discussion in messages_voted_by_user_list %}
                         <!-- Filled hearth -->
-                        <em id="message_vote_icon_{{discussion.id}}" class="fad fa-heart d-inline"
+                        <em id="message_vote_icon_{{discussion.id}}" class="fas fa-heart d-inline"
                             alt="filled_heart"></em>
                         {% else %}
                         <!-- Empty hearth -->
@@ -115,10 +115,10 @@
                         {% endif %}
                         <a href="/accounts/profile/{{response.user.id}}" class="black_link">
                             {% if response.user.avatar %}
-                            <img id="response_user_avatar" class="d-inline rounded-circle"
+                            <img style="border: 3px solid; color: black;" id="response_user_avatar" class="d-inline rounded-circle border border-2"
                                 src="{{response.user.avatar.url}}" width="75" height="75" alt="user_avatar" />
                             {% else %}
-                            <img id="response_user_generic_avatar" class="d-inline rounded-circle"
+                            <img style="border: 3px solid; color: black;" id="response_user_generic_avatar" class="d-inline rounded-circle border border-2"
                                 src="/avatars/generic_avatar.png" width="75" height="75" alt="generic_avatar" />
                             {% endif %}
                             <p id="user_username" class="mx-3 d-inline my-auto"><strong>{{ response.user.username }}
