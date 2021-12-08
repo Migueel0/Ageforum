@@ -1,11 +1,13 @@
 body {
-    background-image: url("background.jpg");
+    background-image: url("nav.jpg");
     font-family: 'Times New Roman', serif !important;
     font-size: large !important;
+    font-weight: 900 !important;
+    
 }
 
 nav {
-    background-image: url("navbar_background.jpg");
+    background-image: url("download\ \(2\).jpg");
 }
 
 .body{
@@ -17,7 +19,7 @@ nav {
 }
 
 .yellow_color {
-    color: #d7caa6 !important;
+    color: #fae3aa !important;
 }
 
 .yellow_background_color {
