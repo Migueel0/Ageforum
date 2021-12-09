@@ -42,6 +42,12 @@
                         <textarea id="id_biography" name='biography' class="form-control" rows="10" cols="50"
                             max-length="150" style="resize: none;">{{ request.user.biography }}</textarea>
                     </div>
+                    <div class="mb-5">
+                        <label class="form-label">Cambiar correo electrónico</label>
+                            <input type="text" id="user_email" name='email' class="form-control"
+                                value="{{ request.user.email }}" max-length="100">
+                            <span class="text-danger">{{ form.email.errors}}</span>
+                    </div>
                     <div class='mb-5'>
                         <p>Cambiar contraseña</p>
                         <a href="/accounts/password" class="btn btn btn-dark" role="button">Cambiar</a>

@@ -42,8 +42,10 @@ class SignUpView(generic.CreateView):
         login(self.request, user)
         return HttpResponseRedirect(ROOT_URL)
 
+
 def password_success(request):
     return render(request, PASSWORD_SUCCESS_TEMPLATE)
+
 
 def user_detail(request, user_id):
     """
@@ -119,6 +121,17 @@ def change_user_detail(request):
         form = EditForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
+            user_email = form.cleaned_data['email']
+            user_email = user_email.replace(" ", "")
+            if (user_email == '' or not User.objects.filter(email=user_email).count() == 0) and user.email != user_email:
+                # username empty or already exists
+                form.add_error(
+                    'email', 'La direccion de correo electrónico ya existe')
+                context = {
+                    'form': form
+                }
+                return render(request, CHANGE_INFO_TEMPLATE, context)
+            user.email = user_email
             username_form = form.cleaned_data['username']
             username_form = username_form.replace(" ", "")
             if (username_form == '' or not User.objects.filter(username=username_form).count() == 0) and user.username != username_form:
@@ -130,6 +143,7 @@ def change_user_detail(request):
                 }
                 return render(request, CHANGE_INFO_TEMPLATE, context)
             user.username = username_form
+
             avatar_form = form.cleaned_data['avatar']
             if avatar_form:
                 user.avatar = avatar_form
