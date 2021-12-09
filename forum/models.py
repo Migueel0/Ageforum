@@ -15,7 +15,7 @@ class Message(models.Model):
     date_publication = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.text)
 
     def __eq__(self, other):
         return self.id == other.id
@@ -27,6 +27,8 @@ class Message(models.Model):
 class Discussion(Message):
     title = models.CharField(max_length=500)
     views = models.PositiveBigIntegerField(default=0)
+    def __str__(self):
+        return self.title
 
 
 class Response(Message):
