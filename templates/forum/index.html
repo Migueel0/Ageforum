@@ -17,37 +17,74 @@
                     <a href="discussion_create" class="mb-3 mx-auto btn btn-dark">+ Nuevo tema</a>
                 </div>
                 {% endif %}
-                <div class = "mb-5" id="table_wrapper">
+                <div class="mb-5" id="table_wrapper">
                     {% if discussion_list %}
-                    <table id="discussion_table" class="table table-hover table-borderless align-middle table-striped"
-                        aria-describedby="discussions table">
-                        <thead class="yellow_color">
-                            <tr>
-                                <th scope="col" class="col-6 col-lg-7">Tema</th>
-                                <th scope="col" class="text-break">Respuestas</th>
-                                <th scope="col" class="text-break">Visitas</th>
-                                <th scope="col" class="text-break">Último mensaje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for discussion in discussion_list %}
-                            <tr class="yellow_background_color">
-                                <th scope="row">
-                                    <a class="black_link" href="{{discussion.id}}">
-                                        {{ discussion.title }}
-                                    </a>
-                                </th>
-                                <td class="text-center">
-                                    {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
-                                </td>
-                                <td class="text-center">{{discussion.views}}</td>
-                                <td class="text-center">
-                                    {{discussion_last_message_date_dict|get_item_from_dict:discussion.id}}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="row">
+                        <div class="d-none d-xl-block">
+                            <table id="discussion_table1"
+                                class="table table-hover table-borderless align-middle table-striped"
+                                aria-describedby="discussions table">
+                                <thead class="yellow_color">
+                                    <tr>
+                                        <th scope="col" class="col-6 col-lg-7">Tema</th>
+                                        <th scope="col" class="text-break">Respuestas</th>
+                                        <th scope="col" class="text-break">Visitas</th>
+                                        <th scope="col" class="text-break">Último mensaje</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for discussion in discussion_list %}
+                                    <tr class="yellow_background_color">
+                                        <th scope="row">
+                                            <a class="black_link" href="{{discussion.id}}">
+                                                {{ discussion.title }}
+                                            </a>
+                                        </th>
+                                        <td class="text-center">
+                                            {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
+                                        </td>
+                                        <td class="text-center">{{discussion.views}}</td>
+                                        <td class="text-center">
+                                            {{discussion_last_message_date_dict|get_item_from_dict:discussion.id}}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="d-xl-none">
+                            <table id="discussion_table2"
+                                class="table table-hover table-borderless align-middle table-striped"
+                                aria-describedby="discussions table">
+                                <thead class="yellow_color">
+                                    <tr>
+                                        <th scope="col" class="col-6 col-lg-7">Tema</th>
+                                        <th scope="col" class="text-break">Res</th>
+                                        <th scope="col" class="text-break">Vis</th>
+                                        <th scope="col" class="text-break">U.M</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for discussion in discussion_list %}
+                                    <tr class="yellow_background_color">
+                                        <th scope="row">
+                                            <a class="black_link" href="{{discussion.id}}">
+                                                {{ discussion.title }}
+                                            </a>
+                                        </th>
+                                        <td class="text-center">
+                                            {{discussion_number_response_dict|get_item_from_dict:discussion.id}}
+                                        </td>
+                                        <td class="text-center">{{discussion.views}}</td>
+                                        <td class="text-center">
+                                            {{discussion_last_message_date_dict|get_item_from_dict:discussion.id}}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     {% else %}
                     <h1 class="text-danger">No hay discusiones</h1>
                     {% endif %}
@@ -62,7 +99,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#discussion_table').DataTable({
+        $('#discussion_table1').DataTable({
             "paging": false,
             "info": false,
             "order": [],
@@ -74,7 +111,20 @@
                 "search": "Buscar: "
             }
         });
-        $("#discussion_table_filter").addClass("text-light")
+        $('#discussion_table2').DataTable({
+            "paging": false,
+            "info": false,
+            "order": [],
+            columnDefs: [{
+                orderable: false,
+                targets: 3
+            }],
+            "language": {
+                "search": "Buscar: "
+            }
+        });
+        $("#discussion_table1_filter").addClass("text-light")
+        $("#discussion_table2_filter").addClass("text-light")
     });
 </script>
 {% endblock %}
