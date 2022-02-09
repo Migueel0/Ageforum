@@ -21,13 +21,11 @@ We can divide this proyect in 3 different splits:
 * To see the posts, have an account is not required but if you want to write in it you will have to sign up and create an account.
 * When you have the account, you can start to write in the forum once you log in.
 * Your profile will be shown with an username and a profile photo.
-* To post, you just write a title and the message body. Other users will can reply your post.
-* Don´t worry about toxic community, we are working to create a report system to ban all non respectfully users ;)
+* To post, you just write a title and the message body. Other users will can reply and vote your post.
+
 
 ## DEVELOPERs
 
 * **Lorenzo Lerate** - [geekecom](https://github.com/geekecom)
-* **Miguel Galán Lerate** - [Migueel0](https://github.com/Migueel0)
+* **Miguel Galán Lerate** - [Migueel0](https://github.com/Migueel0) 
 
-## FORUM STATE 
-In progress...
