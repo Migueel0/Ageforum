@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 from django.views.generic.base import TemplateView
-from django.conf.urls import include, url
+from django.conf.urls import include
 from forum import views as Ageforum_views
 from django.conf.urls import handler404, handler500
 
