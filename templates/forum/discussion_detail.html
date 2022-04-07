@@ -232,12 +232,14 @@
                                     <form action="response_reply_create/{{ discussion.id }}/{{ response.id }}"
                                         class="d-inline">
                                         {% csrf_token %}
+                                        {% if request.user.id %}
                                         <button id="message_reply_button_{{discussion.id}}" type="submit"
                                             class="btn btn-dark message_vote_button d-inline"
                                             title="Responder a este mensaje">
                                             <em class="fas fa-reply d-inline"></em>
                                             <p class="d-inline">&nbsp;Responder</p>
                                         </button>
+                                        {%endif%}
                                     </form>
                                 </div>
                             </div>
@@ -311,6 +313,7 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-dark mb-3 margin_top_30">Volver al inicio</button>
                 </form>
+                {% if request.user.id %}
                 <form class="mb-5" action="response_create/{{ discussion.id }}"
                                         class="d-inline">
                                         {% csrf_token %}
@@ -320,6 +323,7 @@
                                             <p class="d-inline">&nbsp;Responder</p>
                                         </button>
                                     </form>
+                {%endif%}
             </div>
         </div>
     </div>
