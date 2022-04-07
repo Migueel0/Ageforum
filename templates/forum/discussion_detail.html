@@ -24,12 +24,14 @@
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             {% csrf_token %}
+                                            {%if user.id == discussion.user.id%}
                                             <button id="delete_discusison_button_{{discussion.id}}" type="submit"
                                                 class="btn btn-dark d-inline"
                                                 onclick="confirm_discussion_delete({{discussion.id}})"> <em
                                                     class="d-inline fas fa-trash-alt btn-dark"></em>
                                                 <p class="d-inline">&nbsp;Eliminar</p>
                                             </button>
+                                            {%endif%}
                                         </div>
                                     </div>
                                 </div>
@@ -61,8 +63,6 @@
                 </div>
 
                 <div id="discussion_actions_wrapper">
-                    {%if user.id == discussion.user.id%}
-                    {%if user.id == discussion.user.id%}
                     <div class="row">
                         <div class="d-none d-xl-block">
                             <div class="position-relative">
@@ -70,13 +70,15 @@
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             {% csrf_token %}
-                                            <form action="edit_text/{{ discussion.id }}">
+                                            {%if user.id == discussion.user.id%}
+                                            <form action="edit_response_text/{{ response.id }}">
                                                 {% csrf_token %}
                                                 <button id="edit_discussion_button_{{discussion.id}}" type="submit"
                                                     class="btn btn-dark message_vote_button d-inline"> <em
                                                         class="fas fa-edit btn-dark"></em>
                                                     <p class="d-inline">&nbsp;Editar</p>
                                                 </button>
+                                                {%endif%}
                                             </form>
                                         </div>
                                     </div>
@@ -84,7 +86,6 @@
                             </div>
                         </div>
                     </div>
-                    {%endif%}
                     <div class="row">
                         <div class="d-xl-none">
                             <div class="position-relative">
@@ -120,7 +121,6 @@
                             </div>
                         </div>
                     </div>
-                    {%endif%}
                     <button id="message_vote_button_{{discussion.id}}" type="button"
                         class="btn btn-dark message_vote_button" onclick="message_vote('{{discussion.id}}')">
                         <p id="message_votes_{{discussion.id}}" class="d-inline">
@@ -142,7 +142,6 @@
                 {% for response in response_list %}
                 <div class="d-block mx-auto yellow_background_color mt-3 p-3">
                     <div id="response_user_avatar_wrapper">
-                        {%if user.id == response.user.id%}
                         <div class="row">
                             <div class="d-none d-xl-block">
                                 <div class="position-relative">
@@ -150,19 +149,20 @@
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 {% csrf_token %}
+                                                {%if user.id == response.user.id%}
                                                 <button id="delete_response_button_{{response.id}}" type="submit"
                                                     class="btn btn-dark message_vote_button d-inline"
                                                     onclick="confirm_response_delete({{response.id}})"> <em
                                                         class="d-inline far fa-trash-alt  btn-dark"></em>
                                                     <p class="d-inline">&nbsp;Eliminar</p>
                                                 </button>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {% endif %}
                         <a href="/accounts/profile/{{response.user.id}}" class="black_link">
                             {% if response.user.avatar %}
                             <img style="border: 3px solid; color: black;" id="response_user_avatar"
@@ -193,7 +193,6 @@
                     <div id="reponse_actions_wrapper_{{response.id}}">
                         <div class="row">
                             <div class="d-none d-xl-block">
-                                {%if request.user.id == response.user.id%}
                                 <div class="d-block mx-auto margin_top_30">
                                     <div class = "position-relative">
                                         <div class="position-absolute top-0 end-0">
@@ -213,7 +212,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {%endif%}
                                     <form method="post" id="message_vote_form_{{response.id}}" class="d-inline">
                                         {% csrf_token %}
                                         <button id="message_vote_button_{{ response.id }}" type="button"
@@ -246,20 +244,21 @@
                             <div class="d-xl-none">
                                 <div class="d-block mx-auto margin_top_30">
                                     <div class="position-relative">
-                                        {%if user.id == response.user.id%}
+                                        
                                         <div class="position-absolute top-0 start-50 translate-middle-x">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     {% csrf_token %}
+                                                    {%if user.id == response.user.id%}
                                                     <button id="delete_response_button_{{response.id}}" type="submit"
                                                         class="btn btn-dark message_vote_button d-inline"
                                                         onclick="confirm_response_delete({{response.id}})"> <em
                                                             class="d-inline far fa-trash-alt  btn-dark"></em>
                                                     </button>
+                                                    {%endif%}
                                                 </div>
                                             </div>
                                         </div>
-                                        {%endif%}
                                         <div class="position-absolute top-0 end-0">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
@@ -312,6 +311,15 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-dark mb-3 margin_top_30">Volver al inicio</button>
                 </form>
+                <form class="mb-5" action="response_create/{{ discussion.id }}"
+                                        class="d-inline">
+                                        {% csrf_token %}
+                                        <button id="message_reply_button_{{discussion.id}}" type="submit"
+                                            class="btn btn-dark message_vote_button d-inline"
+                                            title="Responder a este mensaje">
+                                            <p class="d-inline">&nbsp;Responder</p>
+                                        </button>
+                                    </form>
             </div>
         </div>
     </div>
