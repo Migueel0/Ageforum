@@ -37,6 +37,7 @@
                         </div>
                     </div>
                     {%endif%}
+
                     <a class="black_link" href="/accounts/profile/{{discussion.user.id}}">
                         {% if discussion.user.avatar %}
                         <img style="border: 3px solid; color: black;" id="discussion_user_avatar"
@@ -61,6 +62,29 @@
 
                 <div id="discussion_actions_wrapper">
                     {%if user.id == discussion.user.id%}
+                    {%if user.id == discussion.user.id%}
+                    <div class="row">
+                        <div class="d-none d-xl-block">
+                            <div class="position-relative">
+                                <div class="position-absolute top-0 end-0">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            {% csrf_token %}
+                                            <form action="edit_text/{{ discussion.id }}">
+                                                {% csrf_token %}
+                                                <button id="edit_discussion_button_{{discussion.id}}" type="submit"
+                                                    class="btn btn-dark message_vote_button d-inline"> <em
+                                                        class="fas fa-edit btn-dark"></em>
+                                                    <p class="d-inline">&nbsp;Editar</p>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endif%}
                     <div class="row">
                         <div class="d-xl-none">
                             <div class="position-relative">
