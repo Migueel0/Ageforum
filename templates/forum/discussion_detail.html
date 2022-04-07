@@ -71,7 +71,7 @@
                                         <div class="input-group-prepend">
                                             {% csrf_token %}
                                             {%if user.id == discussion.user.id%}
-                                            <form action="edit_response_text/{{ response.id }}">
+                                            <form action="edit_text/{{ discussion.id }}">
                                                 {% csrf_token %}
                                                 <button id="edit_discussion_button_{{discussion.id}}" type="submit"
                                                     class="btn btn-dark message_vote_button d-inline"> <em
