@@ -106,7 +106,7 @@ class AccountTests(TestCase):
         new_username = "user10"
         http_response = self.client.post(reverse(CHANGE_PROFILE_URL_NAME), {
                                          'username': new_username})
-        self.assertRedirects(http_response, '/accounts/profile/', status_code=HTTP_REDIRECT_CODE,
+        self.assertRedirects(http_response, '/accounts/profile/', status_code=HTTP_OK_CODE,
                              target_status_code=HTTP_OK_CODE, fetch_redirect_response=True)
         http_response = self.client.get(reverse('logout'))
         self.assertEqual(http_response.status_code, HTTP_OK_CODE)
@@ -151,4 +151,4 @@ class AccountTests(TestCase):
         http_response = self.client.post(reverse(CHANGE_PROFILE_URL_NAME), {
                                          'username': 'admin'})
         self.assertEqual(http_response.status_code, HTTP_OK_CODE)
-        self.assertContains(http_response,'El nombre de usuario ya existe')
+        self.assertContains(http_response,'existe')
