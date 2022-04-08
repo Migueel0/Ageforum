@@ -22,6 +22,6 @@ urlpatterns = [
          views.delete_response, name='delete-response'),
     path('contact', views.contact, name='contact'),
     path('edit_text/<int:discussion_id>', views.edit_text, name='edit_text'),
-    path('edit_response_text/<int:message_id>', views.edit_response_text, name='edit_response_text')
+    path('edit_response_text/<int:discussion_id>/<int:message_id>', views.edit_response_text, name='edit_response_text')
 
 ]

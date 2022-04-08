@@ -21,6 +21,7 @@ from .models import Discussion, Message, Response, Vote
 
 # routes
 INDEX_ROUTE = '/'
+
 # templates urls
 INDEX_TEMPLATE = 'forum/index.html'
 DISCUSSION_CREATE_TEMPLATE = 'forum/discussion_create.html'
@@ -56,8 +57,7 @@ def delete_response(request, response_id):
         raise PermissionDenied()
     else:
         response.delete()
-
-    return redirect(INDEX_ROUTE)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 def edit_text(request, discussion_id,):
@@ -77,7 +77,7 @@ def edit_text(request, discussion_id,):
     return render(request, EDIT_DISCUSSION_TEMPLATE, context)
 
 
-def edit_response_text(request, message_id):
+def edit_response_text(request, message_id,discussion_id):
     if not request.user.id:
         raise PermissionDenied()
     edit_response_text = Message.objects.get(pk=message_id)
@@ -89,8 +89,9 @@ def edit_response_text(request, message_id):
     }
     if form.is_valid():
         form.save()
-        return redirect('/')
+        return redirect("/"+ str(discussion_id))
     return render(request, EDIT_RESPONSE_TEMPLATE, context)
+
 
 
 def index(request):

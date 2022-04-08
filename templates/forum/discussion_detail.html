@@ -199,7 +199,7 @@
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     {%if user.id == response.user.id%}
-                                                    <form action="edit_response_text/{{ response.id }}">
+                                                    <form action="edit_response_text/{{discussion.id}}/{{ response.id }}"">
                                                         {% csrf_token %}
                                                         <button id="edit_response_button_{{response.id}}" type="submit"
                                                             class="btn btn-dark message_vote_button d-inline"> <em
@@ -265,7 +265,7 @@
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     {%if user.id == response.user.id%}
-                                                    <form action="edit_response_text/{{ response.id }}">
+                                                    <form action="edit_response_text/{{discussion.id}}/{{ response.id }}">
                                                         {% csrf_token %}
                                                         <button id="edit_response_button_{{response.id}}" type="submit"
                                                             class="btn btn-dark message_vote_button d-inline"> <em
