@@ -93,11 +93,13 @@
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             {% csrf_token %}
+                                            {%if user.id == discussion.user.id%}
                                             <button id="delete_discusison_button_{{discussion.id}}" type="submit"
                                                 class="btn btn-dark d-inline"
                                                 onclick="confirm_discussion_delete({{discussion.id}})"> <em
                                                     class="d-inline fas fa-trash-alt btn-dark"></em>
                                             </button>
+                                            {%endif%}
                                         </div>
                                     </div>
                                 </div>
