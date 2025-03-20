@@ -1,4 +1,5 @@
-from django.db import models
+from datetime import datetime
+from django.db import connection, models
 from django.contrib.auth.models import AbstractUser
 
 
@@ -23,11 +24,29 @@ class Message(models.Model):
     def __hash__(self):
         return super().__hash__()
 
-
 class Discussion(Message):
     title = models.CharField(max_length=500)
     views = models.PositiveBigIntegerField(default=0)
 
+    def save(self, *args, **kwargs):
+        # Insertar manualmente en forum_message
+        super().save(*args, **kwargs)
+        message_id = self.id + 100
+        date = datetime.now()
+        cursor = connection.cursor()
+        text = self.text
+        if self.text == '':
+            text = "''"
+        message_query = "INSERT INTO forum_message (id, user_id, text, date_publication) VALUES (%s, %s, %s, %s)" % (message_id, self.user.id,text, f"'{date}'")
+        print(message_query)
+        cursor.executescript(message_query)
+        cursor.close()
+        
+        cursor = connection.cursor()
+        query = "INSERT INTO forum_discussion (message_ptr_id, views,title) VALUES ('%s', '%s', '%s')" % (message_id, self.views, self.title)
+        print(query)
+        cursor.executescript(query)  
+        
 
 class Response(Message):
     topic = models.ForeignKey(Discussion, on_delete=models.CASCADE)

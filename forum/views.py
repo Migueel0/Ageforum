@@ -225,8 +225,6 @@ def discussion_detail(request, discussion_id):
     """
     if request.method == 'GET':
         discussion = get_object_or_404(Discussion, id=discussion_id)
-        discussion.views += 1
-        discussion.save()
         response_list = Response.objects.filter(
             topic=discussion).order_by('date_publication')
         vote_count_dict = __retrieve_discussion_votes(

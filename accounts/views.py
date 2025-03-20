@@ -8,7 +8,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, render
 from accounts.forms import EditForm, SignUpForm
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.template.defaulttags import register
 
 from forum.models import Discussion, Response, User, Vote
@@ -41,7 +41,10 @@ class SignUpView(generic.CreateView):
             username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
         login(self.request, user)
         return HttpResponseRedirect(ROOT_URL)
-
+    
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(ROOT_URL)
 
 def password_success(request):
     return render(request, PASSWORD_SUCCESS_TEMPLATE)

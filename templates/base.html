@@ -102,7 +102,10 @@
                             </a>
                         </div>
                         <div class="nav-item my-auto d-inline">
-                            <a class="nav-link d-inline-block" href="/accounts/logout/?next=/">Cerrar sesión</a>
+                            <form method="POST" action="{% url 'logout_view' %}">
+                                {% csrf_token %}
+                                <button type="submit">Cerrar sesión</button>
+                            </form>
                         </div>
                         {% else %}
                         {% if request.path  != '/accounts/sign-up/' %}
